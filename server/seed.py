@@ -96,10 +96,11 @@ if __name__ == '__main__':
         haneul = Location(
             location_name = 'Haneul Park',
             date_visited =  faker.date_between_dates(date_start=datetime(2015,1,1), date_end=datetime(2019,12,31)),
-            rating = 5,
+            rating = 3,
             google_map_url = 'https://goo.gl/maps/E6CtsTEMe27p5HXj9',
             website = 'https://parks.seoul.go.kr/parks/detailView.do?pIdx=6',
             avg_cost = 0,
+            category = 'Outdoor Activity',
             city_id = 2,
             user_id = 1
         )

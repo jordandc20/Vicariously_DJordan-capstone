@@ -143,6 +143,7 @@ class Location(db.Model, SerializerMixin):
     google_map_url = db.Column(db.String)
     website = db.Column(db.String)
     avg_cost = db.Column(db.Integer)
+    category = db.Column(db.Integer)
     created_at = db.Column(db.DateTime, server_default=db.func.now())
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
     city_id = db.Column(db.Integer, db.ForeignKey('cities.id'), nullable=False)
@@ -153,6 +154,13 @@ class Location(db.Model, SerializerMixin):
 
     serialize_rules = ("-city.locations", "-city.user",
                         "-user.locations", "-user.cities","-location_notes.location", "-created_at", "-updated_at",)
+
+    @validates('category')
+    def validates_category(self, key, value):
+        categories = ['Shopping','Mart', 'Food/Drink', 'Indoor Activity', 'Outdoor Activity', 'Accommodation', 'Other']
+        if value not in categories:
+            raise ValueError(f'{value} not an allowed value for category.')
+        return value
 
     @validates('location_name')
     def validates_nullable(self, key, value):
@@ -165,6 +173,13 @@ class Location(db.Model, SerializerMixin):
         styles = range(4)
         if value not in styles:
             raise ValueError(f'{value} not an allowed value for avg_cost.')
+        return value
+
+    @validates('rating')
+    def validates_rating(self, key, value):
+        styles = range(5)
+        if value not in styles:
+            raise ValueError(f'{value} not an allowed value for rating.')
         return value
 
     @validates('user_id')
