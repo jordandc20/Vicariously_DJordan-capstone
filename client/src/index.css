@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 
+body {
+  background-color: #1a1641;
+  font-family: 'Lato', sans-serif;
+  font-family: 'Quicksand', sans-serif;
+}
+
+button {
+  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+@layer components {
+  .btn-default {
+      @apply text-white text-xl border px-4 py-2 rounded-md hover:bg-white hover:text-black transition-all ease-in-out duration-200 hover:rounded-3xl disabled:hover:cursor-not-allowed disabled:text-gray-500 disabled:hover:rounded-md disabled:hover:bg-transparent disabled:border-gray-500;
+  }
+  .btn-remove {
+      @apply text-red-600 text-xl border border-red-600 px-4 py-2 rounded-md hover:bg-red-600 hover:text-white transition-all ease-in-out duration-200 hover:rounded-3xl;
+  }
+  .container {
+      @apply ml-[225px] text-center pt-12;
+  }
+} */
