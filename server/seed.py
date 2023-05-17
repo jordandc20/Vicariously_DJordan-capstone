@@ -56,6 +56,14 @@ if __name__ == '__main__':
         )
         db.session.add(seoul)
         db.session.commit()
+       
+        seoul2 = City(
+            city_name = 'Seoul',
+            country =  'South Korea',
+            user_id = 2
+        )
+        db.session.add(seoul2)
+        db.session.commit()
         
         ############# * CITY NOTES * #############
             

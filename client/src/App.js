@@ -6,13 +6,33 @@ import './App.css';
 import 'react-toastify/dist/ReactToastify.css';
 
 import Home from './components/Home'
+import CitiesList from './components/CitiesList';
+import CityDetails from './components/CityDetails';
 
 function App() {
+
+  //   const fetchData = async () => {
+  //     const data = await axios.get("/posts")
+  //     setAllPosts(data.data);
+  // };
+
+  // useEffect(()=>{
+  //     fetchData();
+  // },[toggle]);
+
+
+
+
+
+
   return (
     <div className="App">
       <Routes>
         <Route exact path="/" element={<Home />} />
-      </Routes>    </div>
+        <Route exact path="/cities" element={<CitiesList />} />
+        <Route exact path="/cities/:cityId" element={<CityDetails />} />
+      </Routes>
+    </div>
   );
 }
 

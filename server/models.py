@@ -18,14 +18,14 @@ class User(db.Model, SerializerMixin):
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
 
     cities = db.relationship("City", backref='user',
-                            cascade='all, delete, delete-orphan')
+                             cascade='all, delete, delete-orphan')
     locations = db.relationship(
         "Location", backref='user', cascade='all, delete, delete-orphan')
 
     # users=association_proxy('checkout_logs','user')
 
     serialize_rules = ("-cities.user", "-cities.locations.user",
-                        "-locations", "-created_at", "-updated_at",)
+                       "-locations", "-created_at", "-updated_at",)
 # "-locations.user","-locations.city.user"
 
     @validates('email')
@@ -45,7 +45,7 @@ class User(db.Model, SerializerMixin):
     @validates('travel_style')
     def validates_travel_style(self, key, value):
         styles = ['Thrill-seeker', 'Foodie', 'Relaxer', 'Experiencer', 'Culture Seeker',
-                    'Nature', 'Influencer', 'Party Animal', 'Shopper', 'Luxuriate']
+                  'Nature', 'Influencer', 'Party Animal', 'Shopper', 'Luxuriate']
         if value not in styles:
             raise ValueError(f'{value} not an allowed value for travel_style.')
         return value
@@ -58,6 +58,8 @@ class User(db.Model, SerializerMixin):
 
 class City(db.Model, SerializerMixin):
     __tablename__ = 'cities'
+    __table_args__ = (db.UniqueConstraint(
+        'city_name', 'country', 'user_id', name='unique_city_country'),)
 
     id = db.Column(db.Integer, primary_key=True)
     city_name = db.Column(db.String, nullable=False)
@@ -72,13 +74,14 @@ class City(db.Model, SerializerMixin):
         "CityNote", backref='city', cascade='all, delete, delete-orphan')
 
     serialize_rules = ("-user.cities", "-locations.city",
-                        "-city_notes.city", "-locations.user", "-created_at", "-updated_at",)
+                       "-city_notes.city", "-locations.user", "-created_at", "-updated_at",)
 
     @validates('city_name', 'country')
     def validates_nullable(self, key, value):
         if not value:
             raise ValueError(f'{key} must be provided.')
         return value
+
 
     @validates('user_id')
     def validates_user_id(self, key, value):
@@ -149,15 +152,15 @@ class Location(db.Model, SerializerMixin):
     city_id = db.Column(db.Integer, db.ForeignKey('cities.id'), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     location_notes = db.relationship(
-            "LocationNote", backref='location', cascade='all, delete, delete-orphan')
-
+        "LocationNote", backref='location', cascade='all, delete, delete-orphan')
 
     serialize_rules = ("-city.locations", "-city.user",
-                        "-user.locations", "-user.cities","-location_notes.location", "-created_at", "-updated_at",)
+                       "-user.locations", "-user.cities", "-location_notes.location", "-created_at", "-updated_at",)
 
     @validates('category')
     def validates_category(self, key, value):
-        categories = ['Shopping','Mart', 'Food/Drink', 'Indoor Activity', 'Outdoor Activity', 'Accommodation', 'Other']
+        categories = ['Shopping', 'Mart', 'Food/Drink',
+                      'Indoor Activity', 'Outdoor Activity', 'Accommodation', 'Other']
         if value not in categories:
             raise ValueError(f'{value} not an allowed value for category.')
         return value
@@ -200,8 +203,6 @@ class Location(db.Model, SerializerMixin):
         return f'<Location {self.id} :: {self.location_name} | city: {self.city_id} | user: {self.user_id}>'
 
 
-
-
 ###################### LOCATION NOTES ######################
 
 
@@ -213,10 +214,11 @@ class LocationNote(db.Model, SerializerMixin):
     # note_type = db.Column(db.String, nullable=False, default='Other')
     created_at = db.Column(db.DateTime, server_default=db.func.now())
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
-    location_id = db.Column(db.Integer, db.ForeignKey('locations.id'), nullable=False)
+    location_id = db.Column(db.Integer, db.ForeignKey(
+        'locations.id'), nullable=False)
 
-
-    serialize_rules = ("-location.location_notes", "-created_at", "-updated_at",)
+    serialize_rules = ("-location.location_notes",
+                       "-created_at", "-updated_at",)
 
     @validates('note_body')
     def validates_nullable(self, key, value):

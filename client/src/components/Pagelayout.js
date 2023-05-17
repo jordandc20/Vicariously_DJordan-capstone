@@ -4,10 +4,10 @@ import Navbar from "./Navbar";
 
 export const PageLayout = ({ children }) => {
     return (
-        <div className="page-layout">
+        <div >
             <Navbar />
             {/* <MobileNavBar /> */}
-            <div className="page-layout__content">{children}</div>
+            <div className=" bg-blue-400 h-screen">{children}</div>
             {/* <PageFooter /> */}
         </div>
     );
