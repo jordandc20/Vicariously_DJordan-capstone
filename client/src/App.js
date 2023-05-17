@@ -10,9 +10,6 @@ import Home from './components/Home'
 function App() {
   return (
     <div className="App">
-      <h1 className="text-3xl font-bold underline">
-        replace with navbar
-      </h1>
       <Routes>
         <Route exact path="/" element={<Home />} />
       </Routes>    </div>

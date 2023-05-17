@@ -16,14 +16,3 @@ root.render(
   </React.StrictMode>
 );
 
-// <React.StrictMode>
-// <BrowserRouter>
-//   <Auth0Provider
-//       domain={domain}
-//       clientId={clientId}
-//       redirectUri={`${window.location.origin}/profile`}
-//   >
-//       <App />
-//   </Auth0Provider>
-// </BrowserRouter>
-// </React.StrictMode>
