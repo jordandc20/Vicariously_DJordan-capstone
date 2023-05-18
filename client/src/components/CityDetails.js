@@ -11,8 +11,7 @@ const CityDetails = () => {
   const [categoryExpanded, setCategoryExpanded] = useState(null)
   const [isOpen, setIsOpen] = useState(false);
 
-  function handleFormClose(e) {
-    console.log(e)
+  function handleFormClose() {
     setIsOpen(false)
   }
 
