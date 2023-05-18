@@ -159,8 +159,8 @@ class Location(db.Model, SerializerMixin):
 
     @validates('category')
     def validates_category(self, key, value):
-        categories = ['Shopping', 'Mart', 'Food/Drink',
-                      'Indoor Activity', 'Outdoor Activity', 'Accommodation', 'Other']
+        categories = ['Shopping', 'Mart', 'FoodDrink',
+                      'IndoorActivity', 'OutdoorActivity', 'Accommodation', 'Other']
         if value not in categories:
             raise ValueError(f'{value} not an allowed value for category.')
         return value

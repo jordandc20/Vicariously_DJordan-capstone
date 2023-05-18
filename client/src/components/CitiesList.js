@@ -1,12 +1,20 @@
-import React from 'react'
-import { PageLayout } from './Pagelayout';
+import React, { useState, useEffect } from 'react'
+import axios from "axios"
 
-const CitiesList = () => {
+import CityCard from './CityCard';
+
+const CitiesList = ({ userCitiesData }) => {
+
+  const cityCardsArray = userCitiesData.map((city) => {
+    return <CityCard  key={city.id} cityData ={city} />
+  })
+
+
   return (
-    <PageLayout>
 
-    <div>CitiesList</div>
-    </PageLayout>   
+    <div className='flex sm:flex-row sm:text-left sm:justify-between py-4 px-6'>
+      {cityCardsArray}
+    </div>
   )
 }
 
