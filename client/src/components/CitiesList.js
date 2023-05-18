@@ -5,10 +5,14 @@ import CityCard from './CityCard';
 
 const CitiesList = ({ userCitiesData }) => {
 
-  const cityCardsArray = userCitiesData.map((city) => {
-    return <CityCard  key={city.id} cityData ={city} />
+  const cityCardsArray = userCitiesData?.map((city) => {
+    return <CityCard key={city.id} cityData={city} />
   })
 
+  /// ? waits for data   ... like a ternary? ... once the data is available, then continue to map\
+  // const cityCardsArray = userCitiesData ? userCitiesData?.map((city) => {
+  //   return <CityCard  key={city.id} cityData ={city} />
+  // }) : null
 
   return (
 
