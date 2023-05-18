@@ -146,7 +146,7 @@ class Location(db.Model, SerializerMixin):
     google_map_url = db.Column(db.String)
     website = db.Column(db.String)
     avg_cost = db.Column(db.Integer)
-    category = db.Column(db.Integer)
+    category = db.Column(db.String)
     created_at = db.Column(db.DateTime, server_default=db.func.now())
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
     city_id = db.Column(db.Integer, db.ForeignKey('cities.id'), nullable=False)
@@ -161,7 +161,7 @@ class Location(db.Model, SerializerMixin):
     def validates_category(self, key, value):
         categories = ['Shopping', 'Mart', 'FoodDrink',
                       'IndoorActivity', 'OutdoorActivity', 'Accommodation', 'Other']
-        if value not in categories:
+        if value and value not in categories:
             raise ValueError(f'{value} not an allowed value for category.')
         return value
 
@@ -174,14 +174,14 @@ class Location(db.Model, SerializerMixin):
     @validates('avg_cost')
     def validates_avg_cost(self, key, value):
         styles = range(4)
-        if value not in styles:
+        if value and value not in styles:
             raise ValueError(f'{value} not an allowed value for avg_cost.')
         return value
 
     @validates('rating')
     def validates_rating(self, key, value):
         styles = range(5)
-        if value not in styles:
+        if value and value not in styles:
             raise ValueError(f'{value} not an allowed value for rating.')
         return value
 

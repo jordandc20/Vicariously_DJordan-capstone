@@ -6,6 +6,7 @@ import * as yup from "yup";
 const NewLocationForm = ({ user_id, city_id, onFormClose }) => {
 
   const url_regex = /^((http|https):\/\/)?(www.)?(?!.*(http|https|www.))[a-zA-Z0-9_-]+(\.[a-zA-Z]+)+(\/)?.([\w\?[a-zA-Z-_%\/@?]+)*([^\/\w\?[a-zA-Z0-9_-]+=\w+(&[a-zA-Z0-9_]+=\w+)*)?$/
+
   const formik = useFormik({
     initialValues: {
       location_name: '',
@@ -15,7 +16,6 @@ const NewLocationForm = ({ user_id, city_id, onFormClose }) => {
       website: '',
       date_visited: '',
       rating: '',
-      location_notes: '',
       user_id: user_id,
       city_id: city_id
     },
@@ -25,22 +25,31 @@ const NewLocationForm = ({ user_id, city_id, onFormClose }) => {
       avg_cost: yup.number(),
       google_map_url: yup.string().matches(url_regex, 'Enter correct url'),
       website: yup.string().matches(url_regex, 'Enter correct url'),
-      date_visited: yup.date().typeError("must be date"),
-      rating: yup.string(),
-      location_notes: yup.string()
+      date_visited: yup.string().matches('^(0[1-9]|1[012])/(0[1-9]|[12][0-9]|3[01])/[0-9]{4}$', 'Enter date as mm/dd/yyyy').typeError("must be date"),
+      rating: yup.number()
     }),
     onSubmit: values => {
+      values.date_visited = new Date(values.date_visited);
+      values.rating = parseInt(values.rating, 10)
+      values.avg_cost = parseInt(values.avg_cost, 10)
+      Object.keys(values).forEach((key) => {
+        if (values[key] === '') {
+            values[key] = null;
+        }
+    });
+
       const requestOptions = {
-        method: 'PATCH',
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(values, null, 2)
       };
       console.log(requestOptions);
       formik.resetForm()
-      // fetch(`${API_URL}/users/${currentUser.id}`, requestOptions)
-      //   .then(r => r.json())
-      //   .then(updatedUser => setCurrentUser(updatedUser))
-      //   .then(navigate("/account"))
+      fetch('/locations', requestOptions)
+        .then(r => r.json())
+        .then(r=>console.log(r))
+        // .then(updatedUser => setCurrentUser(updatedUser))
+        // .then(navigate("/account"))
     },
   });
 
@@ -106,7 +115,7 @@ const NewLocationForm = ({ user_id, city_id, onFormClose }) => {
           ) : null}
 
           <label htmlFor="rating" className="block mb-2 text-sm font-medium text-gray-900 ">rating</label>
-          <select id='rating' as="select" name="rating"   {...formik.getFieldProps('rating')}>
+          <select type='number' id='rating' as="select" name="rating"   {...formik.getFieldProps('rating')}>
             <option value="">Select a rating level</option>
             <option value="0">Never Again</option>
             <option value="1">Kinda Bad</option>
@@ -118,11 +127,7 @@ const NewLocationForm = ({ user_id, city_id, onFormClose }) => {
             <div>{formik.errors.rating}</div>
           ) : null}
 
-          <label htmlFor="location_notes" className="block mb-2 text-sm font-medium text-gray-900 ">location_notes</label>
-          <input id='location_notes' type="location_notes" name="location_notes" placeholder="New location_notes" {...formik.getFieldProps('location_notes')} />
-          {formik.touched.location_notes && formik.errors.location_notes ? (
-            <div>{formik.errors.location_notes}</div>
-          ) : null}
+
 
           <button type="submit" className="w-full text-white-100 bg-emerald-400 hover:bg-emerald-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center ">Submit</button>
           <button type="reset" className="w-full text-white-100 bg-emerald-400 hover:bg-emerald-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center " value="Cancel" onClick={() => {

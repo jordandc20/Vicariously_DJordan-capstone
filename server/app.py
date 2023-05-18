@@ -5,7 +5,7 @@
 # Remote library imports
 from flask import request, session, make_response
 from flask_restful import Resource
-
+from datetime import datetime, timedelta
 # Local imports
 from config import app, db, api
 from models import User, City, CityNote, Location, LocationNote
@@ -43,6 +43,8 @@ class UserById(Resource):
         if not user:
             return make_response({'error': 'User not found'}, 404)
         return make_response(user.to_dict(), 200, {"Content-Type": "application/json"})
+
+
 api.add_resource(UserById, '/users/<int:id>')
 
 
@@ -96,6 +98,42 @@ class Locations(Resource):
             )
         except Exception as e:
             return make_response({'message': 'Something went wrong!', 'stackTrace': e}, 400)
+
+    def post(self):
+        data = request.get_json()
+        print(data['date_visited'] )
+        if data['date_visited'] is None:
+            date_v =     data['date_visited']
+        else:
+            date_v =   datetime.strptime(data['date_visited'], "%Y-%m-%dT%H:%M:%S.%fZ")
+            print(date_v)
+        try:
+            new_loc = Location(
+                location_name=data['location_name'],
+                category=data['category'],
+                avg_cost=data['avg_cost'],
+                google_map_url=data['google_map_url'],
+                website=data['website'],
+                date_visited=date_v,
+                rating=data['rating'],
+                user_id=data['user_id'],
+                city_id=data['city_id']
+                # due_date=datetime.utcnow() + timedelta(days=14)
+            )
+            db.session.add(new_loc)
+            db.session.commit()
+        except Exception as errors:
+            return make_response({"errors": [errors.__str__()]}, 422)
+        # new_loc_dict = {
+        #     "user_id": new_loc.user_id,
+        #     "due_date": new_loc.due_date,
+        #     "book_id": new_loc.book_id,
+        #     "id": new_loc.id
+        # }
+
+        return make_response(new_loc.to_dict(), 201)
+#   const date = new Date(book.due_date);
+#             // console.log(date.toLocaleString('en-US'))
 
 
 api.add_resource(Locations, '/locations')
