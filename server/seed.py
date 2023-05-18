@@ -44,7 +44,7 @@ if __name__ == '__main__':
         ireland = City(
             city_name = 'Killarney',
             country =  'Ireland',
-            user_id = 2
+            user_id = 1
         )
         db.session.add(ireland)
         db.session.commit()
@@ -55,6 +55,14 @@ if __name__ == '__main__':
             user_id = 1
         )
         db.session.add(seoul)
+        db.session.commit()
+       
+        seoul2 = City(
+            city_name = 'Seoul',
+            country =  'South Korea',
+            user_id = 2
+        )
+        db.session.add(seoul2)
         db.session.commit()
         
         ############# * CITY NOTES * #############
@@ -94,21 +102,57 @@ if __name__ == '__main__':
         ############# * LOCATIONS * #############
         
         haneul = Location(
-            location_name = 'Haneul Park',
+            location_name = 'Haneul Park (하늘공원)',
             date_visited =  faker.date_between_dates(date_start=datetime(2015,1,1), date_end=datetime(2019,12,31)),
-            rating = 3,
+            rating = 4,
             google_map_url = 'https://goo.gl/maps/E6CtsTEMe27p5HXj9',
             website = 'https://parks.seoul.go.kr/parks/detailView.do?pIdx=6',
             avg_cost = 0,
-            category = 'Outdoor Activity',
+            category = 'OutdoorActivity',
             city_id = 2,
             user_id = 1
         )
         db.session.add(haneul)
         db.session.commit()
+    
+        seoul_forest = Location(
+            location_name = 'Seoul Forest Park (서울숲공원)',
+            date_visited =  faker.date_between_dates(date_start=datetime(2015,1,1), date_end=datetime(2019,12,31)),
+            rating = 4,
+            google_map_url = 'https://goo.gl/maps/kDGN5J1qCkgRsMoX8',
+            website = 'https://parks.seoul.go.kr/parks/detailView.do?pIdx=6',
+            avg_cost = 0,
+            category = 'OutdoorActivity',
+            city_id = 2,
+            user_id = 1
+        )
+        db.session.add(seoul_forest)
+        db.session.commit()
+
+
+        kimbap = Location(
+            location_name = 'Gimbap Cheonguk (김밥천국 서강대점)',
+            date_visited =  faker.date_between_dates(date_start=datetime(2015,1,1), date_end=datetime(2019,12,31)),
+            rating = 4,
+            google_map_url = 'https://goo.gl/maps/NAsvAz4WeD8Hrh3J7',
+            website = None,
+            avg_cost = 1,
+            category = 'FoodDrink',
+            city_id = 2,
+            user_id = 1
+        )
+        db.session.add(kimbap)
+        db.session.commit()
         
         ############# * LOCATION NOTES * #############
             
+        seoul_forest1 = LocationNote(
+            note_body =  'great for fall foliage. walk all the way to the tip for nice city views and deer ',
+            location_id = 2
+        )
+        db.session.add(seoul_forest1)
+        db.session.commit()
+        
         haneul1 = LocationNote(
             note_body =  'great city views, especially at night',
             location_id = 1
@@ -128,5 +172,26 @@ if __name__ == '__main__':
             location_id = 1
         )
         db.session.add(haneul3)
+        db.session.commit()
+        
+        kimbap1 = LocationNote(
+            note_body =  'Food is very affordable, 3,000-6,000 won',
+            location_id = 3
+        )
+        db.session.add(kimbap1)
+        db.session.commit()
+        
+        kimbap2 = LocationNote(
+            note_body =  'Loved the Cheese Ramen (with egg) and the kimbap rolled in egg',
+            location_id = 3
+        )
+        db.session.add(kimbap2)
+        db.session.commit()
+        
+        kimbap3 = LocationNote(
+            note_body =  'Not so good: bibimbap',
+            location_id = 3
+        )
+        db.session.add(kimbap3)
         db.session.commit()
         
