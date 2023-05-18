@@ -11,7 +11,7 @@ const Navbar = () => {
          </div>
          <div>
             <NavLink className="text-lg no-underline text-grey-darkest hover:text-blue-dark ml-5" to='/'>Home</NavLink>
-            <NavLink className="text-lg no-underline text-grey-darkest hover:text-blue-dark ml-5" to='/cities'>My Cities</NavLink>
+            <NavLink className="text-lg no-underline text-grey-darkest hover:text-blue-dark ml-5" to='/users/1/cities'>My Cities</NavLink>
          </div>
       </nav>
    )

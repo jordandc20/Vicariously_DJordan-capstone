@@ -5,7 +5,7 @@ const CityCard = ({ cityData }) => {
   const { city_name, city_notes, country,id, locations } = cityData;
   const navigate = useNavigate()
   function   handleCityCardClick(e){
-    navigate(`/cities/${id}`, {state:{cityData}})
+    navigate(`/users/1/cities/${id}`, {state:{cityData}})
   }
 
   return (

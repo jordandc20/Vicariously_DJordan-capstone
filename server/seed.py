@@ -148,7 +148,7 @@ if __name__ == '__main__':
             
         seoul_forest1 = LocationNote(
             note_body =  'great for fall foliage. walk all the way to the tip for nice city views and deer ',
-            location_id = 1
+            location_id = 2
         )
         db.session.add(seoul_forest1)
         db.session.commit()
@@ -176,21 +176,21 @@ if __name__ == '__main__':
         
         kimbap1 = LocationNote(
             note_body =  'Food is very affordable, 3,000-6,000 won',
-            location_id = 2
+            location_id = 3
         )
         db.session.add(kimbap1)
         db.session.commit()
         
         kimbap2 = LocationNote(
             note_body =  'Loved the Cheese Ramen (with egg) and the kimbap rolled in egg',
-            location_id = 2
+            location_id = 3
         )
         db.session.add(kimbap2)
         db.session.commit()
         
         kimbap3 = LocationNote(
             note_body =  'Not so good: bibimbap',
-            location_id = 2
+            location_id = 3
         )
         db.session.add(kimbap3)
         db.session.commit()
