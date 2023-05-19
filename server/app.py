@@ -130,6 +130,34 @@ class Cities(Resource):
         return make_response(new_city.to_dict(), 201)
 api.add_resource(Cities, '/cities')
 
+class CityById(Resource):
+    def get(self, id):
+        city = City.query.filter_by(id=id).first()
+        if not city:
+            return make_response({'error': 'City not found'}, 404)
+        return make_response(city.to_dict(), 200, {"Content-Type": "application/json"})
+
+    def patch(self, id):
+        data = request.get_json()
+        city = City.query.filter_by(id=id).first()
+        print(data)
+        print(city)
+        if not city:
+            return make_response({'error': 'City not found'}, 404)
+        try:
+            for attr in data:
+                setattr(city, attr, data[attr])
+            db.session.add(city)
+            db.session.commit()
+        except Exception as ex:
+            return make_response({'error': [ex.__str__()]}, 422)
+        
+        print(city)
+        return make_response(city.to_dict(),202)
+
+api.add_resource(CityById, '/cities/<int:id>')
+
+
 
 class CityNotes(Resource):
     def get(self):

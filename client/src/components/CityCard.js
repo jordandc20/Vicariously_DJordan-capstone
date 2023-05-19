@@ -1,12 +1,19 @@
 import React from 'react'
-import { Navigate, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
+import { useAuth0 } from '@auth0/auth0-react'
 
 const CityCard = ({ cityData }) => {
+  const { isLoading} = useAuth0();
+  const params = useParams();
   const { city_name, city_notes, country, id, locations, user_id } = cityData;
   const navigate = useNavigate()
+
+  
   function handleCityCardClick(e) {
-    navigate(`/users/1/cities/${id}`, { state: { city_name, city_notes, country, id, locations, user_id } })
+    navigate(`/users/${params.userId}/cities/${id}`)
   }
+
+  if (isLoading) { return <div>Loading ...</div> }
 
   return (
     < div className="max-w-sm rounded overflow-hidden shadow-lg bg-slate-50" onClick={handleCityCardClick}>
