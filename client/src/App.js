@@ -9,10 +9,16 @@ import Home from './components/Home'
 import CitiesList from './components/CitiesList';
 import CityDetails from './components/CityDetails';
 import Navbar from './components/Navbar'
+import Profile from './components/Profile';
 function App() {
 
 
   const [userData, setUserData] = useState([])
+  const { isLoading, isAuthenticated, error, user, loginWithRedirect, logout } =useAuth0();
+
+  console.log(user)
+console.log(isAuthenticated)
+console.log(isLoading)
 
 
 
@@ -25,6 +31,9 @@ function App() {
   }, [])
 
 
+if (isLoading) {
+  return <div>Loading ...</div>;
+}
 
   function handleAddCity(newCity) {
     setUserData({
@@ -39,6 +48,7 @@ function App() {
         <Route exact path="/" element={<Home />} />
         <Route exact path="/users/:userId/cities" element={<CitiesList userCitiesData={userData.cities} user_id={userData.id} onAddNewCity={handleAddCity} />} />
         <Route exact path="/users/:userId/cities/:cityId" element={<CityDetails userCitiesData={userData.cities}/>} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </div>
   );
