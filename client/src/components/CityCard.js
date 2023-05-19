@@ -2,10 +2,10 @@ import React from 'react'
 import {Navigate, useNavigate} from 'react-router-dom'
 
 const CityCard = ({ cityData }) => {
-  const { city_name, city_notes, country,id, locations } = cityData;
+  const { city_name, city_notes, country,id, locations ,user_id} = cityData;
   const navigate = useNavigate()
   function   handleCityCardClick(e){
-    navigate(`/users/1/cities/${id}`, {state:{cityData}})
+    navigate(`/users/1/cities/${id}`, {state:{city_name, city_notes, country, id, locations,user_id}})
   }
 
   return (

@@ -1,16 +1,17 @@
 import React from 'react'
+
 import { useFormik } from "formik";
 import * as yup from "yup";
 
 // https://regex101.com/r/V5Y7rn/1/
-const NewLocationForm = ({ user_id, city_id, onFormClose }) => {
+const NewLocationForm = ({ user_id, city_id, onFormClose, onSubmitNew }) => {
 
   const url_regex = /^((http|https):\/\/)?(www.)?(?!.*(http|https|www.))[a-zA-Z0-9_-]+(\.[a-zA-Z]+)+(\/)?.([\w\?[a-zA-Z-_%\/@?]+)*([^\/\w\?[a-zA-Z0-9_-]+=\w+(&[a-zA-Z0-9_]+=\w+)*)?$/
 
   const formik = useFormik({
     initialValues: {
       location_name: '',
-      category: '',
+      category: 'Other',
       avg_cost: '',
       google_map_url: '',
       website: '',
@@ -29,27 +30,25 @@ const NewLocationForm = ({ user_id, city_id, onFormClose }) => {
       rating: yup.number()
     }),
     onSubmit: values => {
-      values.date_visited = new Date(values.date_visited);
-      values.rating = parseInt(values.rating, 10)
-      values.avg_cost = parseInt(values.avg_cost, 10)
-      Object.keys(values).forEach((key) => {
-        if (values[key] === '') {
-            values[key] = null;
+      const new_values = { ...values }
+      Object.keys(new_values).forEach((key) => {
+        if (new_values[key] === '') {
+          new_values[key] = null;
         }
-    });
+      })
+      if (new_values.date_visited) { new_values.date_visited = new Date(new_values.date_visited) }
+      if (new_values.rating) { new_values.rating = parseInt(new_values.rating, 10) }
+      if (new_values.avg_cost) { new_values.avg_cost = parseInt(new_values.avg_cost, 10) }
 
       const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(values, null, 2)
+        body: JSON.stringify(new_values, null, 2)
       };
-      console.log(requestOptions);
-      formik.resetForm()
       fetch('/locations', requestOptions)
         .then(r => r.json())
-        .then(r=>console.log(r))
-        // .then(updatedUser => setCurrentUser(updatedUser))
-        // .then(navigate("/account"))
+        .then(r => onSubmitNew(r))
+        .then(onFormClose())
     },
   });
 
@@ -71,7 +70,7 @@ const NewLocationForm = ({ user_id, city_id, onFormClose }) => {
 
           <label htmlFor="category" className="block mb-2 text-sm font-medium text-gray-900 ">Category</label>
           <select id='category' as="select" name="category"  {...formik.getFieldProps('category')}>
-            <option value="">Select a Category</option>
+            <option value="Other">Select a Category</option>
             <option value="Shopping">Shopping</option>
             <option value="Mart">Mart</option>
             <option value="FoodDrink">Food/Drink</option>
@@ -131,7 +130,7 @@ const NewLocationForm = ({ user_id, city_id, onFormClose }) => {
 
           <button type="submit" className="w-full text-white-100 bg-emerald-400 hover:bg-emerald-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center ">Submit</button>
           <button type="reset" className="w-full text-white-100 bg-emerald-400 hover:bg-emerald-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center " value="Cancel" onClick={() => {
-            formik.resetForm();
+            // formik.resetForm();
             onFormClose()
           }}>Cancel</button>
         </form>

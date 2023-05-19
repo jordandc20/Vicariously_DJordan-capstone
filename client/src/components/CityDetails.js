@@ -6,20 +6,32 @@ import NewLocationForm from './NewLocationForm';
 
 const CityDetails = () => {
   const { state } = useLocation();
-  const { cityData } = state;
-  const { city_name, city_notes, country, id, locations,user_id } = cityData;
+  const { city_name, city_notes, country, id, locations,user_id } = state;
+
+  const [locs,setLocs] = useState(locations)
   const [categoryExpanded, setCategoryExpanded] = useState(null)
   const [isOpen, setIsOpen] = useState(false);
 
   function handleFormClose() {
     setIsOpen(false)
   }
+ 
+function handleNewLocation(new_location){
+  setLocs(locs => ([
+    ...locs,
+    new_location
+  ]))
 
+}
 
-  const outdoor = locations.filter(location => location.category === 'OutdoorActivity')
-  const food = locations.filter(location => location.category === 'FoodDrink')
-  const mart = locations.filter(location => location.category === 'Mart')
-  console.log(outdoor, food, mart)
+  
+  const shop = locs.filter(location => location.category === 'Shopping')
+  const mart = locs.filter(location => location.category === 'Mart')
+  const food = locs.filter(location => location.category === 'FoodDrink')
+  const outdoor = locs.filter(location => location.category === 'OutdoorActivity')
+  const indoor = locs.filter(location => location.category === 'IndoorActivity')
+  const acc = locs.filter(location => location.category === 'Accommodation')
+  const other = locs.filter(location => location.category === 'Other')
   return (
     <div>
 
@@ -29,12 +41,16 @@ const CityDetails = () => {
       <div>
         < button className="max-w-sm rounded overflow-hidden shadow-lg bg-slate-50" onClick={() => setIsOpen(true)}>New Location</button>
         <ReactModal isOpen={isOpen} contentLabel="Example Modal" onRequestClose={() => setIsOpen(false)}>
-          <NewLocationForm user_id={user_id} city_id={id} onFormClose={handleFormClose} />
+          <NewLocationForm user_id={user_id} city_id={id} onFormClose={handleFormClose} onSubmitNew={handleNewLocation} />
         </ReactModal>
       </div>
-      {outdoor.length > 0 && <CategoryContainer locations={outdoor} categoryExpanded={categoryExpanded} type="outdoor" />}
-      {food.length > 0 && <CategoryContainer locations={food} categoryExpanded={categoryExpanded} type="food" />}
-      {mart.length > 0 && <CategoryContainer locations={mart} categoryExpanded={categoryExpanded} type="mart" />}
+      {shop.length > 0 && <CategoryContainer locationData={shop} categoryExpanded={categoryExpanded} type="shop" />}
+      {mart.length > 0 && <CategoryContainer locationData={mart} categoryExpanded={categoryExpanded} type="mart" />}
+      {food.length > 0 && <CategoryContainer locationData={food} categoryExpanded={categoryExpanded} type="food" />}
+      {outdoor.length > 0 && <CategoryContainer locationData={outdoor} categoryExpanded={categoryExpanded} type="outdoor" />}
+      {indoor.length > 0 && <CategoryContainer locationData={indoor} categoryExpanded={categoryExpanded} type="indoor" />}
+      {acc.length > 0 && <CategoryContainer locationData={acc} categoryExpanded={categoryExpanded} type="acc" />}
+      {other.length > 0 && <CategoryContainer locationData={other} categoryExpanded={categoryExpanded} type="other" />}
     </div> 
   )
 }

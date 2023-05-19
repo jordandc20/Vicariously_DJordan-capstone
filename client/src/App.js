@@ -31,7 +31,7 @@ function App() {
       <Navbar />
       <Routes>
         <Route exact path="/" element={<Home />} />
-        <Route exact path="/users/:userId/cities" element={<CitiesList userCitiesData={userData.cities} />} />
+        <Route exact path="/users/:userId/cities" element={<CitiesList userCitiesData={userData.cities} user_id={userData.id}/>} />
         <Route exact path="/users/:userId/cities/:cityId" element={<CityDetails />} />
       </Routes>
     </div>

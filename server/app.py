@@ -62,7 +62,19 @@ class Cities(Resource):
         except Exception as e:
             return make_response({'message': 'Something went wrong!', 'stackTrace': e}, 400)
 
-
+    def post(self):
+        data = request.get_json()
+        try:
+            new_city = City(
+                city_name=data['city_name'],
+                country=data['country'],
+                user_id=data['user_id'],
+            )
+            db.session.add(new_city)
+            db.session.commit()
+        except Exception as errors:
+            return make_response({"errors": [errors.__str__()]}, 422)
+        return make_response(new_city.to_dict(), 201)
 api.add_resource(Cities, '/cities')
 
 
@@ -101,12 +113,11 @@ class Locations(Resource):
 
     def post(self):
         data = request.get_json()
-        print(data['date_visited'] )
         if data['date_visited'] is None:
-            date_v =     data['date_visited']
+            date_v = data['date_visited']
         else:
-            date_v =   datetime.strptime(data['date_visited'], "%Y-%m-%dT%H:%M:%S.%fZ")
-            print(date_v)
+            date_v = datetime.strptime(
+                data['date_visited'], "%Y-%m-%dT%H:%M:%S.%fZ")
         try:
             new_loc = Location(
                 location_name=data['location_name'],
@@ -118,22 +129,12 @@ class Locations(Resource):
                 rating=data['rating'],
                 user_id=data['user_id'],
                 city_id=data['city_id']
-                # due_date=datetime.utcnow() + timedelta(days=14)
             )
             db.session.add(new_loc)
             db.session.commit()
         except Exception as errors:
             return make_response({"errors": [errors.__str__()]}, 422)
-        # new_loc_dict = {
-        #     "user_id": new_loc.user_id,
-        #     "due_date": new_loc.due_date,
-        #     "book_id": new_loc.book_id,
-        #     "id": new_loc.id
-        # }
-
         return make_response(new_loc.to_dict(), 201)
-#   const date = new Date(book.due_date);
-#             // console.log(date.toLocaleString('en-US'))
 
 
 api.add_resource(Locations, '/locations')

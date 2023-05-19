@@ -1,12 +1,11 @@
 import React, { useState } from 'react'
 import LocationCard from './LocationCard'
 
-const CategoryContainer = ({ locations, type, categoryExpanded }) => {
-    console.log({ locations })
-    console.log({ type })
+const CategoryContainer = ({ locationData, type, categoryExpanded }) => {
+
     const [noteExpanded, setNoteExpanded] = useState(null)
 
-    const locationCardsArray = locations.map((location) => {
+    const locationCardsArray = locationData.map((location) => {
         return <LocationCard key={location.id} locationData={location} noteExpanded={noteExpanded} />
     })
 

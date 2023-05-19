@@ -73,7 +73,7 @@ class City(db.Model, SerializerMixin):
     city_notes = db.relationship(
         "CityNote", backref='city', cascade='all, delete, delete-orphan')
 
-    serialize_rules = ("-user.cities", "-locations.city",
+    serialize_rules = ("-user", "-locations.city",
                        "-city_notes.city", "-locations.user", "-created_at", "-updated_at",)
 
     @validates('city_name', 'country')
@@ -154,14 +154,14 @@ class Location(db.Model, SerializerMixin):
     location_notes = db.relationship(
         "LocationNote", backref='location', cascade='all, delete, delete-orphan')
 
-    serialize_rules = ("-city.locations", "-city.user",
-                       "-user.locations", "-user.cities", "-location_notes.location", "-created_at", "-updated_at",)
+    serialize_rules = ( "-city",
+                        "-user", "-location_notes.location", "-created_at", "-updated_at",)
 
     @validates('category')
     def validates_category(self, key, value):
         categories = ['Shopping', 'Mart', 'FoodDrink',
                       'IndoorActivity', 'OutdoorActivity', 'Accommodation', 'Other']
-        if value and value not in categories:
+        if value not in categories:
             raise ValueError(f'{value} not an allowed value for category.')
         return value
 
