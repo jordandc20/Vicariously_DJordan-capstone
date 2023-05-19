@@ -10,31 +10,32 @@ import CitiesList from './components/CitiesList';
 import CityDetails from './components/CityDetails';
 import Navbar from './components/Navbar'
 import Profile from './components/Profile';
+
 function App() {
 
-
   const [userData, setUserData] = useState([])
-  const { isLoading, isAuthenticated, error, user, loginWithRedirect, logout } =useAuth0();
-
-  console.log(user)
-console.log(isAuthenticated)
-console.log(isLoading)
-
+  const { isLoading, isAuthenticated, user } = useAuth0();
 
 
   useEffect(() => {
-    async function fetchData() {
-      const r = await axios.get('/users/1');
-      setUserData(r.data)
+    if (isAuthenticated) {
+      axios.post('/login', user)
+        .then(r=>setUserData(r.data))
     }
-    fetchData()
-  }, [])
+  }, [isAuthenticated, user]);
 
 
-if (isLoading) {
-  return <div>Loading ...</div>;
-}
+  if (isLoading) {
+    return <div>Loading ...</div>;
+  }
 
+
+
+  function handleChangeUserData(newUsername) {
+    setUserData({
+      ...userData, username:  newUsername
+    })
+  }
   function handleAddCity(newCity) {
     setUserData({
       ...userData, cities: [...userData.cities, newCity],
@@ -46,9 +47,9 @@ if (isLoading) {
       <Navbar />
       <Routes>
         <Route exact path="/" element={<Home />} />
-        <Route exact path="/users/:userId/cities" element={<CitiesList userCitiesData={userData.cities} user_id={userData.id} onAddNewCity={handleAddCity} />} />
-        <Route exact path="/users/:userId/cities/:cityId" element={<CityDetails userCitiesData={userData.cities}/>} />
-        <Route path="/profile" element={<Profile />} />
+        {/* <Route exact path="/users/:userId/cities" element={<CitiesList userCitiesData={userData?.cities} user_id={userData?.id} onAddNewCity={handleAddCity} />} />
+      <Route exact path="/users/:userId/cities/:cityId" element={<CityDetails userCitiesData={userData?.cities} />} /> */}
+        <Route path="/profile" element={<Profile userData={userData} onUserDataChange={handleChangeUserData} />} />
       </Routes>
     </div>
   );

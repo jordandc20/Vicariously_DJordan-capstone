@@ -37,6 +37,17 @@ class Users(Resource):
 api.add_resource(Users, '/users')
 
 
+class UserByUsername(Resource):
+    def get(self, username):
+        user = User.query.filter_by(username=username).first()
+        if not user:
+            return make_response({'error': 'User not found'}, 404)
+        return make_response(user.to_dict(), 200, {"Content-Type": "application/json"})
+
+
+api.add_resource(UserByUsername, '/users/<username>')
+
+
 class UserById(Resource):
     def get(self, id):
         user = User.query.filter_by(id=id).first()
@@ -44,8 +55,50 @@ class UserById(Resource):
             return make_response({'error': 'User not found'}, 404)
         return make_response(user.to_dict(), 200, {"Content-Type": "application/json"})
 
+    def patch(self, id):
+        data = request.get_json()
+        user = User.query.filter_by(id=id).first()
+        print(data)
+        print(user)
+        if not user:
+            return make_response({'error': 'User not found'}, 404)
+        try:
+            for attr in data:
+                setattr(user, attr, data[attr])
+            db.session.add(user)
+            db.session.commit()
+        except Exception as ex:
+            return make_response({'error': [ex.__str__()]}, 422)
+        
+        print(user)
+        return make_response(user.to_dict(),202)
 
 api.add_resource(UserById, '/users/<int:id>')
+
+
+
+
+
+class Login(Resource):
+    def post(self):
+        data = request.get_json()
+        print(data)
+        user = User.query.filter_by(email=data['email']).first()
+        print(user)
+        if not user:
+            try:
+                new_user = User(
+                    email=data['email'],
+                    username= data['email'].split('@')[0]
+                )
+                db.session.add(new_user)
+                db.session.commit()
+            except Exception as errors:
+                return make_response({"errors": [errors.__str__()]}, 422)
+            return make_response(new_user.to_dict(), 201)
+        
+        return make_response(user.to_dict(), 200, {"Content-Type": "application/json"})
+api.add_resource(Login, '/login')
 
 
 class Cities(Resource):

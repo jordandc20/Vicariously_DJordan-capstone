@@ -1,51 +1,41 @@
 import React, { useState } from "react";
-import { useAuth0 } from "@auth0/auth0-react";
+import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
+import EditUsernameForm from "./EditUsernameForm";
 
-
-const Profile = () => {
-    const { user, isAuthenticated, getAccessTokenSilently, isLoading } = useAuth0();
-    const [userMetadata, setUserMetadata] = useState(null);
-
+const Profile = ({ userData, onUserDataChange }) => {
+    const { user, isAuthenticated, isLoading } = useAuth0();
+    const [showEditUsername, setShowEditUsername] = useState(false)
 
     if (isLoading) {
         return <div>Loading ...</div>;
     }
-    console.log(user)
-    console.log(isAuthenticated)
-    console.log(isLoading)
+
+
     return (
         < div >
             {isAuthenticated && (
                 <div>
-        <p>This is my profile page YE logged in</p>
-
-
+                    <h1>Hello {userData.username} !</h1>
                     <img src={user.picture} alt={user.name} />
-                    <h2>{user.name}</h2>
-                    <p>{user.email}</p>
+                    <h2>Username: {userData.username}</h2>
+                    <button onClick={() => setShowEditUsername(!showEditUsername)}>Edit_Username_button</button>
+        {showEditUsername && <EditUsernameForm  user_id={userData.id} username={userData.username} onEditUsername={(newUsername)=>onUserDataChange(newUsername)}/>}
+                    <p>email: {user.email}</p>
+                    <h2>name: {user.name}</h2>
                 </div>
             )
             }
-            {
-                !isAuthenticated && (
-                    <p>This is my profile page not logged in</p>
-                )
-}
+
         </div >
     )
 
 
 }
-    //   return (
-    //     isAuthenticated && (
-    //         <div>
-    //             <img src={user.picture} alt={user.name} />
-    //             <h2>{user.name}</h2>
-    //             <p>{user.email}</p>
-    //         </div>
-    //     )
-    // );
-    // };
 
 
-    export default Profile;
+// <button onClick={() => setShowEdit(showEdit => !showEdit)}>Edit Scientist</button>
+//         {showEdit && <ScientistForm scientist={scientist} onScientistRequest={handleUpdateScientist} edit={true}/>}
+
+
+
+export default withAuthenticationRequired(Profile);

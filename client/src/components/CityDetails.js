@@ -17,7 +17,7 @@ const CityDetails = ({userCitiesData}) => {
 
   const x = userCitiesData?.filter(city => city.id === Number( cityId))
   // const { city_name1, city_notes1, country1, id1, locations1,user_id1 } = x[0]
-  console.log(x)
+  // console.log(x)
   // console.log(city_name1, city_notes1, country1, id1, locations1,user_id1)
 function handleNewLocation(new_location){
   setLocs(locs => ([
