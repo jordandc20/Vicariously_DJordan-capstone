@@ -5,7 +5,7 @@ import NewCityForm from './NewCityForm';
 
 import CityCard from './CityCard';
 
-const CitiesList = ({ userCitiesData, user_id }) => {
+const CitiesList = ({ userCitiesData, user_id , onAddNewCity}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const cityCardsArray = userCitiesData?.map((city) => {
@@ -19,6 +19,7 @@ const CitiesList = ({ userCitiesData, user_id }) => {
 
   function handleNewCity(newCity) {
     console.log(newCity)
+    onAddNewCity(newCity)
 
   }
   function handleFormClose() {
@@ -31,7 +32,7 @@ const CitiesList = ({ userCitiesData, user_id }) => {
       <div>
         < button className="max-w-sm rounded overflow-hidden shadow-lg bg-slate-50" onClick={() => setIsOpen(true)}>New Location</button>
         <ReactModal isOpen={isOpen} contentLabel="Example Modal" onRequestClose={() => setIsOpen(false)}>
-          <NewCityForm user_id={user_id} onFormClose={handleFormClose} onSubmitNew={handleNewCity} />
+          <NewCityForm user_id={user_id} onFormClose={handleFormClose} onSubmitNew={(newCity) =>onAddNewCity(newCity)} />
         </ReactModal>
       </div>
       {cityCardsArray}
