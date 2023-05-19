@@ -73,7 +73,7 @@ class City(db.Model, SerializerMixin):
     city_notes = db.relationship(
         "CityNote", backref='city', cascade='all, delete, delete-orphan')
 
-    serialize_rules = ("-user.cities", "-locations.city",
+    serialize_rules = ("-user", "-locations.city",
                        "-city_notes.city", "-locations.user", "-created_at", "-updated_at",)
 
     @validates('city_name', 'country')
@@ -146,7 +146,7 @@ class Location(db.Model, SerializerMixin):
     google_map_url = db.Column(db.String)
     website = db.Column(db.String)
     avg_cost = db.Column(db.Integer)
-    category = db.Column(db.Integer)
+    category = db.Column(db.String)
     created_at = db.Column(db.DateTime, server_default=db.func.now())
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
     city_id = db.Column(db.Integer, db.ForeignKey('cities.id'), nullable=False)
@@ -154,8 +154,8 @@ class Location(db.Model, SerializerMixin):
     location_notes = db.relationship(
         "LocationNote", backref='location', cascade='all, delete, delete-orphan')
 
-    serialize_rules = ("-city.locations", "-city.user",
-                       "-user.locations", "-user.cities", "-location_notes.location", "-created_at", "-updated_at",)
+    serialize_rules = ( "-city",
+                        "-user", "-location_notes.location", "-created_at", "-updated_at",)
 
     @validates('category')
     def validates_category(self, key, value):
@@ -174,14 +174,14 @@ class Location(db.Model, SerializerMixin):
     @validates('avg_cost')
     def validates_avg_cost(self, key, value):
         styles = range(4)
-        if value not in styles:
+        if value and value not in styles:
             raise ValueError(f'{value} not an allowed value for avg_cost.')
         return value
 
     @validates('rating')
     def validates_rating(self, key, value):
         styles = range(5)
-        if value not in styles:
+        if value and value not in styles:
             raise ValueError(f'{value} not an allowed value for rating.')
         return value
 
