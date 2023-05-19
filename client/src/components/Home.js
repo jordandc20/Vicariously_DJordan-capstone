@@ -7,8 +7,17 @@ const Home = () => {
   // console.log(theme)
   // isAuthenticated ?
 
-  const { isAuthenticated } = useAuth0();
-  console.log(isAuthenticated)
+  const { user, isAuthenticated, isLoading } = useAuth0();
+
+  if (isLoading) {
+    return <div>Loading ...</div>;
+  }
+console.log(user)
+console.log(isAuthenticated)
+console.log(isLoading)
+
+
+
 
   return (
     <PageLayout>

@@ -2,6 +2,8 @@ import React from 'react'
 import { useAuth0 } from "@auth0/auth0-react";
 
 const Login = () => {
+
+
     const { loginWithRedirect } = useAuth0();
     const handleLogin = async () => {
         await loginWithRedirect({
@@ -10,6 +12,10 @@ const Login = () => {
             },
         });
     };
+
+
+
+    
     return (
         <button onClick={handleLogin}>This_is_the_Log_In_Button</button>
     )
@@ -17,3 +23,14 @@ const Login = () => {
 
 
 export default Login
+
+// import React from "react";
+// import { useAuth0 } from "@auth0/auth0-react";
+
+// const LoginButton = () => {
+//   const { loginWithRedirect } = useAuth0();
+
+//   return <button onClick={() => loginWithRedirect()}>Log In</button>;
+// };
+
+// export default LoginButton;

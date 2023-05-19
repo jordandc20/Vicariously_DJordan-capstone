@@ -4,6 +4,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import Login from './Login';
 import Logout from './Logout';
 import Signup from './Signup';
+import Profile from './Profile';
 
 const Navbar = () => {
   const { isAuthenticated } = useAuth0();
@@ -14,11 +15,14 @@ const Navbar = () => {
         <>
           <Signup />
           <Login />
+          <Profile/>
 
         </>
       )}
       {isAuthenticated && (
         <>
+          <Profile/>
+
           <Logout />
         </>
       )}

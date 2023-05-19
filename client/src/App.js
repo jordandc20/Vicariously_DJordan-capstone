@@ -9,7 +9,8 @@ import Home from './components/Home'
 import Login from './components/Login'
 import Navbar from './components/Navbar'
 import Logout from './components/Logout';
-import Callback from './components/Callback';
+// import Callback from './components/Callback';
+import Profile from './components/Profile';
 
 const ThemeContext = React.createContext({
   theme: "light",
@@ -27,7 +28,8 @@ const App = () => {
       {/* <Navbar /> */}
       <Routes>
         <Route  path="/" element={<Home />} />
-        <Route  path="/callback" element={<Callback />} />
+        {/* <Route  path="/callback" element={<Callback />} /> */}
+        <Route  path="/profile" element={<Profile />} />
         {/* <Route  path="/login" element={<Login />} />
         <Route path="/logout" element={<Logout />} /> */}
       </Routes>

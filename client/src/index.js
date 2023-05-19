@@ -14,9 +14,18 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <Auth0ProviderWithNavigate      >
+      <Auth0Provider
+      domain={domain}
+      clientId={clientId}
+      authorizationParams={{
+        redirect_uri: window.location.origin,
+        // redirect_uri: "http://localhost:4000",
+        // audience: `https://${domain}/api/v2/`,
+        // scope: "read:current_user update:current_user_metadata"
+      }}
+      >
         <App />
-      </Auth0ProviderWithNavigate>
+      </Auth0Provider>
     </BrowserRouter>
   </React.StrictMode>
 );
