@@ -38,7 +38,7 @@ function App() {
       <Routes>
         <Route exact path="/" element={<Home />} />
         <Route exact path="/users/:userId/cities" element={<CitiesList userCitiesData={userData.cities} user_id={userData.id} onAddNewCity={handleAddCity} />} />
-        <Route exact path="/users/:userId/cities/:cityId" element={<CityDetails />} />
+        <Route exact path="/users/:userId/cities/:cityId" element={<CityDetails userCitiesData={userData.cities}/>} />
       </Routes>
     </div>
   );

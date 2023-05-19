@@ -6,11 +6,12 @@ import * as yup from "yup";
 const NewCityForm = ({ user_id, onFormClose, onSubmitNew }) => {
 
 
+
   const formik = useFormik({
     initialValues: {
       city_name: '',
       country: '',
-      user_id: user_id
+      user_id:Number( user_id)
     },
     validationSchema: yup.object({
       city_name: yup.string().required("Must enter a City name. We suggest entering 'foreign' names in parenthesis."),

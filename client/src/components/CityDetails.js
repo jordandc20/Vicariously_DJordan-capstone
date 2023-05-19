@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import ReactModal from 'react-modal';
-import { Navigate, useLocation } from 'react-router-dom'
+import {useLocation,useParams } from 'react-router-dom'
 import CategoryContainer from './CategoryContainer';
 import NewLocationForm from './NewLocationForm';
 
-const CityDetails = () => {
+const CityDetails = ({userCitiesData}) => {
   const { state } = useLocation();
   const { city_name, city_notes, country, id, locations,user_id } = state;
 
@@ -12,16 +12,18 @@ const CityDetails = () => {
   const [categoryExpanded, setCategoryExpanded] = useState(null)
   const [isOpen, setIsOpen] = useState(false);
 
-  function handleFormClose() {
-    setIsOpen(false)
-  }
- 
+  const { cityId } = useParams();
+
+
+  const x = userCitiesData?.filter(city => city.id === Number( cityId))
+  // const { city_name1, city_notes1, country1, id1, locations1,user_id1 } = x[0]
+  console.log(x)
+  // console.log(city_name1, city_notes1, country1, id1, locations1,user_id1)
 function handleNewLocation(new_location){
   setLocs(locs => ([
     ...locs,
     new_location
   ]))
-
 }
 
   
@@ -41,7 +43,7 @@ function handleNewLocation(new_location){
       <div>
         < button className="max-w-sm rounded overflow-hidden shadow-lg bg-slate-50" onClick={() => setIsOpen(true)}>New Location</button>
         <ReactModal isOpen={isOpen} contentLabel="Example Modal" onRequestClose={() => setIsOpen(false)}>
-          <NewLocationForm user_id={user_id} city_id={id} onFormClose={handleFormClose} onSubmitNew={handleNewLocation} />
+          <NewLocationForm user_id={user_id} city_id={id} onFormClose={() => setIsOpen(false)} onSubmitNew={handleNewLocation} />
         </ReactModal>
       </div>
       {shop.length > 0 && <CategoryContainer locationData={shop} categoryExpanded={categoryExpanded} type="shop" />}
