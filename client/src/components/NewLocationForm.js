@@ -46,7 +46,6 @@ const NewLocationForm = ({ user_id, city_id, onFormClose, onSubmitNew }) => {
 
       axios.post(`/locations`, new_values)
         .then(r => {
-          console.log(r.data)
           onSubmitNew(r.data)
         })
         .then(onFormClose())

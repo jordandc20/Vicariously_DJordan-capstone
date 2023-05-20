@@ -1,5 +1,6 @@
 import React from 'react'
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
+import axios from "axios"
 
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -13,21 +14,17 @@ const NewCityForm = ({ user_id, onFormClose, onSubmitNew }) => {
     initialValues: {
       city_name: '',
       country: '',
-      user_id:Number( user_id)
+      user_id: Number(user_id)
     },
     validationSchema: yup.object({
       city_name: yup.string().required("Must enter a City name. We suggest entering 'foreign' names in parenthesis."),
       country: yup.string().required("Must enter a Country name.")
     }),
     onSubmit: values => {
-      const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(values, null, 2)
-      };
-      fetch('/cities', requestOptions)
-        .then(r => r.json())
-        .then(r => onSubmitNew(r))
+      axios.post(`/cities`, values)
+        .then(r => {
+          onSubmitNew(r.data)
+        })
         .then(onFormClose())
     },
   });
@@ -49,7 +46,7 @@ const NewCityForm = ({ user_id, onFormClose, onSubmitNew }) => {
             <div>{formik.errors.city_name}</div>
           ) : null}
 
-         
+
           <label htmlFor="country" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Country Name</label>
           <input id='country' type="text" name="country" placeholder="Country Name" {...formik.getFieldProps('country')} />
           {formik.touched.country && formik.errors.country ? (
