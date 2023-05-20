@@ -6,7 +6,7 @@ import Login from './Login';
 import Logout from './Logout';
 import Signup from './Signup';
 
-const Navbar = () => {
+const Navbar = ({ userData }) => {
   const { isAuthenticated } = useAuth0();
 
 
@@ -27,7 +27,7 @@ const Navbar = () => {
       {isAuthenticated && (
         <>
           <NavLink className="text-lg no-underline text-grey-darkest hover:text-blue-dark ml-5" to='/profile'>My Profile</NavLink>
-          <NavLink className="text-lg no-underline text-grey-darkest hover:text-blue-dark ml-5" to='/users/1/cities'>My Cities</NavLink>
+          <NavLink className="text-lg no-underline text-grey-darkest hover:text-blue-dark ml-5" to={"/users/"+userData.id+'/cities'}>My Cities</NavLink>
           <div>       <Logout className="text-lg no-underline text-grey-darkest hover:text-blue-dark ml-5" /> </div>
         </>
       )}

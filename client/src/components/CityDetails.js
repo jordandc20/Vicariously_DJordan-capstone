@@ -41,9 +41,7 @@ const CityDetails = ({ userData }) => {
   const other = cityDetails?.locations.filter(location => location.category === 'Other')
 
 
-  if (isLoading) {
-    return <div>Loading ...</div>;
-  }
+  if (isLoading) { return <div>Loading ...</div>; }
 
   return (
     <div>

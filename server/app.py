@@ -95,9 +95,9 @@ class Login(Resource):
                 db.session.commit()
             except Exception as errors:
                 return make_response({"errors": [errors.__str__()]}, 422)
-            return make_response(new_user.to_dict(), 201)
+            return make_response(new_user.to_dict(rules=('-cities',)), 201)
         
-        return make_response(user.to_dict(), 200, {"Content-Type": "application/json"})
+        return make_response(user.to_dict(rules=('-cities',)), 200, {"Content-Type": "application/json"})
 api.add_resource(Login, '/login')
 
 

@@ -1,5 +1,6 @@
 import React from 'react'
 import axios from "axios"
+import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -69,4 +70,4 @@ const EditUsernameForm = ({ user_id, username, onEditUsername }) => {
 
 
 
-export default EditUsernameForm
+export default withAuthenticationRequired(EditUsernameForm)

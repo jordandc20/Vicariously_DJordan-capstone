@@ -1,11 +1,13 @@
 import React from 'react'
 import axios from "axios"
+import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 
 import { useFormik } from "formik";
 import * as yup from "yup";
 
 // https://regex101.com/r/V5Y7rn/1/
 const NewLocationForm = ({ user_id, city_id, onFormClose, onSubmitNew }) => {
+  const { isLoading } = useAuth0();
 
   const url_regex = /^((http|https):\/\/)?(www.)?(?!.*(http|https|www.))[a-zA-Z0-9_-]+(\.[a-zA-Z]+)+(\/)?.([\w\?[a-zA-Z-_%\/@?]+)*([^\/\w\?[a-zA-Z0-9_-]+=\w+(&[a-zA-Z0-9_]+=\w+)*)?$/
 
@@ -41,15 +43,18 @@ const NewLocationForm = ({ user_id, city_id, onFormClose, onSubmitNew }) => {
       if (new_values.rating) { new_values.rating = parseInt(new_values.rating, 10) }
       if (new_values.avg_cost) { new_values.avg_cost = parseInt(new_values.avg_cost, 10) }
 
-      
+
       axios.post(`/locations`, new_values)
-      .then(r => { console.log(r.data)
-        onSubmitNew(r.data)})
+        .then(r => {
+          console.log(r.data)
+          onSubmitNew(r.data)
+        })
         .then(onFormClose())
     },
   });
 
 
+  if (isLoading) { return <div>Loading ...</div>; }
 
   return (
     <div className="grid place-items-center  bg-yellow-50 ">
@@ -138,4 +143,4 @@ const NewLocationForm = ({ user_id, city_id, onFormClose, onSubmitNew }) => {
   )
 }
 
-export default NewLocationForm
+export default withAuthenticationRequired(NewLocationForm)

@@ -36,7 +36,7 @@ function App() {
 
   return (
     <div className=" bg-yellow-100 h-screen">
-      <Navbar />
+      <Navbar userData={userData}/>
       <Routes>
         <Route exact path="/" element={<Home />} />
         <Route exact path="/users/:userId/cities" element={<CitiesList userData={userData} />} />

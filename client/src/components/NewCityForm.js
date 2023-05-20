@@ -1,9 +1,11 @@
 import React from 'react'
+import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 
 import { useFormik } from "formik";
 import * as yup from "yup";
 
 const NewCityForm = ({ user_id, onFormClose, onSubmitNew }) => {
+  const { user, isAuthenticated, isLoading } = useAuth0();
 
 
 
@@ -31,6 +33,7 @@ const NewCityForm = ({ user_id, onFormClose, onSubmitNew }) => {
   });
 
 
+  if (isLoading) { return <div>Loading ...</div>; }
 
   return (
     <div className="grid place-items-center  bg-yellow-50 ">
@@ -69,4 +72,4 @@ const NewCityForm = ({ user_id, onFormClose, onSubmitNew }) => {
   )
 }
 
-export default NewCityForm
+export default withAuthenticationRequired(NewCityForm)
