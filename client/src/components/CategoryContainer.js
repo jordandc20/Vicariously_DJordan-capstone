@@ -1,13 +1,18 @@
 import React, { useState } from 'react'
 import LocationCard from './LocationCard'
+import { useAuth0 } from '@auth0/auth0-react'
 
 const CategoryContainer = ({ locationData, type, categoryExpanded }) => {
-
+    const { isLoading, isAuthenticated, user } = useAuth0();
     const [noteExpanded, setNoteExpanded] = useState(null)
 
     const locationCardsArray = locationData.map((location) => {
         return <LocationCard key={location.id} locationData={location} noteExpanded={noteExpanded} />
     })
+
+
+    if (isLoading) { return <div>Loading ...</div> }
+
 
     return (
         <details className='bg-white shadow rounded group mb-4' open={categoryExpanded} >

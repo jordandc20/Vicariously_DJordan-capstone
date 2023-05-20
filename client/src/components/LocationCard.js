@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 
-import { Navigate, useNavigate } from 'react-router-dom'
+import {  useNavigate } from 'react-router-dom'
 
 const LocationCard = ({ locationData, noteExpanded }) => {
   const { avg_cost, category, city_id, date_visited, google_map_url, id, location_name, location_notes, rating, user_id, website } = locationData;
