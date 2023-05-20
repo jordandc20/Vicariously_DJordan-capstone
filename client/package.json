@@ -5,7 +5,7 @@
   "proxy": "http://localhost:5555",
   "dependencies": {
     "@auth0/auth0-react": "^2.1.0",
-    "@svgr/webpack": "^8.0.1",
+   
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -46,6 +46,10 @@
   },
   "devDependencies": {
     "tailwindcss": "^3.3.2",
-    "react-scripts": "5.0.1"
+    "react-scripts": "5.0.1",
+    "@svgr/webpack": "^8.0.1"
+  },
+  "overrides": {
+    "@svgr/webpack": "$@svgr/webpack"
   }
 }
