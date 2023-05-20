@@ -23,12 +23,18 @@ const CityDetails = ({ userData }) => {
   }, [params.cityId, setCityDetails]);
 
 
-  console.log(cityDetails)
 
-  function handleNewLocation(new_location) {
+  function handleAddLocation(new_location) {
     setCityDetails({
       ...cityDetails, locations: [...cityDetails.locations, new_location],
     })
+  }
+
+  function handleDeleteLocation(delLocationId) {
+    setCityDetails({
+      ...cityDetails, locations: cityDetails.locations.filter(location => location.id !== delLocationId),
+    }
+    )
   }
 
 
@@ -51,16 +57,16 @@ const CityDetails = ({ userData }) => {
       {(isAuthenticated && Number(params.userId) === userData.id) && (<div>
         < button className="max-w-sm rounded overflow-hidden shadow-lg bg-slate-50" onClick={() => setIsOpen(true)}>New Location</button>
         <ReactModal isOpen={isOpen} contentLabel="Example Modal" onRequestClose={() => setIsOpen(false)}>
-          <NewLocationForm user_id={userData.id} city_id={params.cityId} onFormClose={() => setIsOpen(false)} onSubmitNew={handleNewLocation} />
+          <NewLocationForm user_id={userData.id} city_id={params.cityId} onFormClose={() => setIsOpen(false)} onSubmitNew={handleAddLocation} />
         </ReactModal>
       </div>)}
-      {shop?.length > 0 && <CategoryContainer locationData={shop} categoryExpanded={categoryExpanded} type="shop" />}
-      {mart?.length > 0 && <CategoryContainer locationData={mart} categoryExpanded={categoryExpanded} type="mart" />}
-      {food?.length > 0 && <CategoryContainer locationData={food} categoryExpanded={categoryExpanded} type="food" />}
-      {outdoor?.length > 0 && <CategoryContainer locationData={outdoor} categoryExpanded={categoryExpanded} type="outdoor" />}
-      {indoor?.length > 0 && <CategoryContainer locationData={indoor} categoryExpanded={categoryExpanded} type="indoor" />}
-      {acc?.length > 0 && <CategoryContainer locationData={acc} categoryExpanded={categoryExpanded} type="acc" />}
-      {other?.length > 0 && <CategoryContainer locationData={other} categoryExpanded={categoryExpanded} type="other" />}
+      {shop?.length > 0 && <CategoryContainer locationData={shop} categoryExpanded={categoryExpanded} type="shop" userData={userData} onDelLocation={handleDeleteLocation} />}
+      {mart?.length > 0 && <CategoryContainer locationData={mart} categoryExpanded={categoryExpanded} type="mart" userData={userData} onDelLocation={handleDeleteLocation} />}
+      {food?.length > 0 && <CategoryContainer locationData={food} categoryExpanded={categoryExpanded} type="food" userData={userData} onDelLocation={handleDeleteLocation} />}
+      {outdoor?.length > 0 && <CategoryContainer locationData={outdoor} categoryExpanded={categoryExpanded} type="outdoor" userData={userData} onDelLocation={handleDeleteLocation} />}
+      {indoor?.length > 0 && <CategoryContainer locationData={indoor} categoryExpanded={categoryExpanded} type="indoor" userData={userData} onDelLocation={handleDeleteLocation} />}
+      {acc?.length > 0 && <CategoryContainer locationData={acc} categoryExpanded={categoryExpanded} type="acc" userData={userData} onDelLocation={handleDeleteLocation} />}
+      {other?.length > 0 && <CategoryContainer locationData={other} categoryExpanded={categoryExpanded} type="other" userData={userData} onDelLocation={handleDeleteLocation} />}
     </div>
   )
 }

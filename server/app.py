@@ -58,8 +58,6 @@ class UserById(Resource):
     def patch(self, id):
         data = request.get_json()
         user = User.query.filter_by(id=id).first()
-        print(data)
-        print(user)
         if not user:
             return make_response({'error': 'User not found'}, 404)
         try:
@@ -69,35 +67,41 @@ class UserById(Resource):
             db.session.commit()
         except Exception as ex:
             return make_response({'error': [ex.__str__()]}, 422)
-        
-        print(user)
-        return make_response(user.to_dict(),202)
+
+        return make_response(user.to_dict(), 202)
+
+    def delete(self, id):
+        user = User.query.filter_by(id=id).first()
+
+        if not user:
+            return make_response({'error': 'user not found'}, 404)
+        db.session.delete(user)
+        db.session.commit()
+        return make_response("deleted ok", 200)
+
 
 api.add_resource(UserById, '/users/<int:id>')
-
-
-
 
 
 class Login(Resource):
     def post(self):
         data = request.get_json()
-        print(data)
         user = User.query.filter_by(email=data['email']).first()
-        print(user)
         if not user:
             try:
                 new_user = User(
                     email=data['email'],
-                    username= data['email'].split('@')[0]
+                    username=data['email'].split('@')[0]
                 )
                 db.session.add(new_user)
                 db.session.commit()
             except Exception as errors:
                 return make_response({"errors": [errors.__str__()]}, 422)
             return make_response(new_user.to_dict(rules=('-cities',)), 201)
-        
+
         return make_response(user.to_dict(rules=('-cities',)), 200, {"Content-Type": "application/json"})
+
+
 api.add_resource(Login, '/login')
 
 
@@ -128,7 +132,10 @@ class Cities(Resource):
         except Exception as errors:
             return make_response({"errors": [errors.__str__()]}, 422)
         return make_response(new_city.to_dict(), 201)
+
+
 api.add_resource(Cities, '/cities')
+
 
 class CityById(Resource):
     def get(self, id):
@@ -140,8 +147,6 @@ class CityById(Resource):
     def patch(self, id):
         data = request.get_json()
         city = City.query.filter_by(id=id).first()
-        print(data)
-        print(city)
         if not city:
             return make_response({'error': 'City not found'}, 404)
         try:
@@ -151,12 +156,19 @@ class CityById(Resource):
             db.session.commit()
         except Exception as ex:
             return make_response({'error': [ex.__str__()]}, 422)
-        
-        print(city)
-        return make_response(city.to_dict(),202)
+
+        return make_response(city.to_dict(), 202)
+
+    def delete(self, id):
+        city = City.query.filter_by(id=id).first()
+        if not city:
+            return make_response({'error': 'city not found'}, 404)
+        db.session.delete(city)
+        db.session.commit()
+        return make_response(f"deleted {id}", 200)
+
 
 api.add_resource(CityById, '/cities/<int:id>')
-
 
 
 class CityNotes(Resource):
@@ -217,8 +229,41 @@ class Locations(Resource):
             return make_response({"errors": [errors.__str__()]}, 422)
         return make_response(new_loc.to_dict(), 201)
 
-
 api.add_resource(Locations, '/locations')
+
+
+class LocationById(Resource):
+    def get(self, id):
+        location = Location.query.filter_by(id=id).first()
+        if not location:
+            return make_response({'error': 'Location not found'}, 404)
+        return make_response(location.to_dict(), 200, {"Content-Type": "application/json"})
+
+    def patch(self, id):
+        data = request.get_json()
+        location = Location.query.filter_by(id=id).first()
+        if not location:
+            return make_response({'error': 'Location not found'}, 404)
+        try:
+            for attr in data:
+                setattr(location, attr, data[attr])
+            db.session.add(location)
+            db.session.commit()
+        except Exception as ex:
+            return make_response({'error': [ex.__str__()]}, 422)
+
+        return make_response(location.to_dict(), 202)
+
+    def delete(self, id):
+        location = Location.query.filter_by(id=id).first()
+        if not location:
+            return make_response({'error': 'location not found'}, 404)
+        db.session.delete(location)
+        db.session.commit()
+        return make_response(f"deleted {id}", 200)
+
+
+api.add_resource(LocationById, '/locations/<int:id>')
 
 
 class LocationNotes(Resource):

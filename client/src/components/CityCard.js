@@ -1,14 +1,18 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useAuth0 } from '@auth0/auth0-react'
+import ReactModal from 'react-modal';
 
-const CityCard = ({ cityData }) => {
-  const { isLoading} = useAuth0();
+import Delete from './Delete';
+
+const CityCard = ({ cityData, userData, onDelCity }) => {
+  const { isLoading, isAuthenticated } = useAuth0();
   const params = useParams();
   const { city_name, city_notes, country, id, locations, user_id } = cityData;
   const navigate = useNavigate()
+  const [isOpen, setIsOpen] = useState(false);
 
-  
+
   function handleCityCardClick(e) {
     navigate(`/users/${params.userId}/cities/${id}`)
   }
@@ -26,6 +30,12 @@ const CityCard = ({ cityData }) => {
         <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">category1</span>
         <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">category2</span>
       </div>
+      {(isAuthenticated && Number(params.userId) === userData.id) && (<div>
+        < button className="max-w-sm rounded overflow-hidden shadow-lg bg-slate-50" onClick={(e) => {e.stopPropagation(); setIsOpen(true)}}>Delete City</button>
+        <ReactModal isOpen={isOpen} contentLabel="Example Modal" onRequestClose={() => setIsOpen(false)}>
+          <Delete idToDel={id} path ='cities' name={city_name} onFormClose={() => setIsOpen(false)} onDelete={  onDelCity } />
+        </ReactModal>
+      </div>)}
     </div >
   )
 }
