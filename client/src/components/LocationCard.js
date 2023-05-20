@@ -5,8 +5,9 @@ import { useParams, useNavigate } from 'react-router-dom'
 
 import Delete from './Delete';
 import NewLocationNoteForm from './NewLocationNoteForm';
+import NotesCard from './NotesCard';
 
-const LocationCard = ({ locationData, noteExpanded, userData, onDelLocation ,onNewLocNote }) => {
+const LocationCard = ({ locationData, noteExpanded, userData, onDelLocation, onNewLocNote ,onDelLocNote}) => {
   const { avg_cost, category, city_id, date_visited, google_map_url, id, location_name, location_notes, rating, user_id, website } = locationData;
   const navigate = useNavigate()
   const { isLoading, isAuthenticated } = useAuth0();
@@ -14,9 +15,10 @@ const LocationCard = ({ locationData, noteExpanded, userData, onDelLocation ,onN
   const [isOpen, setIsOpen] = useState(false);
   const [expandNewNote, setExpandNewNote] = useState(false);
 
-  const locationNotesArray = location_notes.map((note) => {
-    return <p key={note.id}>{note.note_body}</p>
+  const locationNotesArray = location_notes?.map((note) => {
+    return <NotesCard key={note.id} noteData={note} userData={userData} onDelNote={onDelLocNote}   path='locationnotes'/>
   })
+
 
   function handleLocationCardClick(e) {
     console.log(e)
@@ -37,12 +39,11 @@ const LocationCard = ({ locationData, noteExpanded, userData, onDelLocation ,onN
         <summary className='list-none flex flex-wrap items-center cursor-pointer focus-visible:outline-none focus-visible:ring focus-visible:ring-pink-500 rounded group-open:rounded-b-none group-open:z-[1] relative'>
           <h3 className=' flex flex-1 p-4 font-semibold'>Notes</h3>
           {(isAuthenticated && Number(params.userId) === userData.id) && (<div>
-          < button className="max-w-sm rounded overflow-hidden shadow-lg bg-slate-50" onClick={() => setExpandNewNote(true)}>New Location Note</button>
-          <ReactModal isOpen={expandNewNote} contentLabel="Example Modal" onRequestClose={() => setExpandNewNote(false)}>
-            <NewLocationNoteForm  location_id={id} onFormClose={() => setExpandNewNote(false)} onNewNote={onNewLocNote} />
-
-          </ReactModal>
-        </div>)}
+            < button className="max-w-sm rounded overflow-hidden shadow-lg bg-slate-50" onClick={() => setExpandNewNote(true)}>New Location Note</button>
+            <ReactModal isOpen={expandNewNote} contentLabel="Example Modal" onRequestClose={() => setExpandNewNote(false)}>
+              <NewLocationNoteForm location_id={id} onFormClose={() => setExpandNewNote(false)} onNewNote={onNewLocNote} />
+            </ReactModal>
+          </div>)}
           <div className='flex w-10 items-center justify-center'>
             <div className='border-8 border-transparent border-l-gray-600 ml2 group-open:rotate-90 transition-transform origin-left'></div>
           </div>

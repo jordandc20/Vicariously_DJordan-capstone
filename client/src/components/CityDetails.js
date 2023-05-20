@@ -71,6 +71,31 @@ const CityDetails = ({ userData }) => {
     )
   }
 
+
+  function handleDelLocNote(delLocNoteId) {
+    console.log(delLocNoteId)
+    console.log(cityDetails)
+    const ud_cityDetails =
+    {
+      ...cityDetails, locations:
+        cityDetails.locations.map(
+          loc => {
+            return (
+              {
+                ...loc, location_notes: loc.location_notes.filter(note => note.id !== delLocNoteId),
+              }
+            )
+          }
+        )
+    }
+    setCityDetails(ud_cityDetails)
+  }
+
+
+
+
+
+
   // sort city notes into note-categories
   const note_other = cityDetails?.city_notes.filter(note => note.note_type === 'Other')
   const note_safety = cityDetails?.city_notes.filter(note => note.note_type === 'Safety')
@@ -123,13 +148,13 @@ const CityDetails = ({ userData }) => {
       </details>
 
 
-      {shop?.length > 0 && <CategoryContainer locationData={shop} categoryExpanded={categoryExpanded} type="shop" userData={userData} onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} />}
-      {mart?.length > 0 && <CategoryContainer locationData={mart} categoryExpanded={categoryExpanded} type="mart" userData={userData} onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} />}
-      {food?.length > 0 && <CategoryContainer locationData={food} categoryExpanded={categoryExpanded} type="food" userData={userData} onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} />}
-      {outdoor?.length > 0 && <CategoryContainer locationData={outdoor} categoryExpanded={categoryExpanded} type="outdoor" userData={userData} onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} />}
-      {indoor?.length > 0 && <CategoryContainer locationData={indoor} categoryExpanded={categoryExpanded} type="indoor" userData={userData} onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} />}
-      {acc?.length > 0 && <CategoryContainer locationData={acc} categoryExpanded={categoryExpanded} type="acc" userData={userData} onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} />}
-      {other?.length > 0 && <CategoryContainer locationData={other} categoryExpanded={categoryExpanded} type="other" userData={userData} onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} />}
+      {shop?.length > 0 && <CategoryContainer locationData={shop} categoryExpanded={categoryExpanded} type="shop" userData={userData} onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} />}
+      {mart?.length > 0 && <CategoryContainer locationData={mart} categoryExpanded={categoryExpanded} type="mart" userData={userData} onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} />}
+      {food?.length > 0 && <CategoryContainer locationData={food} categoryExpanded={categoryExpanded} type="food" userData={userData} onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} />}
+      {outdoor?.length > 0 && <CategoryContainer locationData={outdoor} categoryExpanded={categoryExpanded} type="outdoor" userData={userData} onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} />}
+      {indoor?.length > 0 && <CategoryContainer locationData={indoor} categoryExpanded={categoryExpanded} type="indoor" userData={userData} onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} />}
+      {acc?.length > 0 && <CategoryContainer locationData={acc} categoryExpanded={categoryExpanded} type="acc" userData={userData} onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} />}
+      {other?.length > 0 && <CategoryContainer locationData={other} categoryExpanded={categoryExpanded} type="other" userData={userData} onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} />}
     </div>
   )
 }

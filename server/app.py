@@ -67,17 +67,15 @@ class UserById(Resource):
             db.session.commit()
         except Exception as ex:
             return make_response({'error': [ex.__str__()]}, 422)
-
         return make_response(user.to_dict(), 202)
 
     def delete(self, id):
         user = User.query.filter_by(id=id).first()
-
         if not user:
             return make_response({'error': 'user not found'}, 404)
         db.session.delete(user)
         db.session.commit()
-        return make_response("deleted ok", 200)
+        return make_response(f"deleted {user.to_dict()}", 200)
 
 
 api.add_resource(UserById, '/users/<int:id>')
@@ -98,7 +96,6 @@ class Login(Resource):
             except Exception as errors:
                 return make_response({"errors": [errors.__str__()]}, 422)
             return make_response(new_user.to_dict(rules=('-cities',)), 201)
-
         return make_response(user.to_dict(rules=('-cities',)), 200, {"Content-Type": "application/json"})
 
 
@@ -156,7 +153,6 @@ class CityById(Resource):
             db.session.commit()
         except Exception as ex:
             return make_response({'error': [ex.__str__()]}, 422)
-
         return make_response(city.to_dict(), 202)
 
     def delete(self, id):
@@ -165,7 +161,7 @@ class CityById(Resource):
             return make_response({'error': 'city not found'}, 404)
         db.session.delete(city)
         db.session.commit()
-        return make_response(f"deleted {id}", 200)
+        return make_response(f"deleted {city.to_dict()}", 200)
 
 
 api.add_resource(CityById, '/cities/<int:id>')
@@ -185,7 +181,6 @@ class CityNotes(Resource):
         except Exception as e:
             return make_response({'message': 'Something went wrong!', 'stackTrace': e}, 400)
 
-
     def post(self):
         data = request.get_json()
         try:
@@ -201,12 +196,7 @@ class CityNotes(Resource):
         return make_response(newCityNote.to_dict(), 201)
 
 
-
 api.add_resource(CityNotes, '/citynotes')
-
-
-
-
 
 
 class CityNotesById(Resource):
@@ -228,7 +218,6 @@ class CityNotesById(Resource):
             db.session.commit()
         except Exception as ex:
             return make_response({'error': [ex.__str__()]}, 422)
-
         return make_response(cityNote.to_dict(), 202)
 
     def delete(self, id):
@@ -237,17 +226,10 @@ class CityNotesById(Resource):
             return make_response({'error': 'City Note not found'}, 404)
         db.session.delete(cityNote)
         db.session.commit()
-        return make_response(f"deleted {id}", 200)
+        return make_response(f"deleted {cityNote.to_dict()}", 200)
 
 
 api.add_resource(CityNotesById, '/citynotes/<int:id>')
-
-
-
-
-
-
-
 
 
 class Locations(Resource):
@@ -290,6 +272,7 @@ class Locations(Resource):
             return make_response({"errors": [errors.__str__()]}, 422)
         return make_response(new_loc.to_dict(), 201)
 
+
 api.add_resource(Locations, '/locations')
 
 
@@ -312,7 +295,6 @@ class LocationById(Resource):
             db.session.commit()
         except Exception as ex:
             return make_response({'error': [ex.__str__()]}, 422)
-
         return make_response(location.to_dict(), 202)
 
     def delete(self, id):
@@ -321,7 +303,7 @@ class LocationById(Resource):
             return make_response({'error': 'location not found'}, 404)
         db.session.delete(location)
         db.session.commit()
-        return make_response(f"deleted {id}", 200)
+        return make_response(f"deleted {location.to_dict()}", 200)
 
 
 api.add_resource(LocationById, '/locations/<int:id>')
@@ -341,8 +323,6 @@ class LocationNotes(Resource):
         except Exception as e:
             return make_response({'message': 'Something went wrong!', 'stackTrace': e}, 400)
 
-
-
     def post(self):
         data = request.get_json()
         try:
@@ -359,6 +339,38 @@ class LocationNotes(Resource):
 
 api.add_resource(LocationNotes, '/locationnotes')
 
+
+class LocationNotesById(Resource):
+    def get(self, id):
+        location_note = LocationNote.query.filter_by(id=id).first()
+        if not location_note:
+            return make_response({'error': 'Location note not found'}, 404)
+        return make_response(location_note.to_dict(), 200, {"Content-Type": "application/json"})
+
+    def patch(self, id):
+        data = request.get_json()
+        location_note = LocationNote.query.filter_by(id=id).first()
+        if not location_note:
+            return make_response({'error': 'Location Note not found'}, 404)
+        try:
+            for attr in data:
+                setattr(location_note, attr, data[attr])
+            db.session.add(location_note)
+            db.session.commit()
+        except Exception as ex:
+            return make_response({'error': [ex.__str__()]}, 422)
+        return make_response(location_note.to_dict(), 202)
+
+    def delete(self, id):
+        location_note = LocationNote.query.filter_by(id=id).first()
+        if not location_note:
+            return make_response({'error': 'location note not found'}, 404)
+        db.session.delete(location_note)
+        db.session.commit()
+        return make_response(f"deleted {location_note.to_dict()}", 200)
+
+
+api.add_resource(LocationNotesById, '/locationnotes/<int:id>')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

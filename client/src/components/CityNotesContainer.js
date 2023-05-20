@@ -8,7 +8,7 @@ const CityNotesContainer = ({ cityNotesData, type, userData, onDelCityNote }) =>
     const { isLoading } = useAuth0();
 
     const cityNotesArray = cityNotesData?.map((note) => {
-        return <NotesCard key={note.id} cityNoteData={note} userData={userData} onDelCityNote={onDelCityNote} />
+        return <NotesCard key={note.id} path='cities' noteData={note} userData={userData} onDelNote={onDelCityNote} />
     })
 
 

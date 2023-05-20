@@ -14,6 +14,7 @@ const Delete = ({ onDelete, onFormClose, idToDel ,path , name}) => {
     // }
     async function handleYes() {
         try {
+            console.log(path)
         const res = await axios.delete(`/${path}/${idToDel}`);
         onFormClose()
         onDelete(idToDel)

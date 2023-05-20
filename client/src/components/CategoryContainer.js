@@ -2,12 +2,12 @@ import React, { useState } from 'react'
 import LocationCard from './LocationCard'
 import { useAuth0 } from '@auth0/auth0-react'
 
-const CategoryContainer = ({ locationData, type, categoryExpanded , userData,onDelLocation , onNewLocNote}) => {
+const CategoryContainer = ({ locationData, type, categoryExpanded , userData,onDelLocation , onNewLocNote, onDelLocNote}) => {
     const { isLoading } = useAuth0();
     const [noteExpanded, setNoteExpanded] = useState(null)
 
     const locationCardsArray = locationData.map((location) => {
-        return <LocationCard key={location.id} locationData={location} noteExpanded={noteExpanded} userData={userData} onDelLocation={onDelLocation} onNewLocNote={onNewLocNote} />
+        return <LocationCard key={location.id} locationData={location} noteExpanded={noteExpanded} userData={userData} onDelLocation={onDelLocation} onNewLocNote={onNewLocNote} onDelLocNote={onDelLocNote}/>
     })
 
 
