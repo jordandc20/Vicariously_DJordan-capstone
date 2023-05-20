@@ -26,16 +26,34 @@ const CityDetails = ({ userData }) => {
   }, [params.cityId, setCityDetails]);
 
 
-
   function handleAddLocation(new_location) {
     setCityDetails({
       ...cityDetails, locations: [...cityDetails.locations, new_location],
     })
   }
+
   function handleAddCityNote(newCityNote) {
     setCityDetails({
       ...cityDetails, city_notes: [...cityDetails.city_notes, newCityNote],
     })
+  }
+
+  function handleAddLocNote(newLocNote) {
+    console.log(newLocNote)
+    console.log(cityDetails)
+    const ud_cityDetails =
+    {
+      ...cityDetails, locations:
+        cityDetails.locations.map(loc => {
+          if (loc.id === newLocNote.location_id) {
+            return (
+              {
+                ...loc, location_notes: [...loc.location_notes, newLocNote],
+              })
+          } else { return loc }
+        })
+    }
+    setCityDetails(ud_cityDetails)
   }
 
   function handleDeleteLocation(delLocationId) {
@@ -43,9 +61,9 @@ const CityDetails = ({ userData }) => {
       ...cityDetails, locations: cityDetails.locations.filter(location => location.id !== delLocationId),
     }
     )
-
-
   }
+
+
   function handleDeleteCityNote(delCityNoteId) {
     setCityDetails({
       ...cityDetails, city_notes: cityDetails.city_notes.filter(note => note.id !== delCityNoteId),
@@ -92,7 +110,7 @@ const CityDetails = ({ userData }) => {
         {(isAuthenticated && Number(params.userId) === userData.id) && (<div>
           < button className="max-w-sm rounded overflow-hidden shadow-lg bg-slate-50" onClick={() => setExpandNewNote(true)}>New City Note</button>
           <ReactModal isOpen={expandNewNote} contentLabel="Example Modal" onRequestClose={() => setExpandNewNote(false)}>
-            <NewCityNoteForm user_id={userData.id} city_id={params.cityId} onFormClose={() => setExpandNewNote(false)} onNewNote={handleAddCityNote} />
+            <NewCityNoteForm city_id={params.cityId} onFormClose={() => setExpandNewNote(false)} onNewNote={handleAddCityNote} />
 
           </ReactModal>
         </div>)}
@@ -105,13 +123,13 @@ const CityDetails = ({ userData }) => {
       </details>
 
 
-      {shop?.length > 0 && <CategoryContainer locationData={shop} categoryExpanded={categoryExpanded} type="shop" userData={userData} onDelLocation={handleDeleteLocation} />}
-      {mart?.length > 0 && <CategoryContainer locationData={mart} categoryExpanded={categoryExpanded} type="mart" userData={userData} onDelLocation={handleDeleteLocation} />}
-      {food?.length > 0 && <CategoryContainer locationData={food} categoryExpanded={categoryExpanded} type="food" userData={userData} onDelLocation={handleDeleteLocation} />}
-      {outdoor?.length > 0 && <CategoryContainer locationData={outdoor} categoryExpanded={categoryExpanded} type="outdoor" userData={userData} onDelLocation={handleDeleteLocation} />}
-      {indoor?.length > 0 && <CategoryContainer locationData={indoor} categoryExpanded={categoryExpanded} type="indoor" userData={userData} onDelLocation={handleDeleteLocation} />}
-      {acc?.length > 0 && <CategoryContainer locationData={acc} categoryExpanded={categoryExpanded} type="acc" userData={userData} onDelLocation={handleDeleteLocation} />}
-      {other?.length > 0 && <CategoryContainer locationData={other} categoryExpanded={categoryExpanded} type="other" userData={userData} onDelLocation={handleDeleteLocation} />}
+      {shop?.length > 0 && <CategoryContainer locationData={shop} categoryExpanded={categoryExpanded} type="shop" userData={userData} onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} />}
+      {mart?.length > 0 && <CategoryContainer locationData={mart} categoryExpanded={categoryExpanded} type="mart" userData={userData} onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} />}
+      {food?.length > 0 && <CategoryContainer locationData={food} categoryExpanded={categoryExpanded} type="food" userData={userData} onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} />}
+      {outdoor?.length > 0 && <CategoryContainer locationData={outdoor} categoryExpanded={categoryExpanded} type="outdoor" userData={userData} onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} />}
+      {indoor?.length > 0 && <CategoryContainer locationData={indoor} categoryExpanded={categoryExpanded} type="indoor" userData={userData} onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} />}
+      {acc?.length > 0 && <CategoryContainer locationData={acc} categoryExpanded={categoryExpanded} type="acc" userData={userData} onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} />}
+      {other?.length > 0 && <CategoryContainer locationData={other} categoryExpanded={categoryExpanded} type="other" userData={userData} onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} />}
     </div>
   )
 }

@@ -219,7 +219,7 @@ class LocationNote(db.Model, SerializerMixin):
     location_id = db.Column(db.Integer, db.ForeignKey(
         'locations.id'), nullable=False)
 
-    serialize_rules = ("-location.location_notes",
+    serialize_rules = ("-location",
                        "-created_at", "-updated_at",)
 
     @validates('note_body')

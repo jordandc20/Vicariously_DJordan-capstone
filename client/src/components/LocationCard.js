@@ -4,14 +4,15 @@ import ReactModal from 'react-modal';
 import { useParams, useNavigate } from 'react-router-dom'
 
 import Delete from './Delete';
+import NewLocationNoteForm from './NewLocationNoteForm';
 
-
-const LocationCard = ({ locationData, noteExpanded, userData, onDelLocation }) => {
+const LocationCard = ({ locationData, noteExpanded, userData, onDelLocation ,onNewLocNote }) => {
   const { avg_cost, category, city_id, date_visited, google_map_url, id, location_name, location_notes, rating, user_id, website } = locationData;
   const navigate = useNavigate()
   const { isLoading, isAuthenticated } = useAuth0();
   const params = useParams();
   const [isOpen, setIsOpen] = useState(false);
+  const [expandNewNote, setExpandNewNote] = useState(false);
 
   const locationNotesArray = location_notes.map((note) => {
     return <p key={note.id}>{note.note_body}</p>
@@ -32,9 +33,16 @@ const LocationCard = ({ locationData, noteExpanded, userData, onDelLocation }) =
         <br />
         {website && <a className="url" href={website} target="_blank" rel="noreferrer">website</a>}
       </div>
-      {location_notes.length > 0 && <details className='bg-white shadow rounded group mb-4' open={noteExpanded} >
+      <details className='bg-white shadow rounded group mb-4' open={noteExpanded} >
         <summary className='list-none flex flex-wrap items-center cursor-pointer focus-visible:outline-none focus-visible:ring focus-visible:ring-pink-500 rounded group-open:rounded-b-none group-open:z-[1] relative'>
           <h3 className=' flex flex-1 p-4 font-semibold'>Notes</h3>
+          {(isAuthenticated && Number(params.userId) === userData.id) && (<div>
+          < button className="max-w-sm rounded overflow-hidden shadow-lg bg-slate-50" onClick={() => setExpandNewNote(true)}>New Location Note</button>
+          <ReactModal isOpen={expandNewNote} contentLabel="Example Modal" onRequestClose={() => setExpandNewNote(false)}>
+            <NewLocationNoteForm  location_id={id} onFormClose={() => setExpandNewNote(false)} onNewNote={onNewLocNote} />
+
+          </ReactModal>
+        </div>)}
           <div className='flex w-10 items-center justify-center'>
             <div className='border-8 border-transparent border-l-gray-600 ml2 group-open:rotate-90 transition-transform origin-left'></div>
           </div>
@@ -42,7 +50,7 @@ const LocationCard = ({ locationData, noteExpanded, userData, onDelLocation }) =
         <div>
           {locationNotesArray}
         </div>
-      </details>}
+      </details>
       <div className="px-6 pt-4 pb-2">
         <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">locations: ##</span>
         <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">category1</span>

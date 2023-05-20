@@ -342,6 +342,21 @@ class LocationNotes(Resource):
             return make_response({'message': 'Something went wrong!', 'stackTrace': e}, 400)
 
 
+
+    def post(self):
+        data = request.get_json()
+        try:
+            newLocationNote = LocationNote(
+                note_body=data['note_body'],
+                location_id=data['location_id'],
+            )
+            db.session.add(newLocationNote)
+            db.session.commit()
+        except Exception as errors:
+            return make_response({"errors": [errors.__str__()]}, 422)
+        return make_response(newLocationNote.to_dict(), 201)
+
+
 api.add_resource(LocationNotes, '/locationnotes')
 
 
