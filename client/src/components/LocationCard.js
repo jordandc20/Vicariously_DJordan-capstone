@@ -1,22 +1,31 @@
 import React, { useState } from 'react'
+import { useAuth0 } from '@auth0/auth0-react'
+import ReactModal from 'react-modal';
+import { useParams, useNavigate } from 'react-router-dom'
 
+import Delete from './Delete';
+import NewLocationNoteForm from './NewLocationNoteForm';
+import NotesCard from './NotesCard';
 
-import {  useNavigate } from 'react-router-dom'
-
-const LocationCard = ({ locationData, noteExpanded }) => {
+const LocationCard = ({ locationData, noteExpanded, userData, onDelLocation, onNewLocNote ,onDelLocNote}) => {
   const { avg_cost, category, city_id, date_visited, google_map_url, id, location_name, location_notes, rating, user_id, website } = locationData;
   const navigate = useNavigate()
+  const { isLoading, isAuthenticated } = useAuth0();
+  const params = useParams();
+  const [isOpen, setIsOpen] = useState(false);
+  const [expandNewNote, setExpandNewNote] = useState(false);
 
-  const locationNotesArray = location_notes.map((note) => {
-    return <p key={note.id}>{note.note_body}</p>
+  const locationNotesArray = location_notes?.map((note) => {
+    return <NotesCard key={note.id} noteData={note} userData={userData} onDelNote={onDelLocNote}   path='locationnotes'/>
   })
+
 
   function handleLocationCardClick(e) {
     console.log(e)
     // navigate(`/cities/${id}`, { state: { cityData } })
   }
 
-
+  if (isLoading) { return <div>Loading ...</div> }
 
   return (
     < div className="max-w-sm rounded overflow-hidden shadow-lg bg-slate-50" onClick={handleLocationCardClick}>
@@ -29,6 +38,12 @@ const LocationCard = ({ locationData, noteExpanded }) => {
       <details className='bg-white shadow rounded group mb-4' open={noteExpanded} >
         <summary className='list-none flex flex-wrap items-center cursor-pointer focus-visible:outline-none focus-visible:ring focus-visible:ring-pink-500 rounded group-open:rounded-b-none group-open:z-[1] relative'>
           <h3 className=' flex flex-1 p-4 font-semibold'>Notes</h3>
+          {(isAuthenticated && Number(params.userId) === userData.id) && (<div>
+            < button className="max-w-sm rounded overflow-hidden shadow-lg bg-slate-50" onClick={() => setExpandNewNote(true)}>New Location Note</button>
+            <ReactModal isOpen={expandNewNote} contentLabel="Example Modal" onRequestClose={() => setExpandNewNote(false)}>
+              <NewLocationNoteForm location_id={id} onFormClose={() => setExpandNewNote(false)} onNewNote={onNewLocNote} />
+            </ReactModal>
+          </div>)}
           <div className='flex w-10 items-center justify-center'>
             <div className='border-8 border-transparent border-l-gray-600 ml2 group-open:rotate-90 transition-transform origin-left'></div>
           </div>
@@ -42,6 +57,12 @@ const LocationCard = ({ locationData, noteExpanded }) => {
         <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">category1</span>
         <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">category2</span>
       </div>
+      {(isAuthenticated && Number(params.userId) === userData.id) && (<div>
+        < button className="max-w-sm rounded overflow-hidden shadow-lg bg-slate-50" onClick={(e) => { e.stopPropagation(); setIsOpen(true) }}>Delete Location</button>
+        <ReactModal isOpen={isOpen} contentLabel="Example Modal" onRequestClose={() => setIsOpen(false)}>
+          <Delete idToDel={id} path='locations' name={location_name} onFormClose={() => setIsOpen(false)} onDelete={onDelLocation} />
+        </ReactModal>
+      </div>)}
     </div >
   )
 }

@@ -5,25 +5,24 @@ import axios from "axios"
 import { useFormik } from "formik";
 import * as yup from "yup";
 
-const NewCityForm = ({ user_id, onFormClose, onSubmitNew }) => {
+const NewLocationNoteForm = ({ location_id, onFormClose, onNewNote }) => {
   const { user, isAuthenticated, isLoading } = useAuth0();
 
 
 
   const formik = useFormik({
     initialValues: {
-      city_name: '',
-      country: '',
-      user_id: Number(user_id)
+      note_body: '',
+      location_id: Number(location_id)
     },
     validationSchema: yup.object({
-      city_name: yup.string().required("Must enter a City name. We suggest entering 'foreign' names in parenthesis."),
-      country: yup.string().required("Must enter a Country name.")
+      note_body: yup.string().required("Must enter a Note").min(3, 'Must be at least 3 characters')
+        .max(50, 'Must be less  than 50 characters'),
     }),
     onSubmit: values => {
-      axios.post(`/cities`, values)
+      axios.post(`/locationnotes`, values)
         .then(r => {
-          onSubmitNew(r.data)
+          onNewNote(r.data)
         })
         .then(onFormClose())
     },
@@ -36,23 +35,15 @@ const NewCityForm = ({ user_id, onFormClose, onSubmitNew }) => {
     <div className="grid place-items-center  bg-yellow-50 ">
 
       <div className="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 ">
-        <h1>Add New City</h1>
+        <h1>Add location note</h1>
         <form className="space-y-6" onSubmit={formik.handleSubmit}>
 
-          <label htmlFor="city_name" className="block mb-2 text-sm font-medium text-gray-900 ">City Name</label>
-          <input id='city_name' type="text" name="city_name" placeholder="City Name (foreign name)" {...formik.getFieldProps('city_name')}
+          <label htmlFor="note_body" className="block mb-2 text-sm font-medium text-gray-900 ">Note Text</label>
+          <input id='note_body' type="text" name="note_body" placeholder="note text" {...formik.getFieldProps('note_body')}
           />
-          {formik.touched.city_name && formik.errors.city_name ? (
-            <div>{formik.errors.city_name}</div>
+          {formik.touched.note_body && formik.errors.note_body ? (
+            <div>{formik.errors.note_body}</div>
           ) : null}
-
-
-          <label htmlFor="country" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Country Name</label>
-          <input id='country' type="text" name="country" placeholder="Country Name" {...formik.getFieldProps('country')} />
-          {formik.touched.country && formik.errors.country ? (
-            <div>{formik.errors.country}</div>
-          ) : null}
-
 
 
 
@@ -69,4 +60,4 @@ const NewCityForm = ({ user_id, onFormClose, onSubmitNew }) => {
   )
 }
 
-export default withAuthenticationRequired(NewCityForm)
+export default withAuthenticationRequired(NewLocationNoteForm)

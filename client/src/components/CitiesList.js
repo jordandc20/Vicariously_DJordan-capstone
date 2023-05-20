@@ -23,7 +23,7 @@ const CitiesList = ({ userData }) => {
 
 
   const cityCardsArray = cities?.map((city) => {
-    return <CityCard key={city.id} cityData={city} />
+    return <CityCard key={city.id} cityData={city} userData={userData} onDelCity={handleDeleteCity} />
   })
 
   /// ? waits for data   ... like a ternary? ... once the data is available, then continue to map\
@@ -35,6 +35,10 @@ const CitiesList = ({ userData }) => {
     setCities([...cities, newCity])
   }
 
+  function handleDeleteCity(delCityId) {
+    setCities(cities => cities.filter(city => city.id !== delCityId))
+  }
+
 
   if (isLoading) { return <div>Loading ...</div> }
 
@@ -43,7 +47,7 @@ const CitiesList = ({ userData }) => {
       {(isAuthenticated && Number(params.userId) === userData.id) && (<div>
         < button className="max-w-sm rounded overflow-hidden shadow-lg bg-slate-50" onClick={() => setIsOpen(true)}>New City</button>
         <ReactModal isOpen={isOpen} contentLabel="Example Modal" onRequestClose={() => setIsOpen(false)}>
-          <NewCityForm user_id={userData.id} onFormClose={() => setIsOpen(false)} onSubmitNew={(newCity) => handleAddCity(newCity)} />
+          <NewCityForm user_id={userData.id} onFormClose={() => setIsOpen(false)} onSubmitNew={handleAddCity} />
         </ReactModal>
       </div>)}
       {cityCardsArray}
