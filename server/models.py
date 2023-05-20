@@ -118,6 +118,8 @@ class CityNote(db.Model, SerializerMixin):
     @validates('city_id')
     def validates_city_id(self, key, value):
         cities = [city.id for city in City.query.all()]
+        if not value:
+            raise ValueError(f'{key} must be provided.')
         if value not in cities:
             raise ValueError('city_id does not exist.')
         return value

@@ -32,7 +32,7 @@ const LocationCard = ({ locationData, noteExpanded, userData, onDelLocation }) =
         <br />
         {website && <a className="url" href={website} target="_blank" rel="noreferrer">website</a>}
       </div>
-      <details className='bg-white shadow rounded group mb-4' open={noteExpanded} >
+      {location_notes.length > 0 && <details className='bg-white shadow rounded group mb-4' open={noteExpanded} >
         <summary className='list-none flex flex-wrap items-center cursor-pointer focus-visible:outline-none focus-visible:ring focus-visible:ring-pink-500 rounded group-open:rounded-b-none group-open:z-[1] relative'>
           <h3 className=' flex flex-1 p-4 font-semibold'>Notes</h3>
           <div className='flex w-10 items-center justify-center'>
@@ -42,16 +42,16 @@ const LocationCard = ({ locationData, noteExpanded, userData, onDelLocation }) =
         <div>
           {locationNotesArray}
         </div>
-      </details>
+      </details>}
       <div className="px-6 pt-4 pb-2">
         <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">locations: ##</span>
         <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">category1</span>
         <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">category2</span>
       </div>
       {(isAuthenticated && Number(params.userId) === userData.id) && (<div>
-        < button className="max-w-sm rounded overflow-hidden shadow-lg bg-slate-50" onClick={(e) => {e.stopPropagation(); setIsOpen(true)}}>Delete Location</button>
+        < button className="max-w-sm rounded overflow-hidden shadow-lg bg-slate-50" onClick={(e) => { e.stopPropagation(); setIsOpen(true) }}>Delete Location</button>
         <ReactModal isOpen={isOpen} contentLabel="Example Modal" onRequestClose={() => setIsOpen(false)}>
-          <Delete idToDel={id} path ='locations' name={location_name} onFormClose={() => setIsOpen(false)} onDelete={  onDelLocation } />
+          <Delete idToDel={id} path='locations' name={location_name} onFormClose={() => setIsOpen(false)} onDelete={onDelLocation} />
         </ReactModal>
       </div>)}
     </div >

@@ -186,7 +186,68 @@ class CityNotes(Resource):
             return make_response({'message': 'Something went wrong!', 'stackTrace': e}, 400)
 
 
+    def post(self):
+        data = request.get_json()
+        try:
+            newCityNote = CityNote(
+                note_body=data['note_body'],
+                note_type=data['note_type'],
+                city_id=data['city_id'],
+            )
+            db.session.add(newCityNote)
+            db.session.commit()
+        except Exception as errors:
+            return make_response({"errors": [errors.__str__()]}, 422)
+        return make_response(newCityNote.to_dict(), 201)
+
+
+
 api.add_resource(CityNotes, '/citynotes')
+
+
+
+
+
+
+class CityNotesById(Resource):
+    def get(self, id):
+        cityNote = CityNote.query.filter_by(id=id).first()
+        if not cityNote:
+            return make_response({'error': 'City Note not found'}, 404)
+        return make_response(cityNote.to_dict(), 200, {"Content-Type": "application/json"})
+
+    def patch(self, id):
+        data = request.get_json()
+        cityNote = CityNote.query.filter_by(id=id).first()
+        if not cityNote:
+            return make_response({'error': 'City Note not found'}, 404)
+        try:
+            for attr in data:
+                setattr(cityNote, attr, data[attr])
+            db.session.add(cityNote)
+            db.session.commit()
+        except Exception as ex:
+            return make_response({'error': [ex.__str__()]}, 422)
+
+        return make_response(cityNote.to_dict(), 202)
+
+    def delete(self, id):
+        cityNote = CityNote.query.filter_by(id=id).first()
+        if not cityNote:
+            return make_response({'error': 'City Note not found'}, 404)
+        db.session.delete(cityNote)
+        db.session.commit()
+        return make_response(f"deleted {id}", 200)
+
+
+api.add_resource(CityNotesById, '/citynotes/<int:id>')
+
+
+
+
+
+
+
 
 
 class Locations(Resource):
