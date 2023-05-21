@@ -13,7 +13,7 @@ from models import User, City, CityNote, Location, LocationNote
 
 class Home(Resource):
     def get(self):
-        return make_response({'message': 'Hello World!'}, 202)
+        return make_response({'message': 'Vicariously API is running!'}, 202)
 
 
 api.add_resource(Home, '/')
@@ -373,4 +373,4 @@ class LocationNotesById(Resource):
 api.add_resource(LocationNotesById, '/locationnotes/<int:id>')
 
 if __name__ == '__main__':
-    app.run(port=5555, debug=True)
+    app.run(port=8000, debug=True)
