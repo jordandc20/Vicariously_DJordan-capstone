@@ -11,6 +11,10 @@ import CitiesList from './components/CitiesList';
 import CityDetails from './components/CityDetails';
 import Navbar from './components/Navbar'
 import Profile from './components/Profile';
+// import { UserProvider } from "../context/user";
+
+const UserdataContext = createContext();
+
 
 function App() {
   const [userData, setUserData] = useState([])
@@ -37,13 +41,15 @@ function App() {
 
   return (
     <div className=" bg-yellow-100 h-screen">
-      <Navbar userData={userData}/>
-      <Routes>
-        <Route exact path="/" element={<Home />} />
-        <Route exact path="/users/:userId/cities" element={<CitiesList userData={userData} />} />
-        <Route exact path="/users/:userId/cities/:cityId" element={<CityDetails userData={userData} />} />
-        <Route path="/profile" element={<Profile userData={userData} onUserDataChange={handleChangeUserData} />} />
-      </Routes>
+      <Navbar userData={userData} />
+      <UserdataContext.Provider value={userData}>
+        <Routes>
+          <Route exact path="/" element={<Home />} />
+          <Route exact path="/users/:userId/cities" element={<CitiesList userData={userData} />} />
+          <Route exact path="/users/:userId/cities/:cityId" element={<CityDetails userData={userData} />} />
+          <Route path="/profile" element={<Profile userData={userData} onUserDataChange={handleChangeUserData} />} />
+        </Routes>
+      </UserdataContext.Provider>
     </div>
   );
 }
