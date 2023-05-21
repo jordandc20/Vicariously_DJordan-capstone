@@ -4,7 +4,7 @@ import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 
 import { useFormik } from "formik";
 import * as yup from "yup";
-
+import API_URL from "../apiConfig.js";
 // https://regex101.com/r/V5Y7rn/1/
 const NewLocationForm = ({ user_id, city_id, onFormClose, onSubmitNew }) => {
   const { isLoading } = useAuth0();
@@ -44,7 +44,7 @@ const NewLocationForm = ({ user_id, city_id, onFormClose, onSubmitNew }) => {
       if (new_values.avg_cost) { new_values.avg_cost = parseInt(new_values.avg_cost, 10) }
 
 
-      axios.post(`/locations`, new_values)
+      axios.post(`${API_URL}/locations`, new_values)
         .then(r => {
           onSubmitNew(r.data)
         })

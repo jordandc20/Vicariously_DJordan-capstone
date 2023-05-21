@@ -5,6 +5,7 @@ import { useAuth0 } from '@auth0/auth0-react'
 import './App.css';
 import 'react-toastify/dist/ReactToastify.css';
 
+import API_URL from "./apiConfig.js";
 import Home from './components/Home'
 import CitiesList from './components/CitiesList';
 import CityDetails from './components/CityDetails';
@@ -18,7 +19,7 @@ function App() {
 
   useEffect(() => {
     if (isAuthenticated) {
-      axios.post('/login', user)
+      axios.post(`${API_URL}/login`, user)
         .then(r => setUserData(r.data))
     }
   }, [isAuthenticated, user]);

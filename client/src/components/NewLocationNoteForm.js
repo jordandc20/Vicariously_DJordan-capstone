@@ -4,7 +4,7 @@ import axios from "axios"
 
 import { useFormik } from "formik";
 import * as yup from "yup";
-
+import API_URL from "../apiConfig.js";
 const NewLocationNoteForm = ({ location_id, onFormClose, onNewNote }) => {
   const { user, isAuthenticated, isLoading } = useAuth0();
 
@@ -20,7 +20,7 @@ const NewLocationNoteForm = ({ location_id, onFormClose, onNewNote }) => {
         .max(50, 'Must be less  than 50 characters'),
     }),
     onSubmit: values => {
-      axios.post(`/locationnotes`, values)
+      axios.post(`${API_URL}/locationnotes`, values)
         .then(r => {
           onNewNote(r.data)
         })

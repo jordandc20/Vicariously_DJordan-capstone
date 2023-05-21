@@ -4,7 +4,7 @@ import axios from "axios"
 
 import { useFormik } from "formik";
 import * as yup from "yup";
-
+import API_URL from "../apiConfig.js";
 const NewCityForm = ({ user_id, onFormClose, onSubmitNew }) => {
   const { user, isAuthenticated, isLoading } = useAuth0();
 
@@ -21,7 +21,7 @@ const NewCityForm = ({ user_id, onFormClose, onSubmitNew }) => {
       country: yup.string().required("Must enter a Country name.")
     }),
     onSubmit: values => {
-      axios.post(`/cities`, values)
+      axios.post(`${API_URL}/cities`, values)
         .then(r => {
           onSubmitNew(r.data)
         })
