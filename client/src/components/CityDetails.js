@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import ReactModal from 'react-modal';
 import { useParams } from 'react-router-dom'
 import axios from "axios"
@@ -8,14 +8,16 @@ import CategoryContainer from './CategoryContainer';
 import NewLocationForm from './NewLocationForm';
 import CityNotesContainer from './CityNotesContainer';
 import NewCityNoteForm from './NewCityNoteForm';
+import { UserdataContext } from "../context/UserData";
 
-const CityDetails = ({ userData }) => {
+const CityDetails = () => {
   const [categoryExpanded, setCategoryExpanded] = useState(null)
   const [expandNewCity, setExpandNewCity] = useState(false);
   const [expandNewNote, setExpandNewNote] = useState(false);
   const [cityDetails, setCityDetails] = useState();
   const { isLoading, isAuthenticated } = useAuth0();
   const params = useParams();
+  const [userData] = useContext(UserdataContext);
 
   useEffect(() => {
     async function fetchData() {
@@ -24,7 +26,6 @@ const CityDetails = ({ userData }) => {
     }
     fetchData()
   }, [params.cityId, setCityDetails]);
-
 
   function handleAddLocation(new_location) {
     setCityDetails({
@@ -63,14 +64,12 @@ const CityDetails = ({ userData }) => {
     )
   }
 
-
   function handleDeleteCityNote(delCityNoteId) {
     setCityDetails({
       ...cityDetails, city_notes: cityDetails.city_notes.filter(note => note.id !== delCityNoteId),
     }
     )
   }
-
 
   function handleDelLocNote(delLocNoteId) {
     console.log(delLocNoteId)
@@ -91,11 +90,6 @@ const CityDetails = ({ userData }) => {
     setCityDetails(ud_cityDetails)
   }
 
-
-
-
-
-
   // sort city notes into note-categories
   const note_other = cityDetails?.city_notes.filter(note => note.note_type === 'Other')
   const note_safety = cityDetails?.city_notes.filter(note => note.note_type === 'Safety')
@@ -111,7 +105,7 @@ const CityDetails = ({ userData }) => {
   const acc = cityDetails?.locations.filter(location => location.category === 'Accommodation')
   const other = cityDetails?.locations.filter(location => location.category === 'Other')
 
-
+  // render loading message
   if (isLoading) { return <div>Loading ...</div>; }
 
   return (
@@ -122,7 +116,7 @@ const CityDetails = ({ userData }) => {
       {(isAuthenticated && Number(params.userId) === userData.id) && (<div>
         < button className="max-w-sm rounded overflow-hidden shadow-lg bg-slate-50" onClick={() => setExpandNewCity(true)}>New Location</button>
         <ReactModal isOpen={expandNewCity} contentLabel="Example Modal" onRequestClose={() => setExpandNewCity(false)}>
-          <NewLocationForm user_id={userData.id} city_id={params.cityId} onFormClose={() => setExpandNewCity(false)} onSubmitNew={handleAddLocation} />
+          <NewLocationForm city_id={params.cityId} onFormClose={() => setExpandNewCity(false)} onSubmitNew={handleAddLocation} />
         </ReactModal>
       </div>)}
       <details className='bg-white shadow rounded group mb-4' open={categoryExpanded} >
@@ -140,21 +134,21 @@ const CityDetails = ({ userData }) => {
           </ReactModal>
         </div>)}
         <div>
-          {note_comm?.length > 0 && <CityNotesContainer cityNotesData={note_comm} type="communication" userData={userData} onDelCityNote={handleDeleteCityNote} />}
-          {note_safety?.length > 0 && <CityNotesContainer cityNotesData={note_safety} type="safety" userData={userData} onDelCityNote={handleDeleteCityNote} />}
-          {note_transp?.length > 0 && <CityNotesContainer cityNotesData={note_transp} type="transportation" userData={userData} onDelCityNote={handleDeleteCityNote} />}
-          {note_other?.length > 0 && <CityNotesContainer cityNotesData={note_other} type="other" userData={userData} onDelCityNote={handleDeleteCityNote} />}
+          {note_comm?.length > 0 && <CityNotesContainer cityNotesData={note_comm} type="communication" onDelCityNote={handleDeleteCityNote} />}
+          {note_safety?.length > 0 && <CityNotesContainer cityNotesData={note_safety} type="safety" onDelCityNote={handleDeleteCityNote} />}
+          {note_transp?.length > 0 && <CityNotesContainer cityNotesData={note_transp} type="transportation" onDelCityNote={handleDeleteCityNote} />}
+          {note_other?.length > 0 && <CityNotesContainer cityNotesData={note_other} type="other" onDelCityNote={handleDeleteCityNote} />}
         </div>
       </details>
 
 
-      {shop?.length > 0 && <CategoryContainer locationData={shop} categoryExpanded={categoryExpanded} type="shop" userData={userData} onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} />}
-      {mart?.length > 0 && <CategoryContainer locationData={mart} categoryExpanded={categoryExpanded} type="mart" userData={userData} onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} />}
-      {food?.length > 0 && <CategoryContainer locationData={food} categoryExpanded={categoryExpanded} type="food" userData={userData} onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} />}
-      {outdoor?.length > 0 && <CategoryContainer locationData={outdoor} categoryExpanded={categoryExpanded} type="outdoor" userData={userData} onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} />}
-      {indoor?.length > 0 && <CategoryContainer locationData={indoor} categoryExpanded={categoryExpanded} type="indoor" userData={userData} onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} />}
-      {acc?.length > 0 && <CategoryContainer locationData={acc} categoryExpanded={categoryExpanded} type="acc" userData={userData} onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} />}
-      {other?.length > 0 && <CategoryContainer locationData={other} categoryExpanded={categoryExpanded} type="other" userData={userData} onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} />}
+      {shop?.length > 0 && <CategoryContainer locationData={shop} categoryExpanded={categoryExpanded} type="shop" onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} />}
+      {mart?.length > 0 && <CategoryContainer locationData={mart} categoryExpanded={categoryExpanded} type="mart" onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} />}
+      {food?.length > 0 && <CategoryContainer locationData={food} categoryExpanded={categoryExpanded} type="food" onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} />}
+      {outdoor?.length > 0 && <CategoryContainer locationData={outdoor} categoryExpanded={categoryExpanded} type="outdoor" onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} />}
+      {indoor?.length > 0 && <CategoryContainer locationData={indoor} categoryExpanded={categoryExpanded} type="indoor" onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} />}
+      {acc?.length > 0 && <CategoryContainer locationData={acc} categoryExpanded={categoryExpanded} type="acc" onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} />}
+      {other?.length > 0 && <CategoryContainer locationData={other} categoryExpanded={categoryExpanded} type="other" onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} />}
     </div>
   )
 }

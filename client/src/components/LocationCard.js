@@ -1,22 +1,24 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { useAuth0 } from '@auth0/auth0-react'
 import ReactModal from 'react-modal';
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
 import Delete from './Delete';
 import NewLocationNoteForm from './NewLocationNoteForm';
 import NotesCard from './NotesCard';
+import { UserdataContext } from "../context/UserData";
 
-const LocationCard = ({ locationData, noteExpanded, userData, onDelLocation, onNewLocNote ,onDelLocNote}) => {
+const LocationCard = ({ locationData, noteExpanded, onDelLocation, onNewLocNote, onDelLocNote }) => {
   const { avg_cost, category, city_id, date_visited, google_map_url, id, location_name, location_notes, rating, user_id, website } = locationData;
-  const navigate = useNavigate()
   const { isLoading, isAuthenticated } = useAuth0();
   const params = useParams();
   const [isOpen, setIsOpen] = useState(false);
   const [expandNewNote, setExpandNewNote] = useState(false);
+  const [userData] = useContext(UserdataContext);
+
 
   const locationNotesArray = location_notes?.map((note) => {
-    return <NotesCard key={note.id} noteData={note} userData={userData} onDelNote={onDelLocNote}   path='locationnotes'/>
+    return <NotesCard key={note.id} noteData={note} onDelNote={onDelLocNote} path='locationnotes' />
   })
 
 
@@ -25,6 +27,7 @@ const LocationCard = ({ locationData, noteExpanded, userData, onDelLocation, onN
     // navigate(`/cities/${id}`, { state: { cityData } })
   }
 
+  // render loading message
   if (isLoading) { return <div>Loading ...</div> }
 
   return (

@@ -1,13 +1,16 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import axios from "axios"
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
-
 import { useFormik } from "formik";
 import * as yup from "yup";
+
 import API_URL from "../apiConfig.js";
+import { UserdataContext } from "../context/UserData";
+
 // https://regex101.com/r/V5Y7rn/1/
-const NewLocationForm = ({ user_id, city_id, onFormClose, onSubmitNew }) => {
+const NewLocationForm = ({ city_id, onFormClose, onSubmitNew }) => {
   const { isLoading } = useAuth0();
+  const [userData] = useContext(UserdataContext);
 
   const url_regex = /^((http|https):\/\/)?(www.)?(?!.*(http|https|www.))[a-zA-Z0-9_-]+(\.[a-zA-Z]+)+(\/)?.([\w\?[a-zA-Z-_%\/@?]+)*([^\/\w\?[a-zA-Z0-9_-]+=\w+(&[a-zA-Z0-9_]+=\w+)*)?$/
 
@@ -20,7 +23,7 @@ const NewLocationForm = ({ user_id, city_id, onFormClose, onSubmitNew }) => {
       website: '',
       date_visited: '',
       rating: '',
-      user_id: user_id,
+      user_id: userData.id,
       city_id: Number(city_id)
     },
     validationSchema: yup.object({
@@ -52,7 +55,7 @@ const NewLocationForm = ({ user_id, city_id, onFormClose, onSubmitNew }) => {
     },
   });
 
-
+ // render loading message
   if (isLoading) { return <div>Loading ...</div>; }
 
   return (

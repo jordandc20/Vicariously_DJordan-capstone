@@ -1,22 +1,26 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useContext } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useAuth0 } from '@auth0/auth0-react'
 import ReactModal from 'react-modal';
 
 import Delete from './Delete';
+import { UserdataContext } from "../context/UserData";
 
-const CityCard = ({ cityData, userData, onDelCity }) => {
+const CityCard = ({ cityData, onDelCity }) => {
+  const [userData] = useContext(UserdataContext);
   const { isLoading, isAuthenticated } = useAuth0();
-  const params = useParams();
-  const { city_name, city_notes, country, id, locations, user_id } = cityData;
-  const navigate = useNavigate()
   const [isOpen, setIsOpen] = useState(false);
+  const params = useParams();
+  const navigate = useNavigate()
+  const { city_name, city_notes, country, id, locations, user_id } = cityData;
 
+  console.log(cityData)
 
   function handleCityCardClick(e) {
     navigate(`/users/${params.userId}/cities/${id}`)
   }
-
+  
+ // render loading message
   if (isLoading) { return <div>Loading ...</div> }
 
   return (

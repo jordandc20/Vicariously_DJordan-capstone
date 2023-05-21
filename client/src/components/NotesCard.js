@@ -1,16 +1,19 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { useAuth0 } from '@auth0/auth0-react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import ReactModal from 'react-modal';
 
+import { UserdataContext } from "../context/UserData";
 import Delete from './Delete';
-const NotesCard = ({ noteData, userData, onDelNote ,path}) => {
+
+const NotesCard = ({ noteData, onDelNote, path }) => {
     const { isLoading, isAuthenticated } = useAuth0();
     const [isOpen, setIsOpen] = useState(false);
-
+    const [userData] = useContext(UserdataContext);
     const params = useParams();
 
-
+    // render loading message
+    if (isLoading) { return <div>Loading ...</div> }
 
     return (
         <div>

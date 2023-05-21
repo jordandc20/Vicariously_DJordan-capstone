@@ -3,19 +3,19 @@ import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 import axios from "axios"
 import API_URL from "../apiConfig.js";
 
-const Delete = ({ onDelete, onFormClose, idToDel ,path , name}) => {
+const Delete = ({ onDelete, onFormClose, idToDel, path, name }) => {
     const { user, isAuthenticated, isLoading } = useAuth0();
 
- 
+
     async function handleYes() {
         try {
-            console.log(path)
-        const res = await axios.delete(`${API_URL}/${path}/${idToDel}`);
-        onFormClose()
-        onDelete(idToDel)
-    } catch (error) {
-        console.log(error)
-    }}
+            const res = await axios.delete(`${API_URL}/${path}/${idToDel}`);
+            onFormClose()
+            onDelete(idToDel)
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
 
     if (isLoading) { return <div>Loading ...</div>; }
