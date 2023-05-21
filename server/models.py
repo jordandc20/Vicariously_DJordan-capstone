@@ -25,7 +25,7 @@ class User(db.Model, SerializerMixin):
     # users=association_proxy('checkout_logs','user')
 
     serialize_rules = ("-cities", "-cities.locations.user",
-                       "-locations",  "-created_at", "-updated_at",)
+                       "-locations", "-email", "-created_at", "-updated_at",)
 # "-locations.user","-locations.city.user"
 
     @validates('email')

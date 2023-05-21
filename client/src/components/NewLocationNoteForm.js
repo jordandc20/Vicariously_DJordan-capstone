@@ -28,7 +28,7 @@ const NewLocationNoteForm = ({ location_id, onFormClose, onNewNote }) => {
     },
   });
 
-
+ // render loading message
   if (isLoading) { return <div>Loading ...</div>; }
 
   return (

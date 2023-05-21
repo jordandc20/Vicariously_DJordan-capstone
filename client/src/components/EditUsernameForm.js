@@ -1,16 +1,21 @@
-import React from 'react'
+import React, { useState, useEffect, useContext } from 'react'
+
+
 import axios from "axios"
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 
 import { useFormik } from "formik";
 import * as yup from "yup";
 import API_URL from "../apiConfig.js";
-const EditUsernameForm = ({ user_id, username, onEditUsername }) => {
+import { UserdataContext } from "../context/UserData";
 
-    console.log(username)
+
+const EditUsernameForm = ({ onEditUsername, onFormClose }) => {
+    const [userData] = useContext(UserdataContext);
+
     const formik = useFormik({
         initialValues: {
-            username: username
+            username: userData.username
         },
         validationSchema: yup.object({
             username: yup.string().min(8, 'Must be at least 8 characters')
@@ -35,10 +40,9 @@ const EditUsernameForm = ({ user_id, username, onEditUsername }) => {
             ,
         }),
         onSubmit: values => {
-
-            axios.patch(`${API_URL}/users/${user_id}`, values)
+            axios.patch(`${API_URL}/users/${userData.id}`, values)
                 .then(r => onEditUsername(r.data.username))
-            // .then(onFormClose())
+                .then(onFormClose())
         },
     });
 
@@ -46,7 +50,6 @@ const EditUsernameForm = ({ user_id, username, onEditUsername }) => {
 
     return (
         <div className="grid place-items-center  bg-yellow-50 ">
-
             <div className="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 ">
                 <h1>Edit Username</h1>
                 <form className="space-y-6" onSubmit={formik.handleSubmit}>
@@ -56,18 +59,13 @@ const EditUsernameForm = ({ user_id, username, onEditUsername }) => {
                         <div>{formik.errors.username}</div>
                     ) : null}
                     <button type="submit" className="w-full text-white-100 bg-emerald-400 hover:bg-emerald-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center ">Submit</button>
-                    {/* <button type="reset" className="w-full text-white-100 bg-emerald-400 hover:bg-emerald-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center " value="Cancel" onClick={() => {
-                        // formik.resetForm();
-                        // onFormClose()
-                    }}>Cancel</button> */}
+                    <button type="reset" className="w-full text-white-100 bg-emerald-400 hover:bg-emerald-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center " value="Cancel" onClick={() => {
+                        onFormClose()
+                    }}>Cancel</button>
                 </form>
-
             </div>
-
         </div>
     )
 }
-
-
 
 export default withAuthenticationRequired(EditUsernameForm)

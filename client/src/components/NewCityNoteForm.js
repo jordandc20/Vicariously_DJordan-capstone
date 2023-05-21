@@ -30,7 +30,7 @@ const NewCityNoteForm = ({ city_id, onFormClose, onNewNote }) => {
     },
   });
 
-
+ // render loading message
   if (isLoading) { return <div>Loading ...</div>; }
 
   return (

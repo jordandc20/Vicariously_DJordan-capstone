@@ -1,12 +1,15 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 import axios from "axios"
 
 import { useFormik } from "formik";
 import * as yup from "yup";
 import API_URL from "../apiConfig.js";
-const NewCityForm = ({ user_id, onFormClose, onSubmitNew }) => {
+import { UserdataContext } from "../context/UserData";
+
+const NewCityForm = ({ onFormClose, onSubmitNew }) => {
   const { user, isAuthenticated, isLoading } = useAuth0();
+  const [userData] = useContext(UserdataContext);
 
 
 
@@ -14,7 +17,7 @@ const NewCityForm = ({ user_id, onFormClose, onSubmitNew }) => {
     initialValues: {
       city_name: '',
       country: '',
-      user_id: Number(user_id)
+      user_id: Number(userData.id)
     },
     validationSchema: yup.object({
       city_name: yup.string().required("Must enter a City name. We suggest entering 'foreign' names in parenthesis."),
@@ -29,7 +32,7 @@ const NewCityForm = ({ user_id, onFormClose, onSubmitNew }) => {
     },
   });
 
-
+  // render loading message
   if (isLoading) { return <div>Loading ...</div>; }
 
   return (

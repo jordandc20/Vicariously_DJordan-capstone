@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import axios from "axios"
 import ReactModal from 'react-modal';
 import NewCityForm from './NewCityForm';
@@ -6,12 +6,14 @@ import { useParams } from 'react-router-dom'
 import { useAuth0 } from '@auth0/auth0-react'
 import API_URL from "../apiConfig.js";
 import CityCard from './CityCard';
+import { UserdataContext } from "../context/UserData";
 
-const CitiesList = ({ userData }) => {
+const CitiesList = () => {
   const [isOpen, setIsOpen] = useState(false);
   const params = useParams();
   const { isLoading, isAuthenticated } = useAuth0();
   const [cities, setCities] = useState()
+  const [userData] = useContext(UserdataContext);
 
   useEffect(() => {
     async function fetchData() {
@@ -23,10 +25,10 @@ const CitiesList = ({ userData }) => {
 
 
   const cityCardsArray = cities?.map((city) => {
-    return <CityCard key={city.id} cityData={city} userData={userData} onDelCity={handleDeleteCity} />
+    return <CityCard key={city.id} cityData={city}  onDelCity={handleDeleteCity} />
   })
 
-  /// ? waits for data   ... like a ternary? ... once the data is available, then continue to map\
+  // / ? waits for data   ... like a ternary? ... once the data is available, then continue to map\
   // const cityCardsArray = userCitiesData ? userCitiesData?.map((city) => {
   //   return <CityCard  key={city.id} cityData ={city} />
   // }) : null
@@ -39,7 +41,7 @@ const CitiesList = ({ userData }) => {
     setCities(cities => cities.filter(city => city.id !== delCityId))
   }
 
-
+ // render loading message
   if (isLoading) { return <div>Loading ...</div> }
 
   return (
@@ -47,7 +49,7 @@ const CitiesList = ({ userData }) => {
       {(isAuthenticated && Number(params.userId) === userData.id) && (<div>
         < button className="max-w-sm rounded overflow-hidden shadow-lg bg-slate-50" onClick={() => setIsOpen(true)}>New City</button>
         <ReactModal isOpen={isOpen} contentLabel="Example Modal" onRequestClose={() => setIsOpen(false)}>
-          <NewCityForm user_id={userData.id} onFormClose={() => setIsOpen(false)} onSubmitNew={handleAddCity} />
+          <NewCityForm  onFormClose={() => setIsOpen(false)} onSubmitNew={handleAddCity} />
         </ReactModal>
       </div>)}
       {cityCardsArray}
