@@ -4,7 +4,7 @@ import ReactModal from 'react-modal';
 import NewCityForm from './NewCityForm';
 import { useParams } from 'react-router-dom'
 import { useAuth0 } from '@auth0/auth0-react'
-
+import API_URL from "../apiConfig.js";
 import CityCard from './CityCard';
 
 const CitiesList = ({ userData }) => {
@@ -15,7 +15,7 @@ const CitiesList = ({ userData }) => {
 
   useEffect(() => {
     async function fetchData() {
-      const r = await axios.get(`/users/${params.userId}`)
+      const r = await axios.get(`${API_URL}/users/${params.userId}`)
       setCities(r.data.cities)
     }
     fetchData()

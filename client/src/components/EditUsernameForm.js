@@ -4,7 +4,7 @@ import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 
 import { useFormik } from "formik";
 import * as yup from "yup";
-
+import API_URL from "../apiConfig.js";
 const EditUsernameForm = ({ user_id, username, onEditUsername }) => {
 
     console.log(username)
@@ -36,7 +36,7 @@ const EditUsernameForm = ({ user_id, username, onEditUsername }) => {
         }),
         onSubmit: values => {
 
-            axios.patch(`/users/${user_id}`, values)
+            axios.patch(`${API_URL}/users/${user_id}`, values)
                 .then(r => onEditUsername(r.data.username))
             // .then(onFormClose())
         },

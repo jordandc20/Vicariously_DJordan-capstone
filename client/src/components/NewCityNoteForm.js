@@ -4,7 +4,7 @@ import axios from "axios"
 
 import { useFormik } from "formik";
 import * as yup from "yup";
-
+import API_URL from "../apiConfig.js";
 const NewCityNoteForm = ({ city_id, onFormClose, onNewNote }) => {
   const { user, isAuthenticated, isLoading } = useAuth0();
 
@@ -22,7 +22,7 @@ const NewCityNoteForm = ({ city_id, onFormClose, onNewNote }) => {
       note_type: yup.string()
     }),
     onSubmit: values => {
-      axios.post(`/citynotes`, values)
+      axios.post(`${API_URL}/citynotes`, values)
         .then(r => {
           onNewNote(r.data)
         })

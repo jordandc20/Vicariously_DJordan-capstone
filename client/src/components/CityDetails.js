@@ -3,7 +3,7 @@ import ReactModal from 'react-modal';
 import { useParams } from 'react-router-dom'
 import axios from "axios"
 import { useAuth0 } from '@auth0/auth0-react'
-
+import API_URL from "../apiConfig.js";
 import CategoryContainer from './CategoryContainer';
 import NewLocationForm from './NewLocationForm';
 import CityNotesContainer from './CityNotesContainer';
@@ -19,7 +19,7 @@ const CityDetails = ({ userData }) => {
 
   useEffect(() => {
     async function fetchData() {
-      const r = await axios.get(`/cities/${params.cityId}`)
+      const r = await axios.get(`${API_URL}/cities/${params.cityId}`)
       setCityDetails(r.data)
     }
     fetchData()

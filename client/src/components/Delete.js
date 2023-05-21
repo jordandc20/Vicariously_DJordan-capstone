@@ -1,21 +1,16 @@
 import React from 'react'
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 import axios from "axios"
+import API_URL from "../apiConfig.js";
 
 const Delete = ({ onDelete, onFormClose, idToDel ,path , name}) => {
     const { user, isAuthenticated, isLoading } = useAuth0();
 
-    // onSubmit: values => {
-    //     axios.post(`/cities`, values)
-    //         .then(r => {
-    //             onSubmitNew(r.data)
-    //         })
-    //         .then(onFormClose())
-    // }
+ 
     async function handleYes() {
         try {
             console.log(path)
-        const res = await axios.delete(`/${path}/${idToDel}`);
+        const res = await axios.delete(`${API_URL}/${path}/${idToDel}`);
         onFormClose()
         onDelete(idToDel)
     } catch (error) {
