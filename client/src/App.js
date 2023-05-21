@@ -11,45 +11,46 @@ import CitiesList from './components/CitiesList';
 import CityDetails from './components/CityDetails';
 import Navbar from './components/Navbar'
 import Profile from './components/Profile';
-// import { UserProvider } from "../context/user";
+import { UserDataProvider } from "./context/UserData";
 
-const UserdataContext = createContext();
+const UserDataContext = createContext();
 
 
 function App() {
-  const [userData, setUserData] = useState([])
+  // const [userData, setUserData] = useState([])
   const { isLoading, isAuthenticated, user } = useAuth0();
 
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      axios.post(`${API_URL}/login`, user)
-        .then(r => setUserData(r.data))
-    }
-  }, [isAuthenticated, user]);
+  // useEffect(() => {
+  //   if (isAuthenticated) {
+  //     axios.post(`${API_URL}/login`, user)
+  //       .then(r => setUserData(r.data))
+  //   }
+  // }, [isAuthenticated, user]);
 
 
-  if (isLoading) { return <div>Loading ...</div> }
+  // if (isLoading) { return <div>Loading ...</div> }
 
 
-  function handleChangeUserData(newUsername) {
-    setUserData({
-      ...userData, username: newUsername
-    })
-  }
+  // function handleChangeUserData(newUsername) {
+  //   setUserData({
+  //     ...userData, username: newUsername
+  //   })
+  // }
 
 
   return (
     <div className=" bg-yellow-100 h-screen">
-      <Navbar userData={userData} />
-      <UserdataContext.Provider value={userData}>
+      <Navbar />
+      <UserDataProvider >
         <Routes>
           <Route exact path="/" element={<Home />} />
-          <Route exact path="/users/:userId/cities" element={<CitiesList userData={userData} />} />
-          <Route exact path="/users/:userId/cities/:cityId" element={<CityDetails userData={userData} />} />
-          <Route path="/profile" element={<Profile userData={userData} onUserDataChange={handleChangeUserData} />} />
+          <Route exact path="/users/:userId/cities" element={<CitiesList />} />
+          <Route exact path="/users/:userId/cities/:cityId" element={<CityDetails />} />
+          <Route path="/profile" element={<Profile />} />
+          {/* onUserDataChange={handleChangeUserData} */}
         </Routes>
-      </UserdataContext.Provider>
+      </UserDataProvider>
     </div>
   );
 }

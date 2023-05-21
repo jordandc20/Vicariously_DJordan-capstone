@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect,useContext } from 'react'
 import axios from "axios"
 import ReactModal from 'react-modal';
 import NewCityForm from './NewCityForm';
@@ -6,12 +6,14 @@ import { useParams } from 'react-router-dom'
 import { useAuth0 } from '@auth0/auth0-react'
 import API_URL from "../apiConfig.js";
 import CityCard from './CityCard';
+import { UserDataContext } from "../app";
 
-const CitiesList = ({ userData }) => {
+const CitiesList = () => {
   const [isOpen, setIsOpen] = useState(false);
   const params = useParams();
   const { isLoading, isAuthenticated } = useAuth0();
   const [cities, setCities] = useState()
+  const userData = useContext(UserDataContext);
 
   useEffect(() => {
     async function fetchData() {
