@@ -11,7 +11,7 @@ import { UserdataContext } from "../context/UserData";
 const CitiesList = () => {
   const [isOpen, setIsOpen] = useState(false);
   const params = useParams();
-  const { isLoading, isAuthenticated } = useAuth0();
+  const { isLoading, isAuthenticated ,error} = useAuth0();
   const [cities, setCities] = useState()
   const [userData] = useContext(UserdataContext);
 
@@ -43,6 +43,8 @@ const CitiesList = () => {
 
   // render loading message
   if (isLoading) { return <div>Loading ...</div> }
+  if (error) {    return <div>Oops... {error.message}</div>;
+  }
 
   return (
     <div className='flex sm:flex-row sm:text-left sm:justify-between py-4 px-6'>

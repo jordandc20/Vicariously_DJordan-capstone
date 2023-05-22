@@ -3,7 +3,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 
 const Logout = () => {
-    const { logout } = useAuth0();
+    const { logout ,isAuthenticated,} = useAuth0();
 
     const handleLogout = () => {
         logout({
@@ -13,7 +13,7 @@ const Logout = () => {
         });
     };
 
-    return (
+    return  isAuthenticated &&  (
         <button className="button__logout" onClick={handleLogout}>
             This_is_the_Log_Out_button
         </button>
