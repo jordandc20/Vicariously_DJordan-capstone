@@ -3,6 +3,7 @@ import axios from "axios"
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 import { useFormik } from "formik";
 import * as yup from "yup";
+import { useParams } from 'react-router-dom'
 
 import API_URL from "../apiConfig.js";
 import { UserdataContext } from "../context/UserData.js";
@@ -11,6 +12,7 @@ import { UserdataContext } from "../context/UserData.js";
 const LocationForm = ({ locationData, onFormClose, onSubmit, type }) => {
   const { isLoading, user } = useAuth0();
   const [userData] = useContext(UserdataContext);
+  const params = useParams();
 
   const url_regex = /^((http|https):\/\/)?(www.)?(?!.*(http|https|www.))[a-zA-Z0-9_-]+(\.[a-zA-Z]+)+(\/)?.([\w?[a-zA-Z-_%/@?]+)*([^/\w?[a-zA-Z0-9_-]+=\w+(&[a-zA-Z0-9_]+=\w+)*)?$/
   const google_regex = /^(http|https):\/\/(goo\.gl\/maps|www\.google\.com\/maps)/
@@ -25,8 +27,8 @@ const LocationForm = ({ locationData, onFormClose, onSubmit, type }) => {
     date_visited = ''
     rating = ''
     category = 'Other'
-    user_id = Number(locationData.user_id)
-    city_id = Number(locationData.city_id)
+    user_id = Number(params.userId)
+    city_id = Number(params.cityId )
     header ='Create New'
     path = 'locations'
     fetch_type = 'post'
@@ -81,7 +83,6 @@ const LocationForm = ({ locationData, onFormClose, onSubmit, type }) => {
       if (new_values.rating) { new_values.rating = parseInt(new_values.rating, 10) }
       if (new_values.avg_cost) { new_values.avg_cost = parseInt(new_values.avg_cost, 10) }
       new_values['val_user_email'] = user.email
-      console.log(new_values)
 
       axios(        
         {method: fetch_type,

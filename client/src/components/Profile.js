@@ -14,7 +14,7 @@ const Profile = () => {
     if (isLoading) { return <div>Loading ...</div>; }
 
     // render username change on frontend
-    function handleChangeUserData(newUsername) {
+    function handleEditUserData(newUsername) {
         setUserData({
             ...userData, username: newUsername
         })
@@ -28,8 +28,8 @@ const Profile = () => {
                     <img src={user.picture} alt={user.name} />
                     <h2>Username: {userData.username}</h2>
                     < button className="max-w-sm rounded overflow-hidden shadow-lg bg-slate-50" onClick={(e) => { e.stopPropagation(); setShowEditUsername(true) }}>Edit_Username_button</button>
-                    <ReactModal isOpen={showEditUsername} contentLabel="edut_username_modal" onRequestClose={() => setShowEditUsername(false)}>
-                        <EditUsernameForm onEditUsername={handleChangeUserData} onFormClose={() => setShowEditUsername(false)} />
+                    <ReactModal appElement={document.getElementById('root') || undefined} isOpen={showEditUsername} contentLabel="edut_username_modal" onRequestClose={() => setShowEditUsername(false)}>
+                        <EditUsernameForm onEditUsername={handleEditUserData} onFormClose={() => setShowEditUsername(false)} />
                     </ReactModal>
                     <p>email: {user.email}</p>
                     <h2>name: {user.name}</h2>

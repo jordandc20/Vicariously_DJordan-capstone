@@ -21,7 +21,7 @@ const NotesCard = ({ noteData, onDelNote, path }) => {
             <p key={noteData.id} >{noteData.note_body}</p>
             {(isAuthenticated && Number(params.userId) === userData.id) && (<div>
                 < button className="max-w-sm rounded overflow-hidden shadow-lg bg-slate-50" onClick={(e) => { e.stopPropagation(); setIsOpen(true) }}>Delete Note</button>
-                <ReactModal isOpen={isOpen} contentLabel="Example Modal" onRequestClose={() => setIsOpen(false)}>
+                <ReactModal appElement={document.getElementById('root') || undefined} isOpen={isOpen} contentLabel="Delete Note Modal" onRequestClose={() => setIsOpen(false)}>
                     <Delete idToDel={noteData.id} path={path} name={noteData.note_body} onFormClose={() => setIsOpen(false)} onDelete={onDelNote} />
                 </ReactModal>
             </div>)}

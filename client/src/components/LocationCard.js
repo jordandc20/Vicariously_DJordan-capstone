@@ -46,7 +46,7 @@ const LocationCard = ({ locationData, noteExpanded, onDelLocation, onEditLocatio
           <h3 className=' flex flex-1 p-4 font-semibold'>Notes</h3>
           {(isAuthenticated && Number(params.userId) === userData.id) && (<div>
             < button className="max-w-sm rounded overflow-hidden shadow-lg bg-slate-50" onClick={() => setExpandNewNote(true)}>New Location Note</button>
-            <ReactModal isOpen={expandNewNote} contentLabel="Example Modal" onRequestClose={() => setExpandNewNote(false)}>
+            <ReactModal appElement={document.getElementById('root') || undefined} isOpen={expandNewNote} contentLabel="New Location Note Modal" onRequestClose={() => setExpandNewNote(false)}>
               <NewLocationNoteForm location_id={id} onFormClose={() => setExpandNewNote(false)} onNewNote={onNewLocNote} />
             </ReactModal>
           </div>)}
@@ -64,16 +64,18 @@ const LocationCard = ({ locationData, noteExpanded, onDelLocation, onEditLocatio
         <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">category2</span>
       </div>
       {(isAuthenticated && Number(params.userId) === userData.id) && (<div>
-        < button className="max-w-sm rounded overflow-hidden shadow-lg bg-slate-50" onClick={(e) => { e.stopPropagation(); setExpandDelLocation(true) }}>Delete Location</button>
-        <ReactModal isOpen={expandDelLocation} contentLabel="Example Modal" onRequestClose={() => setExpandDelLocation(false)}>
-          <Delete idToDel={id} path='locations' name={location_name} onFormClose={() => setExpandDelLocation(false)} onDelete={onDelLocation} />
-        </ReactModal>
-      </div>)}
-      {(isAuthenticated && Number(params.userId) === userData.id) && (<div>
-        < button className="max-w-sm rounded overflow-hidden shadow-lg bg-slate-50" onClick={(e) => { e.stopPropagation(); setExpandEditLocation(true) }}>Edit Location</button>
-         <ReactModal isOpen={expandEditLocation} contentLabel="Example Modal" onRequestClose={() => setExpandEditLocation(false)}>
-          <LocationForm locationData={locationData} type='editLocation' onFormClose={() => setExpandEditLocation(false)} onSubmit={onEditLocation} />
-        </ReactModal>
+        <div>
+          < button className="max-w-sm rounded overflow-hidden shadow-lg bg-slate-50" onClick={(e) => { e.stopPropagation(); setExpandDelLocation(true) }}>Delete Location</button>
+          <ReactModal appElement={document.getElementById('root') || undefined} isOpen={expandDelLocation} contentLabel="Delete Location Modal" onRequestClose={() => setExpandDelLocation(false)}>
+            <Delete idToDel={id} path='locations' name={location_name} onFormClose={() => setExpandDelLocation(false)} onDelete={onDelLocation} />
+          </ReactModal>
+        </div>
+        <div>
+          < button className="max-w-sm rounded overflow-hidden shadow-lg bg-slate-50" onClick={(e) => { e.stopPropagation(); setExpandEditLocation(true) }}>Edit Location</button>
+          <ReactModal appElement={document.getElementById('root') || undefined} isOpen={expandEditLocation} contentLabel="Edit Location Modal" onRequestClose={() => setExpandEditLocation(false)}>
+            <LocationForm locationData={locationData} type='editLocation' onFormClose={() => setExpandEditLocation(false)} onSubmit={onEditLocation} />
+          </ReactModal>
+        </div>
       </div>)}
 
 

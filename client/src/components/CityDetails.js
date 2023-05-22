@@ -28,6 +28,9 @@ const CityDetails = () => {
     fetchCityData()
   }, [params.cityId]);
 
+  if (!cityDetails) { return <div>Loading city details...</div> }
+
+
   function handleAddLocation(new_location) {
     setCityDetails({
       ...cityDetails, locations: [...cityDetails.locations, new_location],
@@ -127,8 +130,8 @@ const CityDetails = () => {
       < button className="max-w-sm rounded overflow-hidden shadow-lg bg-slate-50" onClick={() => setCategoryExpanded(null)}>Collapse All Categories</button>
       {(isAuthenticated && Number(params.userId) === userData.id) && (<div>
         < button className="max-w-sm rounded overflow-hidden shadow-lg bg-slate-50" onClick={() => setExpandNewCity(true)}>New Location</button>
-        <ReactModal isOpen={expandNewCity} contentLabel="Example Modal" onRequestClose={() => setExpandNewCity(false)}>
-          <LocationForm locationData={{ user_id: params.userId, city_id: params.cityId }} type='newLocation' onFormClose={() => setExpandNewCity(false)} onSubmit={handleAddLocation} />
+        <ReactModal appElement={document.getElementById('root') || undefined}  isOpen={expandNewCity} contentLabel="New Location Modal" onRequestClose={() => setExpandNewCity(false)}>
+          <LocationForm  type='newLocation' onFormClose={() => setExpandNewCity(false)} onSubmit={handleAddLocation} />
         </ReactModal>
       </div>)}
       <details className='bg-white shadow rounded group mb-4' open={categoryExpanded} >
@@ -140,9 +143,8 @@ const CityDetails = () => {
         </summary>
         {(isAuthenticated && Number(params.userId) === userData.id) && (<div>
           < button className="max-w-sm rounded overflow-hidden shadow-lg bg-slate-50" onClick={() => setExpandNewNote(true)}>New City Note</button>
-          <ReactModal isOpen={expandNewNote} contentLabel="Example Modal" onRequestClose={() => setExpandNewNote(false)}>
+          <ReactModal appElement={document.getElementById('root') || undefined}  isOpen={expandNewNote} contentLabel="New City Note Modal" onRequestClose={() => setExpandNewNote(false)}>
             <NewCityNoteForm city_id={params.cityId} onFormClose={() => setExpandNewNote(false)} onNewNote={handleAddCityNote} />
-
           </ReactModal>
         </div>)}
         <div>
