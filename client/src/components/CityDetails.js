@@ -5,7 +5,7 @@ import axios from "axios"
 import { useAuth0 } from '@auth0/auth0-react'
 import API_URL from "../apiConfig.js";
 import CategoryContainer from './CategoryContainer';
-import NewLocationForm from './NewLocationForm';
+import LocationForm from './LocationForm';
 import CityNotesContainer from './CityNotesContainer';
 import NewCityNoteForm from './NewCityNoteForm';
 import { UserdataContext } from "../context/UserData";
@@ -19,13 +19,14 @@ const CityDetails = () => {
   const params = useParams();
   const [userData] = useContext(UserdataContext);
 
+  const  fetchCityData= async() => {
+    const r = await axios.get(`${API_URL}/cities/${params.cityId}`)
+    setCityDetails(r.data)
+  }
+
   useEffect(() => {
-    async function fetchData() {
-      const r = await axios.get(`${API_URL}/cities/${params.cityId}`)
-      setCityDetails(r.data)
-    }
-    fetchData()
-  }, [params.cityId, setCityDetails]);
+    fetchCityData()
+  }, [params.cityId]);
 
   function handleAddLocation(new_location) {
     setCityDetails({
@@ -37,7 +38,9 @@ const CityDetails = () => {
     setCityDetails({
       ...cityDetails, city_notes: [...cityDetails.city_notes, newCityNote],
     })
+  
   }
+
 
   function handleAddLocNote(newLocNote) {
     console.log(newLocNote)
@@ -90,6 +93,15 @@ const CityDetails = () => {
     setCityDetails(ud_cityDetails)
   }
 
+  function handleEditLocation(locDetails) {
+    console.log(locDetails)
+    fetchCityData()
+  }
+
+
+
+  
+
   // sort city notes into note-categories
   const note_other = cityDetails?.city_notes.filter(note => note.note_type === 'Other')
   const note_safety = cityDetails?.city_notes.filter(note => note.note_type === 'Safety')
@@ -116,7 +128,7 @@ const CityDetails = () => {
       {(isAuthenticated && Number(params.userId) === userData.id) && (<div>
         < button className="max-w-sm rounded overflow-hidden shadow-lg bg-slate-50" onClick={() => setExpandNewCity(true)}>New Location</button>
         <ReactModal isOpen={expandNewCity} contentLabel="Example Modal" onRequestClose={() => setExpandNewCity(false)}>
-          <NewLocationForm city_id={params.cityId} onFormClose={() => setExpandNewCity(false)} onSubmitNew={handleAddLocation} />
+          <LocationForm locationData={{ user_id: params.userId, city_id: params.cityId }} type='newLocation' onFormClose={() => setExpandNewCity(false)} onSubmit={handleAddLocation} />
         </ReactModal>
       </div>)}
       <details className='bg-white shadow rounded group mb-4' open={categoryExpanded} >
@@ -142,13 +154,13 @@ const CityDetails = () => {
       </details>
 
 
-      {shop?.length > 0 && <CategoryContainer locationData={shop} categoryExpanded={categoryExpanded} type="shop" onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} />}
-      {mart?.length > 0 && <CategoryContainer locationData={mart} categoryExpanded={categoryExpanded} type="mart" onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} />}
-      {food?.length > 0 && <CategoryContainer locationData={food} categoryExpanded={categoryExpanded} type="food" onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} />}
-      {outdoor?.length > 0 && <CategoryContainer locationData={outdoor} categoryExpanded={categoryExpanded} type="outdoor" onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} />}
-      {indoor?.length > 0 && <CategoryContainer locationData={indoor} categoryExpanded={categoryExpanded} type="indoor" onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} />}
-      {acc?.length > 0 && <CategoryContainer locationData={acc} categoryExpanded={categoryExpanded} type="acc" onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} />}
-      {other?.length > 0 && <CategoryContainer locationData={other} categoryExpanded={categoryExpanded} type="other" onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} />}
+      {shop?.length > 0 && <CategoryContainer locationData={shop} categoryExpanded={categoryExpanded} type="shop" onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} onEditLocation={handleEditLocation} />}
+      {mart?.length > 0 && <CategoryContainer locationData={mart} categoryExpanded={categoryExpanded} type="mart" onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} onEditLocation={handleEditLocation} />}
+      {food?.length > 0 && <CategoryContainer locationData={food} categoryExpanded={categoryExpanded} type="food" onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} onEditLocation={handleEditLocation} />}
+      {outdoor?.length > 0 && <CategoryContainer locationData={outdoor} categoryExpanded={categoryExpanded} type="outdoor" onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} onEditLocation={handleEditLocation} />}
+      {indoor?.length > 0 && <CategoryContainer locationData={indoor} categoryExpanded={categoryExpanded} type="indoor" onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} onEditLocation={handleEditLocation} />}
+      {acc?.length > 0 && <CategoryContainer locationData={acc} categoryExpanded={categoryExpanded} type="acc" onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} onEditLocation={handleEditLocation} />}
+      {other?.length > 0 && <CategoryContainer locationData={other} categoryExpanded={categoryExpanded} type="other" onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} onEditLocation={handleEditLocation} />}
     </div>
   )
 }

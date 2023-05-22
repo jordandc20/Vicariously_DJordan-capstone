@@ -5,26 +5,61 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 
 import API_URL from "../apiConfig.js";
-import { UserdataContext } from "../context/UserData";
+import { UserdataContext } from "../context/UserData.js";
 
 // https://regex101.com/r/V5Y7rn/1/
-const NewLocationForm = ({ city_id, onFormClose, onSubmitNew }) => {
-  const { isLoading } = useAuth0();
+const LocationForm = ({ locationData, onFormClose, onSubmit, type }) => {
+  const { isLoading, user } = useAuth0();
   const [userData] = useContext(UserdataContext);
 
-  const url_regex = /^((http|https):\/\/)?(www.)?(?!.*(http|https|www.))[a-zA-Z0-9_-]+(\.[a-zA-Z]+)+(\/)?.([\w\?[a-zA-Z-_%\/@?]+)*([^\/\w\?[a-zA-Z0-9_-]+=\w+(&[a-zA-Z0-9_]+=\w+)*)?$/
+  const url_regex = /^((http|https):\/\/)?(www.)?(?!.*(http|https|www.))[a-zA-Z0-9_-]+(\.[a-zA-Z]+)+(\/)?.([\w?[a-zA-Z-_%/@?]+)*([^/\w?[a-zA-Z0-9_-]+=\w+(&[a-zA-Z0-9_]+=\w+)*)?$/
   const google_regex = /^(http|https):\/\/(goo\.gl\/maps|www\.google\.com\/maps)/
+
+  let location_name, avg_cost, google_map_url, website, date_visited, rating, category, user_id, city_id, header, path,fetch_type
+
+  if (type === "newLocation") {
+    location_name = ''
+    avg_cost = ''
+    google_map_url = ''
+    website = ''
+    date_visited = ''
+    rating = ''
+    category = 'Other'
+    user_id = Number(locationData.user_id)
+    city_id = Number(locationData.city_id)
+    header ='Create New'
+    path = 'locations'
+    fetch_type = 'post'
+  }
+  else if (type === "editLocation") {
+    location_name = locationData.location_name
+    category = locationData.category
+    avg_cost = locationData.avg_cost
+    google_map_url = locationData.google_map_url
+    website = locationData.website
+    date_visited = locationData.date_visited
+    rating = locationData.rating
+    user_id = locationData.user_id
+    city_id = locationData.city_id
+    header ='Edit'
+    path =`locations/${locationData.id}`
+    fetch_type ='patch'
+  }
+
+
+  
+
   const formik = useFormik({
     initialValues: {
-      location_name: '',
-      category: 'Other',
-      avg_cost: '',
-      google_map_url: '',
-      website: '',
-      date_visited: '',
-      rating: '',
-      user_id: userData.id,
-      city_id: Number(city_id)
+      location_name: location_name,
+      avg_cost: avg_cost,
+      google_map_url: google_map_url,
+      website: website,
+      date_visited: date_visited,
+      rating: rating,
+      category: category,
+      user_id: user_id,
+      city_id: city_id
     },
     validationSchema: yup.object({
       location_name: yup.string().required("Must enter a location name. We suggest entering 'foreign' names in parenthesis."),
@@ -45,24 +80,32 @@ const NewLocationForm = ({ city_id, onFormClose, onSubmitNew }) => {
       if (new_values.date_visited) { new_values.date_visited = new Date(new_values.date_visited) }
       if (new_values.rating) { new_values.rating = parseInt(new_values.rating, 10) }
       if (new_values.avg_cost) { new_values.avg_cost = parseInt(new_values.avg_cost, 10) }
+      new_values['val_user_email'] = user.email
+      console.log(new_values)
 
-
-      axios.post(`${API_URL}/locations`, new_values)
+      axios(        
+        {method: fetch_type,
+          url: `${API_URL}/${path}`,
+          data: new_values
+        })
         .then(r => {
-          onSubmitNew(r.data)
+          onSubmit(r.data)
         })
         .then(onFormClose())
     },
   });
 
- // render loading message
+  // render loading message
   if (isLoading) { return <div>Loading ...</div>; }
+
+
+
 
   return (
     <div className="grid place-items-center  bg-yellow-50 ">
 
       <div className="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 ">
-        <h1>Add New Location</h1>
+        <h1>{header} Location</h1>
         <form className="space-y-6" onSubmit={formik.handleSubmit}>
 
           <label htmlFor="location_name" className="block mb-2 text-sm font-medium text-gray-900 ">Location Name</label>
@@ -145,4 +188,4 @@ const NewLocationForm = ({ city_id, onFormClose, onSubmitNew }) => {
   )
 }
 
-export default withAuthenticationRequired(NewLocationForm)
+export default withAuthenticationRequired(LocationForm)

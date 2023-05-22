@@ -7,12 +7,15 @@ import Delete from './Delete';
 import NewLocationNoteForm from './NewLocationNoteForm';
 import NotesCard from './NotesCard';
 import { UserdataContext } from "../context/UserData";
+import LocationForm from './LocationForm';
 
-const LocationCard = ({ locationData, noteExpanded, onDelLocation, onNewLocNote, onDelLocNote }) => {
+
+const LocationCard = ({ locationData, noteExpanded, onDelLocation, onEditLocation, onNewLocNote, onDelLocNote }) => {
   const { avg_cost, category, city_id, date_visited, google_map_url, id, location_name, location_notes, rating, user_id, website } = locationData;
   const { isLoading, isAuthenticated } = useAuth0();
   const params = useParams();
-  const [isOpen, setIsOpen] = useState(false);
+  const [expandDelLocation, setExpandDelLocation] = useState(false);
+  const [expandEditLocation, setExpandEditLocation] = useState(false);
   const [expandNewNote, setExpandNewNote] = useState(false);
   const [userData] = useContext(UserdataContext);
 
@@ -61,11 +64,19 @@ const LocationCard = ({ locationData, noteExpanded, onDelLocation, onNewLocNote,
         <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">category2</span>
       </div>
       {(isAuthenticated && Number(params.userId) === userData.id) && (<div>
-        < button className="max-w-sm rounded overflow-hidden shadow-lg bg-slate-50" onClick={(e) => { e.stopPropagation(); setIsOpen(true) }}>Delete Location</button>
-        <ReactModal isOpen={isOpen} contentLabel="Example Modal" onRequestClose={() => setIsOpen(false)}>
-          <Delete idToDel={id} path='locations' name={location_name} onFormClose={() => setIsOpen(false)} onDelete={onDelLocation} />
+        < button className="max-w-sm rounded overflow-hidden shadow-lg bg-slate-50" onClick={(e) => { e.stopPropagation(); setExpandDelLocation(true) }}>Delete Location</button>
+        <ReactModal isOpen={expandDelLocation} contentLabel="Example Modal" onRequestClose={() => setExpandDelLocation(false)}>
+          <Delete idToDel={id} path='locations' name={location_name} onFormClose={() => setExpandDelLocation(false)} onDelete={onDelLocation} />
         </ReactModal>
       </div>)}
+      {(isAuthenticated && Number(params.userId) === userData.id) && (<div>
+        < button className="max-w-sm rounded overflow-hidden shadow-lg bg-slate-50" onClick={(e) => { e.stopPropagation(); setExpandEditLocation(true) }}>Edit Location</button>
+         <ReactModal isOpen={expandEditLocation} contentLabel="Example Modal" onRequestClose={() => setExpandEditLocation(false)}>
+          <LocationForm locationData={locationData} type='editLocation' onFormClose={() => setExpandEditLocation(false)} onSubmit={onEditLocation} />
+        </ReactModal>
+      </div>)}
+
+
     </div >
   )
 }
