@@ -13,7 +13,7 @@ const NewLocationForm = ({ city_id, onFormClose, onSubmitNew }) => {
   const [userData] = useContext(UserdataContext);
 
   const url_regex = /^((http|https):\/\/)?(www.)?(?!.*(http|https|www.))[a-zA-Z0-9_-]+(\.[a-zA-Z]+)+(\/)?.([\w\?[a-zA-Z-_%\/@?]+)*([^\/\w\?[a-zA-Z0-9_-]+=\w+(&[a-zA-Z0-9_]+=\w+)*)?$/
-
+  const google_regex = /^(http|https):\/\/(goo\.gl\/maps|www\.google\.com\/maps)/
   const formik = useFormik({
     initialValues: {
       location_name: '',
@@ -30,7 +30,7 @@ const NewLocationForm = ({ city_id, onFormClose, onSubmitNew }) => {
       location_name: yup.string().required("Must enter a location name. We suggest entering 'foreign' names in parenthesis."),
       category: yup.string(),
       avg_cost: yup.number(),
-      google_map_url: yup.string().matches(url_regex, 'Enter correct url'),
+      google_map_url: yup.string().matches(google_regex, 'Enter correct google url syntax, must include http or https'),
       website: yup.string().matches(url_regex, 'Enter correct url'),
       date_visited: yup.string().matches('^(0[1-9]|1[012])/(0[1-9]|[12][0-9]|3[01])/[0-9]{4}$', 'Enter date as mm/dd/yyyy').typeError("must be date"),
       rating: yup.number()
