@@ -75,7 +75,7 @@ class UserById(Resource):
             return make_response({'error': 'user not found'}, 404)
         db.session.delete(user)
         db.session.commit()
-        return make_response(f"deleted {user.to_dict()}", 200)
+        return make_response(f"deleted ok", 200)
 
 
 api.add_resource(UserById, '/users/<int:id>')
@@ -161,7 +161,7 @@ class CityById(Resource):
             return make_response({'error': 'city not found'}, 404)
         db.session.delete(city)
         db.session.commit()
-        return make_response(f"deleted {city.to_dict()}", 200)
+        return make_response(f"deleted ok", 200)
 
 
 api.add_resource(CityById, '/cities/<int:id>')
@@ -226,7 +226,7 @@ class CityNotesById(Resource):
             return make_response({'error': 'City Note not found'}, 404)
         db.session.delete(cityNote)
         db.session.commit()
-        return make_response(f"deleted {cityNote.to_dict()}", 200)
+        return make_response(f"deleted ok", 200)
 
 
 api.add_resource(CityNotesById, '/citynotes/<int:id>')
@@ -249,6 +249,10 @@ class Locations(Resource):
 
     def post(self):
         data = request.get_json()
+        # print(data['val_user_email'])
+        user_val = User.query.filter_by(email=data['val_user_email']).first()
+        if user_val.id != data['user_id']:
+            return make_response({'error': 'permissions mismatch'}, 400)
         if data['date_visited'] is None:
             date_v = data['date_visited']
         else:
@@ -303,7 +307,7 @@ class LocationById(Resource):
             return make_response({'error': 'location not found'}, 404)
         db.session.delete(location)
         db.session.commit()
-        return make_response(f"deleted {location.to_dict()}", 200)
+        return make_response(f"deleted ok", 200)
 
 
 api.add_resource(LocationById, '/locations/<int:id>')
@@ -367,7 +371,7 @@ class LocationNotesById(Resource):
             return make_response({'error': 'location note not found'}, 404)
         db.session.delete(location_note)
         db.session.commit()
-        return make_response(f"deleted {location_note.to_dict()}", 200)
+        return make_response(f"deleted ok", 200)
 
 
 api.add_resource(LocationNotesById, '/locationnotes/<int:id>')
