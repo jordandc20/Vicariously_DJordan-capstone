@@ -29,10 +29,6 @@ const CitiesList = () => {
     return <CityCard key={city.id} cityData={city} onDelCity={handleDeleteCity} handleEditCity={handleEditCity} />
   })
 
-  // / ? waits for data   ... like a ternary? ... once the data is available, then continue to map\
-  // const cityCardsArray = userCitiesData ? userCitiesData?.map((city) => {
-  //   return <CityCard  key={city.id} cityData ={city} />
-  // }) : null
 
   function handleAddCity(newCity) {
     setCities([...cities, newCity])

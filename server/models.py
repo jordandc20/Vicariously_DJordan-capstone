@@ -3,6 +3,7 @@ from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import validates
 from config import db
+from sqlalchemy import UniqueConstraint
 
 ###################### USER ######################
 
@@ -25,7 +26,7 @@ class User(db.Model, SerializerMixin):
     # users=association_proxy('checkout_logs','user')
 
     serialize_rules = ("-cities", "-cities.locations.user",
-                       "-locations", "-email", "-created_at", "-updated_at",)
+                       "-locations", "-created_at", "-updated_at",)
 # "-locations.user","-locations.city.user"
 
     @validates('email')
@@ -76,19 +77,19 @@ class City(db.Model, SerializerMixin):
     serialize_rules = ("-user", "-locations.city",
                        "-city_notes.city", "-locations.user", "-created_at", "-updated_at",)
 
-    @validates('city_name', 'country')
-    def validates_nullable(self, key, value):
+    @validates('city_name', 'country', 'user_id')
+    def validates_set(self, key, value):
+        existing_sets = [(city.city_name.lower(), city.country.lower(), city.user_id) for city in City.query.all()]
+        users = [user.id for user in User.query.all()]
         if not value:
             raise ValueError(f'{key} must be provided.')
+        if key == 'user_id':
+            if (self.city_name.lower(), self.country.lower(), value) in existing_sets:
+                raise ValueError(f'city, country, user_id set already exists: {self.city_name}, {self.country}, {value}')
+            if value not in users:
+                raise ValueError('user_id does not exist.')
         return value
 
-
-    @validates('user_id')
-    def validates_user_id(self, key, value):
-        users = [user.id for user in User.query.all()]
-        if value not in users:
-            raise ValueError('user_id does not exist.')
-        return value
 
     def __repr__(self):
         return f'<City {self.id} :: {self.city_name} | {self.country} | user: {self.user_id}>'
@@ -156,8 +157,8 @@ class Location(db.Model, SerializerMixin):
     location_notes = db.relationship(
         "LocationNote", backref='location', cascade='all, delete, delete-orphan')
 
-    serialize_rules = ( "-city",
-                        "-user", "-location_notes.location", "-created_at", "-updated_at",)
+    serialize_rules = ("-city",
+                       "-user", "-location_notes.location", "-created_at", "-updated_at",)
 
     @validates('category')
     def validates_category(self, key, value):
