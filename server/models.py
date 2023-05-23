@@ -78,10 +78,13 @@ class City(db.Model, SerializerMixin):
 
     @validates('city_name', 'country')
     def validates_nullable(self, key, value):
+        pairs = [(city.city_name.lower(), city.country.lower()) for city in City.query.all()]
         if not value:
             raise ValueError(f'{key} must be provided.')
+        if key == 'country':
+            if (self.city_name.lower(), value.lower()) in pairs:
+                raise ValueError(f'city, country pair already exists: {self.city_name}, {value}')
         return value
-
 
     @validates('user_id')
     def validates_user_id(self, key, value):
@@ -156,8 +159,8 @@ class Location(db.Model, SerializerMixin):
     location_notes = db.relationship(
         "LocationNote", backref='location', cascade='all, delete, delete-orphan')
 
-    serialize_rules = ( "-city",
-                        "-user", "-location_notes.location", "-created_at", "-updated_at",)
+    serialize_rules = ("-city",
+                       "-user", "-location_notes.location", "-created_at", "-updated_at",)
 
     @validates('category')
     def validates_category(self, key, value):
