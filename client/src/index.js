@@ -12,20 +12,20 @@ const clientId = process.env.REACT_APP_AUTH0_CLIENT_ID;
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-      <Auth0Provider
-        domain={domain}
-        clientId={clientId}
-        authorizationParams={{
-          redirect_uri: window.location.origin,
-          // redirect_uri: "http://localhost:4000",
-          // audience: `https://${domain}/api/v2/`,
-          // scope: "read:current_user update:current_user_metadata"
-        }}
-      >
-    <BrowserRouter>
+    <Auth0Provider
+      domain={domain}
+      clientId={clientId}
+      authorizationParams={{
+        redirect_uri: window.location.origin,
+        // redirect_uri: "http://localhost:4000",
+        // audience: `https://${domain}/api/v2/`,
+        // scope: "read:current_user update:current_user_metadata"
+      }}
+    >
+      <BrowserRouter>
         <App />
-    </BrowserRouter>,
-      </Auth0Provider>
+      </BrowserRouter>,
+    </Auth0Provider>
 
   </React.StrictMode>
 );
