@@ -44,7 +44,6 @@ const CityForm = ({ locationData, type, onFormClose, onSubmit }) => {
       country: yup.string().required("Must enter a Country name.")
     }),
     onSubmit: values => {
-      console.log(values)
       axios(
         {method: fetch_type,
           url: `${API_URL}/${path}`,
@@ -52,7 +51,6 @@ const CityForm = ({ locationData, type, onFormClose, onSubmit }) => {
         }
       )
         .then(r => {
-          console.log(r.data)
           onSubmit(r.data)
         })
         .then(onFormClose())

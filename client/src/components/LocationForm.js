@@ -17,52 +17,46 @@ const LocationForm = ({ locationData, onFormClose, onSubmit, type }) => {
   const url_regex = /^((http|https):\/\/)?(www.)?(?!.*(http|https|www.))[a-zA-Z0-9_-]+(\.[a-zA-Z]+)+(\/)?.([\w?[a-zA-Z-_%/@?]+)*([^/\w?[a-zA-Z0-9_-]+=\w+(&[a-zA-Z0-9_]+=\w+)*)?$/
   const google_regex = /^(http|https):\/\/(goo\.gl\/maps|www\.google\.com\/maps)/
 
-  let location_name, avg_cost, google_map_url, website, date_visited, rating, category, user_id, city_id, header, path,fetch_type
+  let init_vals, header, path, fetch_type
 
   if (type === "newLocation") {
-    location_name = ''
-    avg_cost = ''
-    google_map_url = ''
-    website = ''
-    date_visited = ''
-    rating = ''
-    category = 'Other'
-    user_id = Number(params.userId)
-    city_id = Number(params.cityId )
-    header ='Create New'
+    init_vals = {
+      location_name: '',
+      avg_cost: '',
+      google_map_url: '',
+      website: '',
+      date_visited: '',
+      rating: '',
+      category: 'Other',
+      user_id: Number(params.userId),
+      city_id: Number(params.cityId)
+    }
+    header = 'Create New'
     path = 'locations'
     fetch_type = 'post'
   }
   else if (type === "editLocation") {
-    location_name = locationData.location_name
-    category = locationData.category
-    avg_cost = locationData.avg_cost
-    google_map_url = locationData.google_map_url
-    website = locationData.website
-    date_visited = locationData.date_visited
-    rating = locationData.rating
-    user_id = locationData.user_id
-    city_id = locationData.city_id
-    header ='Edit'
-    path =`locations/${locationData.id}`
-    fetch_type ='patch'
+    init_vals = {
+      location_name: locationData.location_name,
+      category: locationData.category,
+      avg_cost: locationData.avg_cost,
+      google_map_url: locationData.google_map_url,
+      website: locationData.website,
+      date_visited: locationData.date_visited,
+      rating: locationData.rating,
+      user_id: locationData.user_id,
+      city_id: locationData.city_id
+    }
+    header = 'Edit'
+    path = `locations/${locationData.id}`
+    fetch_type = 'patch'
   }
 
 
-  
+
 
   const formik = useFormik({
-    initialValues: {
-      location_name: location_name,
-      avg_cost: avg_cost,
-      google_map_url: google_map_url,
-      website: website,
-      date_visited: date_visited,
-      rating: rating,
-      category: category,
-      user_id: user_id,
-      city_id: city_id
-    },
+    initialValues: init_vals,
     validationSchema: yup.object({
       location_name: yup.string().required("Must enter a location name. We suggest entering 'foreign' names in parenthesis."),
       category: yup.string(),
@@ -84,8 +78,9 @@ const LocationForm = ({ locationData, onFormClose, onSubmit, type }) => {
       if (new_values.avg_cost) { new_values.avg_cost = parseInt(new_values.avg_cost, 10) }
       new_values['val_user_email'] = user.email
 
-      axios(        
-        {method: fetch_type,
+      axios(
+        {
+          method: fetch_type,
           url: `${API_URL}/${path}`,
           data: new_values
         })
