@@ -16,8 +16,7 @@ root.render(
       domain={domain}
       clientId={clientId}
       authorizationParams={{
-        redirect_uri: window.location.origin,
-        
+        redirect_uri: window.location.origin  
         // redirectUri={`${window.location.origin}/profile`}
         // redirect_uri: "http://localhost:4000",
         // audience: `https://${domain}/api/v2/`,
@@ -28,7 +27,6 @@ root.render(
         <App />
       </BrowserRouter>,
     </Auth0Provider>
-
   </React.StrictMode>
 );
 

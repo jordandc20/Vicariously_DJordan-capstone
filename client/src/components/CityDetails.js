@@ -9,7 +9,7 @@ import LocationForm from './LocationForm';
 import CityNotesContainer from './CityNotesContainer';
 import NoteForm from './NoteForm';
 import { UserdataContext } from "../context/UserData";
-import { toast, ToastBar, Toaster } from 'react-hot-toast';
+import { toast } from 'react-hot-toast';
 
 const CityDetails = () => {
   const [categoryExpanded, setCategoryExpanded] = useState(null)
@@ -25,18 +25,16 @@ const CityDetails = () => {
       axios.get(`${API_URL}/cities/${params.cityId}`)
         .then(r => {
           setCityDetails(r.data)
-          toast.success(`Success`);
         }),
       {
+        success: `Success`,
         loading: 'Loading...',
         error: (err) => `Error: ${err.message}: ${err.response.data.error}`,
       }
     )
   }
 
-  useEffect(() => {
-    fetchCityData()
-  }, [params.cityId]);
+  useEffect(() => { fetchCityData() }, [params.cityId]);
 
   if (!cityDetails) { return <div>Loading city details...</div> }
 
@@ -51,9 +49,7 @@ const CityDetails = () => {
     setCityDetails({
       ...cityDetails, city_notes: [...cityDetails.city_notes, newCityNote],
     })
-
   }
-
 
   function handleAddLocNote(newLocNote) {
     const ud_cityDetails =
@@ -114,7 +110,6 @@ const CityDetails = () => {
 
   function handleEditLocNote(ud_locnote) {
     fetchCityData()
-
   }
 
 

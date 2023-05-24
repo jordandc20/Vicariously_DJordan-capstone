@@ -20,7 +20,6 @@ const Navbar = () => {
       <NavLink to='/' className="flex items-center">
         <img src={logo} width={150} height={100} alt='Vicariously logo' />
       </NavLink>
-
       <div>
         <NavLink className="text-lg no-underline text-grey-darkest hover:text-blue-dark ml-5" to='/'>Home</NavLink>
       </div>

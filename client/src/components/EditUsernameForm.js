@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useContext } from 'react'
 
-import { toast, ToastBar, Toaster } from 'react-hot-toast';
+import { toast } from 'react-hot-toast';
 
 import axios from "axios"
-import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
+import { withAuthenticationRequired } from "@auth0/auth0-react";
 
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -45,10 +45,10 @@ const EditUsernameForm = ({ onEditUsername, onFormClose }) => {
                 axios.patch(`${API_URL}/users/${userData.id}`, values)
                     .then(r => {
                         onEditUsername(r.data.username)
-                        toast.success(`Successfully updated: ${r.data.username}`);
                     })
                     .then(onFormClose()),
                 {
+                    success: (`Successfully updated: ${values.username}`),
                     loading: 'Loading...',
                     error: (err) => `Error: ${err.message}: ${err.response.data.error}`,
                 }

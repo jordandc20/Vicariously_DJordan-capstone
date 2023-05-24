@@ -1,11 +1,9 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { useAuth0 } from '@auth0/auth0-react'
 
 import NotesCard from './NotesCard';
-import { UserdataContext } from "../context/UserData";
 
 const CityNotesContainer = ({ cityNotesData, type, onDelCityNote ,onEditCityNote}) => {
-    const [userData] = useContext(UserdataContext);
     const { isLoading } = useAuth0();
 
   if (!cityNotesData) { return <div>Loading City Notes...</div> }

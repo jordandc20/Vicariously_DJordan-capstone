@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useContext } from 'react'
-import { Route, Routes ,useLocation} from 'react-router-dom'
+import React from 'react'
+import { Route, Routes } from 'react-router-dom'
 import './App.css';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -9,16 +9,16 @@ import CityDetails from './components/CityDetails';
 import Navbar from './components/Navbar'
 import Profile from './components/Profile';
 import { UserdataProvider } from "./context/UserData";
-import { toast, ToastBar, Toaster } from 'react-hot-toast';
+import {  Toaster } from 'react-hot-toast';
 
 
 function App() {
-  const location = useLocation();
-  useEffect(() => {
-    // Dismiss all active toasts
+//   const location = useLocation();
+//   useEffect(() => {
+//     // Dismiss all active toasts
     
-    toast.dismiss()
-   }, [location])
+//     toast.dismiss()
+//    }, [location])
  
   return (
     <>

@@ -1,18 +1,16 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import axios from "axios"
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { useParams } from 'react-router-dom'
-import { toast, ToastBar, Toaster } from 'react-hot-toast';
+import { toast } from 'react-hot-toast';
 
 import API_URL from "../apiConfig.js";
-import { UserdataContext } from "../context/UserData.js";
 
 // https://regex101.com/r/V5Y7rn/1/
 const LocationForm = ({ locationData, onFormClose, onSubmit, type }) => {
   const { isLoading, user } = useAuth0();
-  const [userData] = useContext(UserdataContext);
   const params = useParams();
 
   const url_regex = /^((http|https):\/\/)?(www.)?(?!.*(http|https|www.))[a-zA-Z0-9_-]+(\.[a-zA-Z]+)+(\/)?.([\w?[a-zA-Z-_%/@?]+)*([^/\w?[a-zA-Z0-9_-]+=\w+(&[a-zA-Z0-9_]+=\w+)*)?$/
@@ -92,10 +90,10 @@ const LocationForm = ({ locationData, onFormClose, onSubmit, type }) => {
           })
           .then(r => {
             onSubmit(r.data)
-            toast.success(`Success: ${r.data.location_name}`);
           })
           .then(onFormClose()),
         {
+          success: `Success: ${new_values.location_name}`,
           loading: 'Loading...',
           error: (err) => `Error: ${err.message}: ${err.response.data.error}`,
         }
@@ -107,8 +105,6 @@ const LocationForm = ({ locationData, onFormClose, onSubmit, type }) => {
   if (isLoading) { return <div>Loading ...</div>; }
 
 
-  console.log(formik)
-  console.log(formik.initialValues)
 
   return (
     <div className="grid place-items-center  bg-yellow-50 ">
@@ -181,8 +177,6 @@ const LocationForm = ({ locationData, onFormClose, onSubmit, type }) => {
           {formik.touched.rating && formik.errors.rating ? (
             <div>{formik.errors.rating}</div>
           ) : null}
-
-
 
           <button type="submit" className="w-full text-white-100 bg-emerald-400 hover:bg-emerald-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center ">Submit</button>
           <button type="reset" className="w-full text-white-100 bg-emerald-400 hover:bg-emerald-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center " value="Cancel" onClick={() => {

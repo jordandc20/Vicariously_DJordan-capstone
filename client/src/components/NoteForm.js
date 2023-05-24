@@ -3,13 +3,13 @@ import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 import axios from "axios"
 import { useParams } from 'react-router-dom'
 
-import { toast, ToastBar, Toaster } from 'react-hot-toast';
+import { toast } from 'react-hot-toast';
 
 import { useFormik } from "formik";
 import * as yup from "yup";
 import API_URL from "../apiConfig.js";
 const NoteForm = ({ noteData, onFormClose, onSubmit, type }) => {
-  const { user, isAuthenticated, isLoading } = useAuth0();
+  const { user, isLoading } = useAuth0();
   const params = useParams();
 
   // set data for form reuse for new/edit city/location notes
@@ -76,11 +76,11 @@ const NoteForm = ({ noteData, onFormClose, onSubmit, type }) => {
           })
           .then(r => {
             onSubmit(r.data)
-            toast.success(`Success: ${r.data.note_body}`);
           })
           .then(
             onFormClose()),
         {
+          success: `Success: ${new_values.note_body}`,
           loading: 'Loading...',
           error: (err) => `Error: ${err.message}: ${err.response.data.error}`,
         }
@@ -121,8 +121,6 @@ const NoteForm = ({ noteData, onFormClose, onSubmit, type }) => {
             </>
 
           )}
-
-
 
           <button type="submit" className="w-full text-white-100 bg-emerald-400 hover:bg-emerald-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center ">Submit</button>
           <button type="reset" className="w-full text-white-100 bg-emerald-400 hover:bg-emerald-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center " value="Cancel" onClick={() => {

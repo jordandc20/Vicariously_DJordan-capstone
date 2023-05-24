@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 import axios from "axios"
 import { useParams } from 'react-router-dom'
@@ -7,14 +7,11 @@ import { useParams } from 'react-router-dom'
 import { useFormik } from "formik";
 import * as yup from "yup";
 import API_URL from "../apiConfig.js";
-import { UserdataContext } from "../context/UserData.js";
-import { toast, ToastBar, Toaster } from 'react-hot-toast';
+import { toast } from 'react-hot-toast';
 
 const CityForm = ({ locationData, type, onFormClose, onSubmit }) => {
-  const { user, isAuthenticated, isLoading } = useAuth0();
-  const [userData] = useContext(UserdataContext);
+  const { user, isLoading } = useAuth0();
   const params = useParams();
-
 
   let user_id, header, path, fetch_type, country, city_name
   if (type === "newCity") {
@@ -49,7 +46,6 @@ const CityForm = ({ locationData, type, onFormClose, onSubmit }) => {
     onSubmit: values => {
       const new_values = { ...values }
       new_values['val_user_email'] = user.email
-
       toast.promise(
         axios(
           {
@@ -60,11 +56,11 @@ const CityForm = ({ locationData, type, onFormClose, onSubmit }) => {
         )
           .then(r => {
             onSubmit(r.data)
-            toast.success(`Success: ${r.data.city_name}`);
           })
           .then(onFormClose())
         ,
         {
+          success: (`Success: ${values.city_name}, ${values.country}`),
           loading: 'Loading...',
           error: (err) => {
             if (err.response.data.errors && err.response.data.errors[0].includes('user_city_country_index')) {
@@ -85,7 +81,6 @@ const CityForm = ({ locationData, type, onFormClose, onSubmit }) => {
 
   return (
     <div className="grid place-items-center  bg-yellow-50 ">
-
       <div className="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 ">
         <h1>{header} City</h1>
         <form className="space-y-6" onSubmit={formik.handleSubmit}>
@@ -97,24 +92,18 @@ const CityForm = ({ locationData, type, onFormClose, onSubmit }) => {
             <div>{formik.errors.city_name}</div>
           ) : null}
 
-
           <label htmlFor="country" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Country Name</label>
           <input id='country' type="text" name="country" placeholder="Country Name" {...formik.getFieldProps('country')} />
           {formik.touched.country && formik.errors.country ? (
             <div>{formik.errors.country}</div>
           ) : null}
 
-
-
-
           <button id='cityFormSubmit' type="submit" className="w-full text-white-100 bg-emerald-400 hover:bg-emerald-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center ">Submit</button>
           <button id='cityFormCancel' type="reset" className="w-full text-white-100 bg-emerald-400 hover:bg-emerald-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center " value="Cancel" onClick={() => {
             onFormClose()
           }}>Cancel</button>
         </form>
-
       </div>
-
     </div>
   )
 }

@@ -3,9 +3,9 @@
 # Standard library imports
 
 # Remote library imports
-from flask import request, session, make_response
+from flask import request, make_response
 from flask_restful import Resource
-from datetime import datetime, timedelta
+from datetime import datetime
 from faker import Faker
 
 # Local imports
@@ -150,6 +150,7 @@ api.add_resource(Cities, '/cities')
 
 class CityById(Resource):
     def get(self, id):
+        print(datetime.now())
         city = City.query.filter_by(id=id).first()
         if not city:
             return make_response({'error': 'City not found'}, 404)
@@ -184,7 +185,6 @@ class CityById(Resource):
         db.session.delete(city)
         db.session.commit()
         return make_response(f"deleted ok", 200)
-
 
 api.add_resource(CityById, '/cities/<int:id>')
 

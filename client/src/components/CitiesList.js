@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import axios from "axios"
 import ReactModal from 'react-modal';
-import { toast, ToastBar, Toaster } from 'react-hot-toast';
+import { toast } from 'react-hot-toast';
 
 import CityForm from './CityForm';
 import { useParams } from 'react-router-dom'
@@ -19,22 +19,21 @@ const CitiesList = () => {
 
   useEffect(() => {
     toast.promise(
-
-    axios.get(`${API_URL}/users/${params.userId}`)
-      .then(r => {setCities(r.data.cities)
-        toast.success(`Success`);
-      
-      }),
+      axios.get(`${API_URL}/users/${params.userId}`)
+        .then(r => {
+          setCities(r.data.cities)
+        }),
       {
+        success: `Success`,
         loading: 'Loading...',
         error: (err) => `Error: ${err.message}: ${err.response.data.error}`,
       }
     )
-  }, [params.userId, setCities]);
+  }, [params.userId]);
 
   if (!cities) { return <div>Loading cities...</div> }
 
-  const cityCardsArray = cities?.map((city) => {
+  const cityCardsArray = cities.map((city) => {
     return <CityCard key={city.id} cityData={city} onDelCity={handleDeleteCity} handleEditCity={handleEditCity} />
   })
 
@@ -57,9 +56,7 @@ const CitiesList = () => {
 
   // render loading message
   if (isLoading) { return <div>Loading ...</div> }
-  if (error) {
-    return <div>Oops... {error.message}</div>;
-  }
+  if (error) { return <div>Oops... {error.message}</div>; }
 
   return (
     <div className='flex sm:flex-row sm:text-left sm:justify-between py-4 px-6'>

@@ -3,14 +3,10 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 const Login = () => {
 
-    const { isAuthenticated, loginWithPopup, } = useAuth0();
-  
+    const { loginWithPopup } = useAuth0();
 
+    return <button onClick={() => loginWithPopup()} >This_is_the_Log_In_Button</button>
 
-
-    return !isAuthenticated &&(
-        <button  onClick={() => loginWithPopup()} >This_is_the_Log_In_Button</button>
-    )
 };
 
 
