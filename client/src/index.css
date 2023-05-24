@@ -4,6 +4,10 @@
 
 
 /* @layer components { */
-    .url {
-    @apply underline text-blue-600 hover:text-blue-800 visited:text-purple-800
- }
+.url {
+    @apply underline text-blue-600 hover:text-lg visited:text-purple-800
+}
+
+.nav-button {
+    @apply lg:px-5 py-2 block font-semibold hover:text-sky-600 hover:border-b-4 hover:border-sky-500 transition duration-200 ease-in-out
+}

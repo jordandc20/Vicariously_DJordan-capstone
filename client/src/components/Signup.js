@@ -15,8 +15,8 @@ const Signup = () => {
     };
 
     return (
-        <button onClick={handleSignUp}>
-            This_is_the_SignUP_button
+        <button className="px-6 py-2 block font-semibold text-white bg-sky-500 rounded-xl hover:bg-ky-600 hover:scale-105 transition duration-200 ease-in-out" onClick={handleSignUp}>
+            Sign Up
         </button>
     );
 }
