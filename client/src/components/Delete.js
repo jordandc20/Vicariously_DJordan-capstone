@@ -2,19 +2,34 @@ import React from 'react'
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 import axios from "axios"
 import API_URL from "../apiConfig.js";
+import { useParams } from 'react-router-dom'
+import { toast, ToastBar, Toaster } from 'react-hot-toast';
+
 
 const Delete = ({ onDelete, onFormClose, idToDel, path, name }) => {
     const { user, isAuthenticated, isLoading } = useAuth0();
+    const params = useParams();
 
+    function handleYes() {
 
-    async function handleYes() {
-        try {
-            const res = await axios.delete(`${API_URL}/${path}/${idToDel}`);
-            onFormClose()
-            onDelete(idToDel)
-        } catch (error) {
-            console.log(error)
+        const new_values = {
+            val_user_email: user.email,
+            user_id: Number(params.userId)
         }
+
+        toast.promise(
+            axios.delete(`${API_URL}/${path}/${idToDel}`, { data: new_values })
+                .then(() => {
+                    onDelete(idToDel)
+                    toast.success(`Deleted: ${name}`);
+                })
+                .then(onFormClose()),
+            {
+                loading: 'Loading...',
+                error: (err) => `Error: ${err.message}: ${err.response.data.error}`,
+            }
+        )
+
     }
 
 

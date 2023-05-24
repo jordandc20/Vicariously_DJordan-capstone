@@ -8,6 +8,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import API_URL from "../apiConfig.js";
 import { UserdataContext } from "../context/UserData.js";
+import { toast, ToastBar, Toaster } from 'react-hot-toast';
 
 const CityForm = ({ locationData, type, onFormClose, onSubmit }) => {
   const { user, isAuthenticated, isLoading } = useAuth0();
@@ -15,20 +16,20 @@ const CityForm = ({ locationData, type, onFormClose, onSubmit }) => {
   const params = useParams();
 
 
-  let user_id , header, path, fetch_type, country, city_name
+  let user_id, header, path, fetch_type, country, city_name
   if (type === "newCity") {
     user_id = Number(params.userId)
-    city_name= ''
-    country= ''
-    header ='Create New'
+    city_name = ''
+    country = ''
+    header = 'Create New'
     path = 'cities'
     fetch_type = 'post'
   }
   else if (type === "editCity") {
     user_id = locationData.user_id
-    city_name= locationData.city_name
-    country= locationData.country
-    header ='Edit'
+    city_name = locationData.city_name
+    country = locationData.country
+    header = 'Edit'
     path = `cities/${locationData.id}`
     fetch_type = 'patch'
   }
@@ -37,23 +38,45 @@ const CityForm = ({ locationData, type, onFormClose, onSubmit }) => {
     initialValues: {
       city_name: city_name,
       country: country,
-      user_id:user_id
+      user_id: user_id
     },
     validationSchema: yup.object({
       city_name: yup.string().required("Must enter a City name. We suggest entering 'foreign' names in parenthesis."),
       country: yup.string().required("Must enter a Country name.")
     }),
+    validateOnChange: false,
+    validateOnBlur: false,
     onSubmit: values => {
-      axios(
-        {method: fetch_type,
-          url: `${API_URL}/${path}`,
-          data:values
+      const new_values = { ...values }
+      new_values['val_user_email'] = user.email
+
+      toast.promise(
+        axios(
+          {
+            method: fetch_type,
+            url: `${API_URL}/${path}`,
+            data: new_values
+          }
+        )
+          .then(r => {
+            onSubmit(r.data)
+            toast.success(`Success: ${r.data.city_name}`);
+          })
+          .then(onFormClose())
+        ,
+        {
+          loading: 'Loading...',
+          error: (err) => {
+            if (err.response.data.errors && err.response.data.errors[0].includes('user_city_country_index')) {
+              return `Error: city and country combo already exists for this user`
+            }
+            if (err.response.data.errors) {
+              return `Error: ${err.response.data.errors[0]}`
+            }
+            return `Error: ${err.message}: ${err.response.data.error}`
+          },
         }
       )
-        .then(r => {
-          onSubmit(r.data)
-        })
-        .then(onFormClose())
     },
   });
 

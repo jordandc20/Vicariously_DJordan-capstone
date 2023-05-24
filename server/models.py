@@ -3,8 +3,7 @@ from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import validates
 from config import db
-from sqlalchemy import UniqueConstraint
-
+from sqlalchemy import UniqueConstraint, Index, func,text
 ###################### USER ######################
 
 
@@ -59,8 +58,8 @@ class User(db.Model, SerializerMixin):
 
 class City(db.Model, SerializerMixin):
     __tablename__ = 'cities'
-    __table_args__ = (db.UniqueConstraint(
-        'city_name', 'country', 'user_id', name='unique_city_country'),)
+    # __table_args__ = (db.UniqueConstraint(
+    #     text('LOWER(city_name)'), text('LOWER(country)'), 'user_id', name='unique_city_country'),)
 
     id = db.Column(db.Integer, primary_key=True)
     city_name = db.Column(db.String, nullable=False)
@@ -76,16 +75,13 @@ class City(db.Model, SerializerMixin):
 
     serialize_rules = ("-user", "-locations.city",
                        "-city_notes.city", "-locations.user", "-created_at", "-updated_at",)
-
-    @validates('city_name', 'country', 'user_id')
-    def validates_set(self, key, value):
-        existing_sets = [(city.city_name.lower(), city.country.lower(), city.user_id) for city in City.query.all()]
+    
+    @validates('country','user_id','city_name')
+    def validates_country(self, key, value):
         users = [user.id for user in User.query.all()]
         if not value:
             raise ValueError(f'{key} must be provided.')
-        if key == 'user_id':
-            if (self.city_name.lower(), self.country.lower(), value) in existing_sets:
-                raise ValueError(f'city, country, user_id set already exists: {self.city_name}, {self.country}, {value}')
+        if key =='user_id':
             if value not in users:
                 raise ValueError('user_id does not exist.')
         return value
@@ -93,6 +89,7 @@ class City(db.Model, SerializerMixin):
 
     def __repr__(self):
         return f'<City {self.id} :: {self.city_name} | {self.country} | user: {self.user_id}>'
+Index('user_city_country_index', func.lower(City.country),func.lower(City.city_name),City.user_id, unique=True)
 
 
 ###################### CITY NOTES ######################

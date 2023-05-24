@@ -5,20 +5,11 @@ const Login = () => {
 
     const { isAuthenticated, loginWithPopup, } = useAuth0();
   
-  
-    const handleLogin = async () => {
-        await loginWithPopup({
-            appState: {
-                returnTo: "/",
-            },
-        });
-    };
-
 
 
 
     return !isAuthenticated &&(
-        <button onClick={handleLogin}>This_is_the_Log_In_Button</button>
+        <button  onClick={() => loginWithPopup()} >This_is_the_Log_In_Button</button>
     )
 };
 

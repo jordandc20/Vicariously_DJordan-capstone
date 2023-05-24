@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react'
 import axios from "axios"
 import ReactModal from 'react-modal';
+import { toast, ToastBar, Toaster } from 'react-hot-toast';
+
 import CityForm from './CityForm';
 import { useParams } from 'react-router-dom'
 import { useAuth0 } from '@auth0/auth0-react'
@@ -16,11 +18,18 @@ const CitiesList = () => {
   const [userData] = useContext(UserdataContext);
 
   useEffect(() => {
-    async function fetchData() {
-      const r = await axios.get(`${API_URL}/users/${params.userId}`)
-      setCities(r.data.cities)
-    }
-    fetchData()
+    toast.promise(
+
+    axios.get(`${API_URL}/users/${params.userId}`)
+      .then(r => {setCities(r.data.cities)
+        toast.success(`Success`);
+      
+      }),
+      {
+        loading: 'Loading...',
+        error: (err) => `Error: ${err.message}: ${err.response.data.error}`,
+      }
+    )
   }, [params.userId, setCities]);
 
   if (!cities) { return <div>Loading cities...</div> }

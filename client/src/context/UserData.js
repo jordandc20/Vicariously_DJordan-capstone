@@ -2,6 +2,7 @@ import React, { useState, useEffect, createContext } from 'react'
 import axios from "axios"
 import { useAuth0 } from '@auth0/auth0-react'
 import 'react-toastify/dist/ReactToastify.css';
+import { toast, ToastBar, Toaster } from 'react-hot-toast';
 
 import API_URL from "../apiConfig.js";
 
@@ -17,8 +18,18 @@ const UserdataProvider = ({ children }) => {
     // set that userdata as context
     useEffect(() => {
         if (isAuthenticated) {
-            axios.post(`${API_URL}/login`, user)
-                .then(r => setUserData(r.data))
+            toast.promise(
+                axios.post(`${API_URL}/login`, user)
+                    .then(r => {
+                        setUserData(r.data)
+                    })
+                    .then(
+                        toast.success(`logged in: ${user.email}`)),
+                        {
+                            loading: 'Loading...',
+                            error: (err) => `Error: ${err.message}: ${err.response.data.error}`,
+                        }
+                    )
         }
     }, [isAuthenticated, user]);
 
@@ -26,7 +37,7 @@ const UserdataProvider = ({ children }) => {
     if (isLoading) { return <div>Loading ...</div> }
 
     return (
-        <UserdataContext.Provider value={[userData,setUserData]}>{children}</UserdataContext.Provider>
+        <UserdataContext.Provider value={[userData, setUserData]}>{children}</UserdataContext.Provider>
     )
 }
 

@@ -3,6 +3,7 @@ import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 import axios from "axios"
 import { useParams } from 'react-router-dom'
 
+import { toast, ToastBar, Toaster } from 'react-hot-toast';
 
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -11,7 +12,7 @@ const NoteForm = ({ noteData, onFormClose, onSubmit, type }) => {
   const { user, isAuthenticated, isLoading } = useAuth0();
   const params = useParams();
 
-// set data for form reuse for new/edit city/location notes
+  // set data for form reuse for new/edit city/location notes
   let init_vals, header, path, fetch_type
   if (type === "newLocNote") {
     init_vals = {
@@ -62,16 +63,28 @@ const NoteForm = ({ noteData, onFormClose, onSubmit, type }) => {
 
     }),
     onSubmit: values => {
-      axios(
+      const new_values = { ...values }
+      new_values['val_user_email'] = user.email
+      new_values['user_id'] = Number(params.userId)
+
+      toast.promise(
+        axios(
+          {
+            method: fetch_type,
+            url: `${API_URL}/${path}`,
+            data: new_values
+          })
+          .then(r => {
+            onSubmit(r.data)
+            toast.success(`Success: ${r.data.note_body}`);
+          })
+          .then(
+            onFormClose()),
         {
-          method: fetch_type,
-          url: `${API_URL}/${path}`,
-          data: values
-        })
-        .then(r => {
-          onSubmit(r.data)
-        })
-        .then(onFormClose())
+          loading: 'Loading...',
+          error: (err) => `Error: ${err.message}: ${err.response.data.error}`,
+        }
+      )
     },
   });
 

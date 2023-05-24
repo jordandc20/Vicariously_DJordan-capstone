@@ -9,6 +9,7 @@ import LocationForm from './LocationForm';
 import CityNotesContainer from './CityNotesContainer';
 import NoteForm from './NoteForm';
 import { UserdataContext } from "../context/UserData";
+import { toast, ToastBar, Toaster } from 'react-hot-toast';
 
 const CityDetails = () => {
   const [categoryExpanded, setCategoryExpanded] = useState(null)
@@ -19,9 +20,18 @@ const CityDetails = () => {
   const params = useParams();
   const [userData] = useContext(UserdataContext);
 
-  const fetchCityData = async () => {
-    const r = await axios.get(`${API_URL}/cities/${params.cityId}`)
-    setCityDetails(r.data)
+  function fetchCityData() {
+    toast.promise(
+      axios.get(`${API_URL}/cities/${params.cityId}`)
+        .then(r => {
+          setCityDetails(r.data)
+          toast.success(`Success`);
+        }),
+      {
+        loading: 'Loading...',
+        error: (err) => `Error: ${err.message}: ${err.response.data.error}`,
+      }
+    )
   }
 
   useEffect(() => {
@@ -97,12 +107,12 @@ const CityDetails = () => {
   }
 
 
-  function handleEditCityNote(ud_citynote) { 
+  function handleEditCityNote(ud_citynote) {
     fetchCityData()
   }
 
 
-  function handleEditLocNote(ud_locnote) { 
+  function handleEditLocNote(ud_locnote) {
     fetchCityData()
 
   }

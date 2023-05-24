@@ -4,6 +4,7 @@ import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { useParams } from 'react-router-dom'
+import { toast, ToastBar, Toaster } from 'react-hot-toast';
 
 import API_URL from "../apiConfig.js";
 import { UserdataContext } from "../context/UserData.js";
@@ -38,18 +39,18 @@ const LocationForm = ({ locationData, onFormClose, onSubmit, type }) => {
   }
   else if (type === "editLocation") {
     const date = new Date(locationData.date_visited);
-    const month_render = date.getMonth() < 9 ? '0' + (date.getMonth()+1) : date.getMonth()+1
+    const month_render = date.getMonth() < 9 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1
     const day_render = date.getDate() < 10 ? '0' + date.getDate() : date.getDate()
     init_vals = {
-      location_name: locationData.location_name,
-      category: locationData.category,
-      avg_cost: locationData.avg_cost,
-      google_map_url: locationData.google_map_url,
-      website: locationData.website,
-      date_visited: locationData.date_visited !== null ?`${month_render}/${day_render}/${date.getFullYear()}` : locationData.date_visited,
-      rating: locationData.rating,
-      user_id: locationData.user_id,
-      city_id: locationData.city_id
+      location_name: locationData.location_name ?? "",
+      category: locationData.category ?? "",
+      avg_cost: locationData.avg_cost ?? "",
+      google_map_url: locationData.google_map_url ?? "",
+      website: locationData.website ?? "",
+      date_visited: locationData.date_visited !== null ? `${month_render}/${day_render}/${date.getFullYear()}` : locationData.date_visited ?? "",
+      rating: locationData.rating ?? "",
+      user_id: locationData.user_id ?? "",
+      city_id: locationData.city_id ?? ""
     }
     header = 'Edit'
     path = `locations/${locationData.id}`
@@ -82,16 +83,23 @@ const LocationForm = ({ locationData, onFormClose, onSubmit, type }) => {
       if (new_values.avg_cost) { new_values.avg_cost = parseInt(new_values.avg_cost, 10) }
       new_values['val_user_email'] = user.email
 
-      axios(
+      toast.promise(
+        axios(
+          {
+            method: fetch_type,
+            url: `${API_URL}/${path}`,
+            data: new_values
+          })
+          .then(r => {
+            onSubmit(r.data)
+            toast.success(`Success: ${r.data.location_name}`);
+          })
+          .then(onFormClose()),
         {
-          method: fetch_type,
-          url: `${API_URL}/${path}`,
-          data: new_values
-        })
-        .then(r => {
-          onSubmit(r.data)
-        })
-        .then(onFormClose())
+          loading: 'Loading...',
+          error: (err) => `Error: ${err.message}: ${err.response.data.error}`,
+        }
+      )
     },
   });
 
@@ -99,7 +107,8 @@ const LocationForm = ({ locationData, onFormClose, onSubmit, type }) => {
   if (isLoading) { return <div>Loading ...</div>; }
 
 
-
+  console.log(formik)
+  console.log(formik.initialValues)
 
   return (
     <div className="grid place-items-center  bg-yellow-50 ">

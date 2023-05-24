@@ -17,6 +17,8 @@ root.render(
       clientId={clientId}
       authorizationParams={{
         redirect_uri: window.location.origin,
+        
+        // redirectUri={`${window.location.origin}/profile`}
         // redirect_uri: "http://localhost:4000",
         // audience: `https://${domain}/api/v2/`,
         // scope: "read:current_user update:current_user_metadata"
