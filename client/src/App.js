@@ -9,11 +9,20 @@ import CityDetails from './components/CityDetails';
 import Navbar from './components/Navbar'
 import Profile from './components/Profile';
 import { UserdataProvider } from "./context/UserData";
+import {  Toaster } from 'react-hot-toast';
 
 
 function App() {
-
+//   const location = useLocation();
+//   useEffect(() => {
+//     // Dismiss all active toasts
+    
+//     toast.dismiss()
+//    }, [location])
+ 
   return (
+    <>
+    <div><Toaster/></div>
     <div className=" bg-yellow-100 h-screen">
       <UserdataProvider >
         <Navbar />
@@ -25,6 +34,7 @@ function App() {
         </Routes>
       </UserdataProvider>
     </div>
+    </>
   );
 }
 

@@ -3,13 +3,16 @@
 # Standard library imports
 
 # Remote library imports
-from flask import request, session, make_response
+from flask import request, make_response
 from flask_restful import Resource
-from datetime import datetime, timedelta
+from datetime import datetime
+from faker import Faker
+
 # Local imports
 from config import app, db, api
 from models import User, City, CityNote, Location, LocationNote
 
+faker = Faker()
 
 class Home(Resource):
     def get(self):
@@ -58,6 +61,9 @@ class UserById(Resource):
     def patch(self, id):
         data = request.get_json()
         user = User.query.filter_by(id=id).first()
+        # user_val = User.query.filter_by(email=data['val_user_email']).first()
+        # if user_val.id != data['user_id']:
+        #     return make_response({'error': 'permissions mismatch'}, 400)
         if not user:
             return make_response({'error': 'User not found'}, 404)
         try:
@@ -70,6 +76,11 @@ class UserById(Resource):
         return make_response(user.to_dict(), 202)
 
     def delete(self, id):
+        data = request.get_json()
+        user_val = User.query.filter_by(email=data['val_user_email']).first()
+        if user_val.id != data['user_id']:
+            return make_response({'error': 'permissions mismatch'}, 400)
+        
         user = User.query.filter_by(id=id).first()
         if not user:
             return make_response({'error': 'user not found'}, 404)
@@ -88,8 +99,8 @@ class Login(Resource):
         if not user:
             try:
                 new_user = User(
-                    email=data['email'],
-                    username=data['email'].split('@')[0]
+                email=data['email'],
+                username=faker.text(max_nb_chars=19).replace(" ", "").lower()
                 )
                 db.session.add(new_user)
                 db.session.commit()
@@ -118,6 +129,9 @@ class Cities(Resource):
 
     def post(self):
         data = request.get_json()
+        user_val = User.query.filter_by(email=data['val_user_email']).first()
+        if user_val.id != data['user_id']:
+            return make_response({'error': 'permissions mismatch'}, 400)
         try:
             new_city = City(
                 city_name=data['city_name'],
@@ -136,6 +150,7 @@ api.add_resource(Cities, '/cities')
 
 class CityById(Resource):
     def get(self, id):
+        print(datetime.now())
         city = City.query.filter_by(id=id).first()
         if not city:
             return make_response({'error': 'City not found'}, 404)
@@ -143,6 +158,9 @@ class CityById(Resource):
 
     def patch(self, id):
         data = request.get_json()
+        user_val = User.query.filter_by(email=data['val_user_email']).first()
+        if user_val.id != data['user_id']:
+            return make_response({'error': 'permissions mismatch'}, 400)
         city = City.query.filter_by(id=id).first()
         if not city:
             return make_response({'error': 'City not found'}, 404)
@@ -156,13 +174,17 @@ class CityById(Resource):
         return make_response(city.to_dict(), 202)
 
     def delete(self, id):
+        data = request.get_json()
+        user_val = User.query.filter_by(email=data['val_user_email']).first()
+        if user_val.id != data['user_id']:
+            return make_response({'error': 'permissions mismatch'}, 400)
+        
         city = City.query.filter_by(id=id).first()
         if not city:
             return make_response({'error': 'city not found'}, 404)
         db.session.delete(city)
         db.session.commit()
         return make_response(f"deleted ok", 200)
-
 
 api.add_resource(CityById, '/cities/<int:id>')
 
@@ -183,6 +205,9 @@ class CityNotes(Resource):
 
     def post(self):
         data = request.get_json()
+        user_val = User.query.filter_by(email=data['val_user_email']).first()
+        if user_val.id != data['user_id']:
+            return make_response({'error': 'permissions mismatch'}, 400)
         try:
             newCityNote = CityNote(
                 note_body=data['note_body'],
@@ -209,6 +234,9 @@ class CityNotesById(Resource):
     def patch(self, id):
         data = request.get_json()
         cityNote = CityNote.query.filter_by(id=id).first()
+        user_val = User.query.filter_by(email=data['val_user_email']).first()
+        if user_val.id != data['user_id']:
+            return make_response({'error': 'permissions mismatch'}, 400)
         if not cityNote:
             return make_response({'error': 'City Note not found'}, 404)
         try:
@@ -221,6 +249,11 @@ class CityNotesById(Resource):
         return make_response(cityNote.to_dict(), 202)
 
     def delete(self, id):
+        data = request.get_json()
+        user_val = User.query.filter_by(email=data['val_user_email']).first()
+        if user_val.id != data['user_id']:
+            return make_response({'error': 'permissions mismatch'}, 400)
+        
         cityNote = CityNote.query.filter_by(id=id).first()
         if not cityNote:
             return make_response({'error': 'City Note not found'}, 404)
@@ -249,7 +282,6 @@ class Locations(Resource):
 
     def post(self):
         data = request.get_json()
-        # print(data['val_user_email'])
         user_val = User.query.filter_by(email=data['val_user_email']).first()
         if user_val.id != data['user_id']:
             return make_response({'error': 'permissions mismatch'}, 400)
@@ -290,6 +322,9 @@ class LocationById(Resource):
     def patch(self, id):
         data = request.get_json()
         location = Location.query.filter_by(id=id).first()
+        user_val = User.query.filter_by(email=data['val_user_email']).first()
+        if user_val.id != data['user_id']:
+            return make_response({'error': 'permissions mismatch'}, 400)
         if not location:
             return make_response({'error': 'Location not found'}, 404)
         try:
@@ -302,6 +337,11 @@ class LocationById(Resource):
         return make_response(location.to_dict(), 202)
 
     def delete(self, id):
+        data = request.get_json()
+        user_val = User.query.filter_by(email=data['val_user_email']).first()
+        if user_val.id != data['user_id']:
+            return make_response({'error': 'permissions mismatch'}, 400)
+        
         location = Location.query.filter_by(id=id).first()
         if not location:
             return make_response({'error': 'location not found'}, 404)
@@ -329,6 +369,9 @@ class LocationNotes(Resource):
 
     def post(self):
         data = request.get_json()
+        user_val = User.query.filter_by(email=data['val_user_email']).first()
+        if user_val.id != data['user_id']:
+            return make_response({'error': 'permissions mismatch'}, 400)
         try:
             newLocationNote = LocationNote(
                 note_body=data['note_body'],
@@ -354,6 +397,9 @@ class LocationNotesById(Resource):
     def patch(self, id):
         data = request.get_json()
         location_note = LocationNote.query.filter_by(id=id).first()
+        user_val = User.query.filter_by(email=data['val_user_email']).first()
+        if user_val.id != data['user_id']:
+            return make_response({'error': 'permissions mismatch'}, 400)
         if not location_note:
             return make_response({'error': 'Location Note not found'}, 404)
         try:
@@ -366,6 +412,11 @@ class LocationNotesById(Resource):
         return make_response(location_note.to_dict(), 202)
 
     def delete(self, id):
+        data = request.get_json()
+        user_val = User.query.filter_by(email=data['val_user_email']).first()
+        if user_val.id != data['user_id']:
+            return make_response({'error': 'permissions mismatch'}, 400)
+        
         location_note = LocationNote.query.filter_by(id=id).first()
         if not location_note:
             return make_response({'error': 'location note not found'}, 404)

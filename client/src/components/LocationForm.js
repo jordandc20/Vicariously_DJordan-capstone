@@ -1,17 +1,16 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import axios from "axios"
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { useParams } from 'react-router-dom'
+import { toast } from 'react-hot-toast';
 
 import API_URL from "../apiConfig.js";
-import { UserdataContext } from "../context/UserData.js";
 
 // https://regex101.com/r/V5Y7rn/1/
 const LocationForm = ({ locationData, onFormClose, onSubmit, type }) => {
   const { isLoading, user } = useAuth0();
-  const [userData] = useContext(UserdataContext);
   const params = useParams();
 
   const url_regex = /^((http|https):\/\/)?(www.)?(?!.*(http|https|www.))[a-zA-Z0-9_-]+(\.[a-zA-Z]+)+(\/)?.([\w?[a-zA-Z-_%/@?]+)*([^/\w?[a-zA-Z0-9_-]+=\w+(&[a-zA-Z0-9_]+=\w+)*)?$/
@@ -38,18 +37,18 @@ const LocationForm = ({ locationData, onFormClose, onSubmit, type }) => {
   }
   else if (type === "editLocation") {
     const date = new Date(locationData.date_visited);
-    const month_render = date.getMonth() < 9 ? '0' + (date.getMonth()+1) : date.getMonth()+1
+    const month_render = date.getMonth() < 9 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1
     const day_render = date.getDate() < 10 ? '0' + date.getDate() : date.getDate()
     init_vals = {
-      location_name: locationData.location_name,
-      category: locationData.category,
-      avg_cost: locationData.avg_cost,
-      google_map_url: locationData.google_map_url,
-      website: locationData.website,
-      date_visited: locationData.date_visited !== null ?`${month_render}/${day_render}/${date.getFullYear()}` : locationData.date_visited,
-      rating: locationData.rating,
-      user_id: locationData.user_id,
-      city_id: locationData.city_id
+      location_name: locationData.location_name ?? "",
+      category: locationData.category ?? "",
+      avg_cost: locationData.avg_cost ?? "",
+      google_map_url: locationData.google_map_url ?? "",
+      website: locationData.website ?? "",
+      date_visited: locationData.date_visited !== null ? `${month_render}/${day_render}/${date.getFullYear()}` : locationData.date_visited ?? "",
+      rating: locationData.rating ?? "",
+      user_id: locationData.user_id ?? "",
+      city_id: locationData.city_id ?? ""
     }
     header = 'Edit'
     path = `locations/${locationData.id}`
@@ -82,22 +81,28 @@ const LocationForm = ({ locationData, onFormClose, onSubmit, type }) => {
       if (new_values.avg_cost) { new_values.avg_cost = parseInt(new_values.avg_cost, 10) }
       new_values['val_user_email'] = user.email
 
-      axios(
+      toast.promise(
+        axios(
+          {
+            method: fetch_type,
+            url: `${API_URL}/${path}`,
+            data: new_values
+          })
+          .then(r => {
+            onSubmit(r.data)
+          })
+          .then(onFormClose()),
         {
-          method: fetch_type,
-          url: `${API_URL}/${path}`,
-          data: new_values
-        })
-        .then(r => {
-          onSubmit(r.data)
-        })
-        .then(onFormClose())
+          success: `Success: ${new_values.location_name}`,
+          loading: 'Loading...',
+          error: (err) => `Error: ${err.message}: ${err.response.data.error}`,
+        }
+      )
     },
   });
 
   // render loading message
   if (isLoading) { return <div>Loading ...</div>; }
-
 
 
 
@@ -172,8 +177,6 @@ const LocationForm = ({ locationData, onFormClose, onSubmit, type }) => {
           {formik.touched.rating && formik.errors.rating ? (
             <div>{formik.errors.rating}</div>
           ) : null}
-
-
 
           <button type="submit" className="w-full text-white-100 bg-emerald-400 hover:bg-emerald-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center ">Submit</button>
           <button type="reset" className="w-full text-white-100 bg-emerald-400 hover:bg-emerald-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center " value="Cancel" onClick={() => {

@@ -25,7 +25,6 @@ const LocationCard = ({ locationData, noteExpanded, onDelLocation, onEditLocatio
   })
 
 
-
   // render loading message
   if (isLoading) { return <div>Loading ...</div> }
 

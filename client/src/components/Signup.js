@@ -3,8 +3,8 @@ import { useAuth0 } from "@auth0/auth0-react";
 const Signup = () => {
     const { loginWithRedirect } = useAuth0();
 
-    const handleSignUp = async () => {
-        await loginWithRedirect({
+    function handleSignUp() {
+        loginWithRedirect({
             appState: {
                 returnTo: "/",
             },
@@ -15,7 +15,7 @@ const Signup = () => {
     };
 
     return (
-        <button className="button__sign-up" onClick={handleSignUp}>
+        <button onClick={handleSignUp}>
             This_is_the_SignUP_button
         </button>
     );
