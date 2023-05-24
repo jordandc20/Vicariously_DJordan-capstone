@@ -19,7 +19,7 @@ const EditUsernameForm = ({ onEditUsername, onFormClose }) => {
             username: userData.username
         },
         validationSchema: yup.object({
-            username: yup.string().min(8, 'Must be at least 8 characters')
+            username: yup.string().matches(/^[a-zA-Z0-9]+$/, 'only a-z letters and numbers allowed').min(8, 'Must be at least 8 characters')
                 .max(20, 'Must be less  than 20 characters').required("Must enter a username")
             // .test('Unique Email', 'Email already in use', // <- key, message
             //     function (value) {

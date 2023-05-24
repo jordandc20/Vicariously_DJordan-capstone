@@ -3,7 +3,7 @@ from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import validates
 from config import db
-from sqlalchemy import UniqueConstraint, Index, func,text
+from sqlalchemy import UniqueConstraint, Index, func
 ###################### USER ######################
 
 
@@ -25,7 +25,7 @@ class User(db.Model, SerializerMixin):
     # users=association_proxy('checkout_logs','user')
 
     serialize_rules = ("-cities", "-cities.locations.user",
-                       "-locations", "-created_at", "-updated_at",)
+                       "-locations", "-created_at", )
 # "-locations.user","-locations.city.user"
 
     @validates('email')
@@ -58,8 +58,6 @@ class User(db.Model, SerializerMixin):
 
 class City(db.Model, SerializerMixin):
     __tablename__ = 'cities'
-    # __table_args__ = (db.UniqueConstraint(
-    #     text('LOWER(city_name)'), text('LOWER(country)'), 'user_id', name='unique_city_country'),)
 
     id = db.Column(db.Integer, primary_key=True)
     city_name = db.Column(db.String, nullable=False)
@@ -89,6 +87,7 @@ class City(db.Model, SerializerMixin):
 
     def __repr__(self):
         return f'<City {self.id} :: {self.city_name} | {self.country} | user: {self.user_id}>'
+    
 Index('user_city_country_index', func.lower(City.country),func.lower(City.city_name),City.user_id, unique=True)
 
 

@@ -29,7 +29,7 @@ const Navbar = () => {
           <div>     <Login className="text-lg no-underline text-grey-darkest hover:text-blue-dark ml-5" />  </div>
         </>
       )}
-      {isAuthenticated && (
+      {isAuthenticated && userData && (
         <>
           <NavLink className="text-lg no-underline text-grey-darkest hover:text-blue-dark ml-5" to='/profile'>My Profile</NavLink>
           <NavLink className="text-lg no-underline text-grey-darkest hover:text-blue-dark ml-5" to={"/users/" + userData.id + '/cities'}>My Cities</NavLink>

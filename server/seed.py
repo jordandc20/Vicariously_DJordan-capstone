@@ -6,6 +6,7 @@ import random
 # Remote library imports
 from faker import Faker
 from datetime import datetime
+import re
 
 # Local imports
 from app import app
@@ -30,7 +31,8 @@ if __name__ == '__main__':
         for i in range(5):
             email_address = faker.email()
             travel_style_rand=random.choice(styles)
-            username_rand=faker.text(max_nb_chars=19).replace(" ", "").lower()
+            username_rand=re.sub(r"[^a-zA-Z0-9]+", "", faker.text(max_nb_chars=19).lower())
+            
             user = User(
                 email = email_address,
                 username = username_rand,

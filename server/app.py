@@ -7,12 +7,13 @@ from flask import request, make_response
 from flask_restful import Resource
 from datetime import datetime
 from faker import Faker
-
+import re
 # Local imports
 from config import app, db, api
 from models import User, City, CityNote, Location, LocationNote
 
 faker = Faker()
+
 
 class Home(Resource):
     def get(self):
@@ -80,7 +81,7 @@ class UserById(Resource):
         user_val = User.query.filter_by(email=data['val_user_email']).first()
         if user_val.id != data['user_id']:
             return make_response({'error': 'permissions mismatch'}, 400)
-        
+
         user = User.query.filter_by(id=id).first()
         if not user:
             return make_response({'error': 'user not found'}, 404)
@@ -99,15 +100,16 @@ class Login(Resource):
         if not user:
             try:
                 new_user = User(
-                email=data['email'],
-                username=faker.text(max_nb_chars=19).replace(" ", "").lower()
-                )
+                    email=data['email'],
+                    username=re.sub(r"[^a-zA-Z0-9]+", "", faker.text(max_nb_chars=19).lower())
+                    )
                 db.session.add(new_user)
                 db.session.commit()
+                print(new_user)
             except Exception as errors:
                 return make_response({"errors": [errors.__str__()]}, 422)
-            return make_response(new_user.to_dict(rules=('-cities',)), 201)
-        return make_response(user.to_dict(rules=('-cities',)), 200, {"Content-Type": "application/json"})
+            return make_response(new_user.to_dict(), 201)
+        return make_response(user.to_dict(), 200, {"Content-Type": "application/json"})
 
 
 api.add_resource(Login, '/login')
@@ -178,13 +180,14 @@ class CityById(Resource):
         user_val = User.query.filter_by(email=data['val_user_email']).first()
         if user_val.id != data['user_id']:
             return make_response({'error': 'permissions mismatch'}, 400)
-        
+
         city = City.query.filter_by(id=id).first()
         if not city:
             return make_response({'error': 'city not found'}, 404)
         db.session.delete(city)
         db.session.commit()
         return make_response(f"deleted ok", 200)
+
 
 api.add_resource(CityById, '/cities/<int:id>')
 
@@ -253,7 +256,7 @@ class CityNotesById(Resource):
         user_val = User.query.filter_by(email=data['val_user_email']).first()
         if user_val.id != data['user_id']:
             return make_response({'error': 'permissions mismatch'}, 400)
-        
+
         cityNote = CityNote.query.filter_by(id=id).first()
         if not cityNote:
             return make_response({'error': 'City Note not found'}, 404)
@@ -341,7 +344,7 @@ class LocationById(Resource):
         user_val = User.query.filter_by(email=data['val_user_email']).first()
         if user_val.id != data['user_id']:
             return make_response({'error': 'permissions mismatch'}, 400)
-        
+
         location = Location.query.filter_by(id=id).first()
         if not location:
             return make_response({'error': 'location not found'}, 404)
@@ -416,7 +419,7 @@ class LocationNotesById(Resource):
         user_val = User.query.filter_by(email=data['val_user_email']).first()
         if user_val.id != data['user_id']:
             return make_response({'error': 'permissions mismatch'}, 400)
-        
+
         location_note = LocationNote.query.filter_by(id=id).first()
         if not location_note:
             return make_response({'error': 'location note not found'}, 404)
