@@ -6,6 +6,7 @@ import logo from '../images/vicariously_logo.png'
 import Login from './Login';
 import Logout from './Logout';
 import Signup from './Signup';
+import About from './About';
 import { UserdataContext } from "../context/UserData";
 import { FiMenu } from "react-icons/fi"
 const Navbar = () => {
@@ -32,6 +33,7 @@ const Navbar = () => {
         <nav className={`${openNavMenu ? "block" : "hidden"}  w-full lg:flex lg:items-center lg:w-auto`}>
           <div className='text-base text-gray-600 lg:flex lg:justify-between'>
               <NavLink className="nav-button" to='/'  onClick={() => setOpenNavMenu(!openNavMenu)}>Home</NavLink>
+              <NavLink className="nav-button" to='/about'  onClick={() => setOpenNavMenu(!openNavMenu)}>About</NavLink>
               {isAuthenticated && userData && (
                 <>
                   <NavLink className="nav-button" to='/profile' onClick={() => setOpenNavMenu(!openNavMenu)}>My Profile</NavLink>
