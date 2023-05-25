@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react'
 
 import { NavLink } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
-import logo from '../images/vicariously_logo.png'
+import logo from '../images/vicariously_logo_trans.png'
 import Login from './Login';
 import Logout from './Logout';
 import Signup from './Signup';

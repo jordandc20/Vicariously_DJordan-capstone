@@ -107,7 +107,7 @@ const LocationForm = ({ locationData, onFormClose, onSubmit, type }) => {
 
 
   return (
-    <div className="grid place-items-center  bg-yellow-50 ">
+    <div className="grid place-items-center  ">
 
       <div className="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 ">
         <h1>{header} Location</h1>
@@ -177,12 +177,14 @@ const LocationForm = ({ locationData, onFormClose, onSubmit, type }) => {
           {formik.touched.rating && formik.errors.rating ? (
             <div>{formik.errors.rating}</div>
           ) : null}
+          <div className='form-button-div'>
 
-          <button type="submit" className="w-full text-white-100 bg-emerald-400 hover:bg-emerald-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center ">Submit</button>
-          <button type="reset" className="w-full text-white-100 bg-emerald-400 hover:bg-emerald-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center " value="Cancel" onClick={() => {
+          <button type="submit" className="form-button">Submit</button>
+          <button type="reset" className="form-button" value="Cancel" onClick={() => {
             // formik.resetForm();
             onFormClose()
           }}>Cancel</button>
+          </div>
         </form>
 
       </div>

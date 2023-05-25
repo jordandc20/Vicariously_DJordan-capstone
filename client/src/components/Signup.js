@@ -15,7 +15,7 @@ const Signup = () => {
     };
 
     return (
-        <button className="px-6 py-2 ml-2 block  text-base font-semibold text-white bg-sky-500 rounded-xl hover:bg-ky-600 hover:scale-105 transition duration-200 ease-in-out" onClick={handleSignUp}>
+        <button className="form-button  ml-2" onClick={handleSignUp}>
             Sign Up
         </button>
     );
