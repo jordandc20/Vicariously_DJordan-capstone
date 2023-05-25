@@ -9,5 +9,5 @@
 }
 
 .nav-button {
-    @apply lg:px-5 py-2 block font-semibold hover:text-sky-600 hover:border-b-4 hover:border-sky-500 transition duration-200 ease-in-out
+    @apply lg:px-6 py-2 block font-semibold text-base text-gray-700 hover:text-sky-600 hover:border-b-4 hover:border-sky-500 transition duration-200 ease-in-out
 }
