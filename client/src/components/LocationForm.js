@@ -177,7 +177,7 @@ const LocationForm = ({ locationData, onFormClose, onSubmit, type }) => {
           {formik.touched.rating && formik.errors.rating ? (
             <div>{formik.errors.rating}</div>
           ) : null}
-          <div className='form-button-div'>
+          <div className='button-div'>
 
           <button type="submit" className="form-button">Submit</button>
           <button type="reset" className="form-button" value="Cancel" onClick={() => {

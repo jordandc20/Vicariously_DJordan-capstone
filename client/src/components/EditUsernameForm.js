@@ -1,6 +1,7 @@
-import React, { useContext } from 'react'
+import React, { Fragment, useContext } from 'react'
 
 import { toast } from 'react-hot-toast';
+import { Dialog, Transition } from '@headlessui/react'
 
 import axios from "axios"
 import { withAuthenticationRequired } from "@auth0/auth0-react";
@@ -11,7 +12,7 @@ import API_URL from "../apiConfig.js";
 import { UserdataContext } from "../context/UserData";
 
 
-const EditUsernameForm = ({ onEditUsername, onFormClose }) => {
+const EditUsernameForm = ({ onEditUsername, onFormClose, show }) => {
     const [userData] = useContext(UserdataContext);
 
     const formik = useFormik({
@@ -59,25 +60,44 @@ const EditUsernameForm = ({ onEditUsername, onFormClose }) => {
 
 
     return (
-        <div className="grid place-items-center  ">
-            <div className="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 ">
-                <h1>Edit Username</h1>
-                <form className="space-y-6" onSubmit={formik.handleSubmit}>
-                    <input id='username' type="text" name="username" placeholder="username" {...formik.getFieldProps('username')}
-                    />
-                    {formik.touched.username && formik.errors.username ? (
-                        <div>{formik.errors.username}</div>
-                    ) : null}
-          <div className='form-button-div'>
-                  
-                    <button type="submit" className="form-button">Submit</button>
-                    <button type="reset" className="form-button" value="Cancel" onClick={() => {
-                        onFormClose()
-                    }}>Cancel</button>
+
+        <Transition appear show={show} as={Fragment}>
+            <Dialog as="div" className="relative z-10" onClose={onFormClose}>
+                <Transition.Child as={Fragment} enter="ease-out duration-300" enterFrom="opacity-0" enterTo="opacity-100" leave="ease-in duration-200" leaveFrom="opacity-100" leaveTo="opacity-0">
+                    <div className="fixed inset-0 bg-black bg-opacity-25" />
+                </Transition.Child>
+                <div className="fixed inset-0 overflow-y-auto">
+                    <div className="flex min-h-full items-center justify-center p-4 text-center">
+                        <Transition.Child as={Fragment} enter="ease-out duration-300" enterFrom="opacity-0 scale-95" enterTo="opacity-100 scale-100" leave="ease-in duration-200" leaveFrom="opacity-100 scale-100" leaveTo="opacity-0 scale-95"                        >
+                            <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                                <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">
+                                    Edit Username
+                                </Dialog.Title>
+                                <div className="mt-2">
+
+                                    <form className="space-y-6" onSubmit={formik.handleSubmit}>
+                                        <input id='username' type="text" name="username" placeholder="username" {...formik.getFieldProps('username')}
+                                        />
+                                        {formik.touched.username && formik.errors.username ? (
+                                            <div>{formik.errors.username}</div>
+                                        ) : null}
+                                        <div className='button-div'>
+
+                                            <button type="submit" className="form-button">Submit</button>
+                                            <button type="reset" className="form-button" value="Cancel" onClick={() => {
+                                                onFormClose()
+                                            }}>Cancel</button>
+                                        </div>
+                                    </form>
+
+                                </div>
+                            </Dialog.Panel>
+                        </Transition.Child>
                     </div>
-                </form>
-            </div>
-        </div>
+                </div>
+            </Dialog>
+        </Transition>
+
     )
 }
 

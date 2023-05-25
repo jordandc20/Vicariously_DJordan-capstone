@@ -9,19 +9,22 @@ import { useAuth0 } from '@auth0/auth0-react'
 import API_URL from "../apiConfig.js";
 import CityCard from './CityCard';
 import { UserdataContext } from "../context/UserData";
+import { SquaresPlusIcon } from '@heroicons/react/24/solid'
 
 const CitiesList = () => {
   const [isOpen, setIsOpen] = useState(false);
   const params = useParams();
   const { isLoading, isAuthenticated, error } = useAuth0();
-  const [cities, setCities] = useState()
+  const [cities, setCities] = useState([])
   const [userData] = useContext(UserdataContext);
+  const [pageUser, setPageUser] = useState({})
 
   useEffect(() => {
     toast.promise(
       axios.get(`${API_URL}/users/${params.userId}`)
         .then(r => {
           setCities(r.data.cities)
+          setPageUser({ username: r.data.username, travel_style: r.data.travel_style })
         }),
       {
         success: `Success`,
@@ -30,13 +33,13 @@ const CitiesList = () => {
       }
     )
   }, [params.userId]);
-
   if (!cities) { return <div>Loading cities...</div> }
 
+  let loc_count=0
   const cityCardsArray = cities.map((city) => {
+    loc_count += city.locations.length
     return <CityCard key={city.id} cityData={city} onDelCity={handleDeleteCity} handleEditCity={handleEditCity} />
   })
-
 
   function handleAddCity(newCity) {
     setCities([...cities, newCity])
@@ -59,14 +62,24 @@ const CitiesList = () => {
   if (error) { return <div>Oops... {error.message}</div>; }
 
   return (
-    <div className='flex sm:flex-row sm:text-left sm:justify-between py-4 px-6'>
-      {(isAuthenticated && Number(params.userId) === userData.id) && (<div>
-        < button className="max-w-sm rounded overflow-hidden shadow-lg bg-slate-50" onClick={() => setIsOpen(true)}>New City</button>
-        <ReactModal appElement={document.getElementById('root') || undefined} isOpen={isOpen} contentLabel="New City Modal" onRequestClose={() => setIsOpen(false)}>
-          <CityForm type='newCity' onFormClose={() => setIsOpen(false)} onSubmit={handleAddCity} />
-        </ReactModal>
-      </div>)}
-      {cityCardsArray}
+    <div className=' h-screen'>
+      <div className='flex flex-col w-full'>
+        <div className='flex justify-center'>
+          <h1 className="">{pageUser.username}  Cities</h1>
+        </div>
+        <div className='flex justify-center'>
+          <span className="inline-block bg-gray-200 rounded-bl-xl rounded-tr-xl px-3 py-1 text-sm font-semibold text-gray-700 mx-3 ">Cities Visited: {cities.length}</span>
+          <span className="inline-block bg-gray-200 rounded-bl-xl rounded-tr-xl px-3 py-1 text-sm font-semibold text-gray-700 mx-3">Places Visited: {loc_count}</span>
+        </div>
+        {(isAuthenticated && Number(params.userId) === userData.id) && (
+          <div className='flex justify-end'>
+            <SquaresPlusIcon className="h-7 w-7 lg:h-9 lg:w-8 mr-3 rounded text-sky-500 border-2 border-amber-400 hover:scale-105" onClick={() => setIsOpen(true)} />
+              <CityForm show={isOpen} type='newCity' onFormClose={() => setIsOpen(false)} onSubmit={handleAddCity} />
+          </div>)}
+      </div>
+      <div className='flex grow flex-wrap  justify-around'>
+        {cityCardsArray}
+      </div>
     </div>
   )
 }

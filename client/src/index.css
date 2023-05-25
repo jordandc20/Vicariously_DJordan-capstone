@@ -9,13 +9,14 @@
 }
 
 .nav-button {
-    @apply lg:px-6 py-2 block font-semibold text-base text-gray-700 hover:text-sky-600 hover:border-b-4 hover:border-sky-500 transition duration-200 ease-in-out
+    @apply lg:px-6 py-2 block font-semibold text-base text-gray-700 hover:text-sky-600 hover:border-b-4 hover:border-amber-400 transition duration-200 ease-in-out
 }
 
 .form-button {
-    @apply px-6 py-2 block  text-base font-semibold text-white bg-sky-500 rounded-xl hover:bg-sky-600 hover:scale-105 transition duration-200 ease-in-out
+    @apply inline-flex justify-center rounded-md border border-transparent bg-sky-200 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-sky-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2
+    /* @apply px-6 py-2 block  text-base font-semibold text-white bg-sky-500 rounded-xl hover:bg-sky-600 hover:scale-105 transition duration-200 ease-in-out */
 }
 
-.form-button-div {
-    @apply flex justify-evenly sm:flex-wrap
+.button-div {
+    @apply flex justify-evenly md:flex-wrap mt-4
 }

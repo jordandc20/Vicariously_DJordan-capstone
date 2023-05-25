@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 import axios from "axios"
 import { useParams } from 'react-router-dom'
+import { Dialog, Transition } from '@headlessui/react'
 
 
 import { useFormik } from "formik";
@@ -9,7 +10,7 @@ import * as yup from "yup";
 import API_URL from "../apiConfig.js";
 import { toast } from 'react-hot-toast';
 
-const CityForm = ({ locationData, type, onFormClose, onSubmit }) => {
+const CityForm = ({ locationData, type, onFormClose, onSubmit ,show}) => {
   const { user, isLoading } = useAuth0();
   const params = useParams();
 
@@ -63,7 +64,8 @@ const CityForm = ({ locationData, type, onFormClose, onSubmit }) => {
           success: (`Success: ${values.city_name}, ${values.country}`),
           loading: 'Loading...',
           error: (err) => {
-            if (err.response.data.errors && err.response.data.errors[0].includes('user_city_country_index')) {
+            console.log(err.response.data[Object.keys(err.response.data)[0]][0].replace(/\n/g, ''))
+            if (err.response.data && err.response.data[Object.keys(err.response.data)[0]][0].replace(/\n/g, '').includes('user_city_country_index')) {
               return `Error: city and country combo already exists for this user`
             }
             if (err.response.data.errors) {
@@ -80,9 +82,20 @@ const CityForm = ({ locationData, type, onFormClose, onSubmit }) => {
   if (isLoading) { return <div>Loading ...</div>; }
 
   return (
-    <div className="grid place-items-center  ">
-      <div className="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 ">
-        <h1>{header} City</h1>
+    <Transition appear show={show} as={Fragment}>
+            <Dialog as="div" className="relative z-10" onClose={onFormClose}>
+                <Transition.Child as={Fragment} enter="ease-out duration-300" enterFrom="opacity-0" enterTo="opacity-100" leave="ease-in duration-200" leaveFrom="opacity-100" leaveTo="opacity-0">
+                    <div className="fixed inset-0 bg-black bg-opacity-25" />
+                </Transition.Child>
+                <div className="fixed inset-0 overflow-y-auto">
+                    <div className="flex min-h-full items-center justify-center p-4 text-center">
+                        <Transition.Child as={Fragment} enter="ease-out duration-300" enterFrom="opacity-0 scale-95" enterTo="opacity-100 scale-100" leave="ease-in duration-200" leaveFrom="opacity-100 scale-100" leaveTo="opacity-0 scale-95"                        >
+                            <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                                <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">
+                                {header} City
+                                </Dialog.Title>
+                                <div className="mt-2">
+ 
         <form className="space-y-6" onSubmit={formik.handleSubmit}>
 
           <label htmlFor="city_name" className="block mb-2 text-sm font-medium text-gray-900 ">City Name</label>
@@ -97,14 +110,20 @@ const CityForm = ({ locationData, type, onFormClose, onSubmit }) => {
           {formik.touched.country && formik.errors.country ? (
             <div>{formik.errors.country}</div>
           ) : null}
-          <div className='form-button-div'>
+          <div className='button-div'>
           <button id='cityFormSubmit' type="submit" className="form-button">Submit</button>
           <button id='cityFormCancel' type="reset" className="form-button" value="Cancel" onClick={() => {
             onFormClose()
           }}>Cancel</button></div>
         </form>
-      </div>
-    </div>
+      
+        </div>
+                            </Dialog.Panel>
+                        </Transition.Child>
+                    </div>
+                </div>
+            </Dialog>
+        </Transition>
   )
 }
 

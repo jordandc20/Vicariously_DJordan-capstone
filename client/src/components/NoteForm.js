@@ -121,7 +121,7 @@ const NoteForm = ({ noteData, onFormClose, onSubmit, type }) => {
             </>
 
           )}
-          <div className='form-button-div'>
+          <div className='button-div'>
 
             <button type="submit" className="form-button">Submit</button>
             <button type="reset" className="form-button" value="Cancel" onClick={() => {
