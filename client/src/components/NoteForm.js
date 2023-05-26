@@ -82,7 +82,7 @@ const NoteForm = ({ noteData, onFormClose, onSubmit, type }) => {
         {
           success: `Success: ${new_values.note_body}`,
           loading: 'Loading...',
-          error: (err) => `Error: ${err.message}: ${err.response.data.error}`,
+          error: (err) => `Error: ${err.message}: ${err.response.data[Object.keys(err.response.data)[0]]}`,
         }
       )
     },

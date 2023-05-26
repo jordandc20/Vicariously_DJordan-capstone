@@ -26,7 +26,7 @@ const Delete = ({ onDelete, onFormClose, idToDel, path, name }) => {
             {
                 success: `Deleted: ${name}`,
                 loading: 'Loading...',
-                error: (err) => `Error: ${err.message}: ${err.response.data.error}`,
+                error: (err) => `Error: ${err.message}: ${err.response.data[Object.keys(err.response.data)[0]]}`,
             }
         )
     }
