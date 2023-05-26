@@ -28,8 +28,7 @@ const CityCard = ({ cityData, onDelCity, handleEditCity }) => {
 
 
   return (
-    < div className="rounded hover:scale-105 m-2 shadow-md bg-amber-50"   >
-      <div onClick={handleCityCardClick}>
+    < div className="rounded hover:scale-105 m-2 shadow-md bg-amber-50"  onClick={handleCityCardClick} >
         <div className='flex justify-end'>
           <div className=" grow px-6 py-3">
             <h3 className="text-gray-700 text-xl text-base font-bold capitalize ">{city_name}</h3>
@@ -54,7 +53,6 @@ const CityCard = ({ cityData, onDelCity, handleEditCity }) => {
           <span className="px-2 py-1 block  bg-gray-200 rounded-xl  text-sm font-semibold text-gray-700 mb-2 mr-2 ml-1">Places: {locations.length}</span>
         </div>
       </div>
-    </div >
   )
 }
 

@@ -25,7 +25,7 @@ const CategoryContainer = ({ locationData, type, categoryExpanded, onDelLocation
             </summary>
             < button className="max-w-sm rounded overflow-hidden shadow-lg bg-slate-50" onClick={() => setNoteExpanded('open')}>Expand All Notes</button>
             < button className="max-w-sm rounded overflow-hidden shadow-lg bg-slate-50" onClick={() => setNoteExpanded(null)}>Collapse All Notes</button>
-            <div>
+            <div className='flex grow flex-wrap  justify-around'>
                 {locationCardsArray}
             </div>
         </details>
