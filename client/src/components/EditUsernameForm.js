@@ -21,7 +21,8 @@ const EditUsernameForm = ({ onEditUsername, onFormClose, show }) => {
         },
         validationSchema: yup.object({
             username: yup.string().matches(/^[a-zA-Z0-9]+$/, 'only a-z letters and numbers allowed').min(8, 'Must be at least 8 characters')
-                .max(20, 'Must be less  than 20 characters').required("Must enter a username")
+                .max(20, 'Must be less  than 20 characters').required("Must enter a username").test("email-include-domain", "No change to username", value => value !== userData.username)
+
             // .test('Unique Email', 'Email already in use', // <- key, message
             //     function (value) {
             //         return new Promise((resolve, reject) => {
@@ -74,7 +75,6 @@ const EditUsernameForm = ({ onEditUsername, onFormClose, show }) => {
                                     Edit Username
                                 </Dialog.Title>
                                 <div className="mt-2">
-
                                     <form className="space-y-6" onSubmit={formik.handleSubmit}>
                                         <input id='username' type="text" name="username" placeholder="username" {...formik.getFieldProps('username')}
                                         />
@@ -82,14 +82,12 @@ const EditUsernameForm = ({ onEditUsername, onFormClose, show }) => {
                                             <div>{formik.errors.username}</div>
                                         ) : null}
                                         <div className='button-div'>
-
                                             <button type="submit" className="form-button">Submit</button>
                                             <button type="reset" className="form-button" value="Cancel" onClick={() => {
                                                 onFormClose()
                                             }}>Cancel</button>
                                         </div>
                                     </form>
-
                                 </div>
                             </Dialog.Panel>
                         </Transition.Child>

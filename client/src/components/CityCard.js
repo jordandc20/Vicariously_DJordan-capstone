@@ -1,7 +1,6 @@
 import React, { useState, useContext } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useAuth0 } from '@auth0/auth0-react'
-import ReactModal from 'react-modal';
 import { NoSymbolIcon, PencilSquareIcon } from '@heroicons/react/24/solid'
 
 import Delete from './Delete';
@@ -45,9 +44,7 @@ const CityCard = ({ cityData, onDelCity, handleEditCity }) => {
               </div>
               <div >
                 <NoSymbolIcon className="h-5 w-5 lg:h-7 lg:w-7  rounded-full text-red-500  hover:scale-110" onClick={(e) => { e.stopPropagation(); setIsOpen(true) }} />
-                <ReactModal appElement={document.getElementById('root') || undefined} isOpen={isOpen} contentLabel="Delete City Modal" onRequestClose={() => setIsOpen(false)}>
-                  <Delete idToDel={id} path='cities' name={city_name} onFormClose={() => setIsOpen(false)} onDelete={onDelCity} />
-                </ReactModal>
+                  <Delete show={isOpen} idToDel={id} path='cities' name={city_name} onFormClose={() => setIsOpen(false)} onDelete={onDelCity} />
               </div>
             </div>
           )}

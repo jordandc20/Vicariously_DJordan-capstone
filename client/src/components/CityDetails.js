@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from 'react'
-import ReactModal from 'react-modal';
 import { useParams } from 'react-router-dom'
 import axios from "axios"
 import { useAuth0 } from '@auth0/auth0-react'
@@ -138,19 +137,13 @@ const CityDetails = () => {
       < button className="max-w-sm rounded overflow-hidden shadow-lg bg-slate-50" onClick={() => setCategoryExpanded(null)}>Collapse All Categories</button>
       {(isAuthenticated && Number(params.userId) === userData.id) && (<div>
         < button className="max-w-sm rounded overflow-hidden shadow-lg bg-slate-50" onClick={() => setExpandNewCity(true)}>New Location</button>
-        <ReactModal appElement={document.getElementById('root') || undefined} isOpen={expandNewCity} contentLabel="New Location Modal" onRequestClose={() => setExpandNewCity(false)}>
-          <LocationForm type='newLocation' onFormClose={() => setExpandNewCity(false)} onSubmit={handleAddLocation} />
-        </ReactModal>
+        <LocationForm show={expandNewCity} type='newLocation' onFormClose={() => setExpandNewCity(false)} onSubmit={handleAddLocation} />
       </div>)}<div>
-
         {(isAuthenticated && Number(params.userId) === userData.id) && (<div>
           < button className="max-w-sm rounded overflow-hidden shadow-lg bg-slate-50" onClick={() => setExpandNewNote(true)}>New City Note</button>
-          <ReactModal appElement={document.getElementById('root') || undefined} isOpen={expandNewNote} contentLabel="New City Note Modal" onRequestClose={() => setExpandNewNote(false)}>
-            <NoteForm type='newCityNote' onFormClose={() => setExpandNewNote(false)} onSubmit={handleAddCityNote} />
-          </ReactModal>
+          <NoteForm show={expandNewNote} type='newCityNote' onFormClose={() => setExpandNewNote(false)} onSubmit={handleAddCityNote} />
         </div>)}
         <div>
-
           <details className='bg-white shadow rounded group mb-4' open={categoryExpanded} >
             <summary className='list-none flex flex-wrap items-center cursor-pointer focus-visible:outline-none focus-visible:ring focus-visible:ring-pink-500 rounded group-open:rounded-b-none group-open:z-[1] relative'>
               <h3 className=' flex flex-1 p-4 font-semibold'>General City Notes</h3>
@@ -158,7 +151,6 @@ const CityDetails = () => {
                 <div className='border-8 border-transparent border-l-gray-600 ml2 group-open:rotate-90 transition-transform origin-left'></div>
               </div>
             </summary>
-
             <div>
               {note_comm?.length > 0 && <CityNotesContainer cityNotesData={note_comm} type="communication" onDelCityNote={handleDeleteCityNote} onEditCityNote={handleEditCityNote} />}
               {note_safety?.length > 0 && <CityNotesContainer cityNotesData={note_safety} type="safety" onDelCityNote={handleDeleteCityNote} onEditCityNote={handleEditCityNote} />}
@@ -168,8 +160,6 @@ const CityDetails = () => {
           </details>
         </div>
       </div>
-
-
       {shop?.length > 0 && <CategoryContainer locationData={shop} categoryExpanded={categoryExpanded} type="shop" onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} onEditLocation={handleEditLocation} onEditLocNote={handleEditLocNote} />}
       {mart?.length > 0 && <CategoryContainer locationData={mart} categoryExpanded={categoryExpanded} type="mart" onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} onEditLocation={handleEditLocation} onEditLocNote={handleEditLocNote} />}
       {food?.length > 0 && <CategoryContainer locationData={food} categoryExpanded={categoryExpanded} type="food" onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} onEditLocation={handleEditLocation} onEditLocNote={handleEditLocNote} />}

@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
 import axios from "axios"
-import ReactModal from 'react-modal';
 import { toast } from 'react-hot-toast';
 
 import CityForm from './CityForm';
