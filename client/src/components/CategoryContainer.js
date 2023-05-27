@@ -1,14 +1,16 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import LocationCard from './LocationCard'
 import { useAuth0 } from '@auth0/auth0-react'
+import { NoSymbolIcon, PencilSquareIcon, ChevronDoubleDownIcon, ChevronDoubleUpIcon, ChevronUpIcon, DocumentPlusIcon, MinusCircleIcon, PencilIcon } from '@heroicons/react/24/solid'
 
+import { Disclosure } from '@headlessui/react'
 
-const CategoryContainer = ({ locationData, type, categoryExpanded, onDelLocation, onEditLocation, onNewLocNote, onDelLocNote ,onEditLocNote}) => {
+const CategoryContainer = ({ locationData, type, categoryExpanded, onDelLocation, onEditLocation, onNewLocNote, onDelLocNote, onEditLocNote }) => {
     const { isLoading } = useAuth0();
     const [noteExpanded, setNoteExpanded] = useState(null)
 
     const locationCardsArray = locationData.map((location) => {
-        return <LocationCard key={location.id} locationData={location} noteExpanded={noteExpanded} onDelLocation={onDelLocation} onNewLocNote={onNewLocNote} onDelLocNote={onDelLocNote} onEditLocation={onEditLocation} onEditLocNote={onEditLocNote}/>
+        return <LocationCard key={location.id} locationData={location} noteExpanded={noteExpanded} onDelLocation={onDelLocation} onNewLocNote={onNewLocNote} onDelLocNote={onDelLocNote} onEditLocation={onEditLocation} onEditLocNote={onEditLocNote} />
     })
 
     // render loading message
@@ -16,19 +18,35 @@ const CategoryContainer = ({ locationData, type, categoryExpanded, onDelLocation
 
 
     return (
-        <details className='bg-white shadow rounded group mb-4' open={categoryExpanded} >
-            <summary className='list-none flex flex-wrap items-center cursor-pointer focus-visible:outline-none focus-visible:ring focus-visible:ring-pink-500 rounded group-open:rounded-b-none group-open:z-[1] relative'>
-                <h3 className=' flex flex-1 p-4 font-semibold'>Category Container for {type}</h3>
-                <div className='flex w-10 items-center justify-center'>
-                    <div className='border-8 border-transparent border-l-gray-600 ml2 group-open:rotate-90 transition-transform origin-left'></div>
-                </div>
-            </summary>
-            < button className="max-w-sm rounded overflow-hidden shadow-lg bg-slate-50" onClick={() => setNoteExpanded('open')}>Expand All Notes</button>
-            < button className="max-w-sm rounded overflow-hidden shadow-lg bg-slate-50" onClick={() => setNoteExpanded(null)}>Collapse All Notes</button>
-            <div className='flex grow flex-wrap  justify-around'>
-                {locationCardsArray}
-            </div>
-        </details>
+
+        <Disclosure>
+            {({ open }) => (
+                <>
+                    <div className='flex justify-end items-center '>
+                        <Disclosure.Button className="flex grow justify-between  rounded-lg bg-purple-100 px-4 py-2 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
+                            <span>Category Container for {type}</span>
+                            <ChevronUpIcon className={`${open ? 'rotate-180 transform' : ''} h-5 w-5 text-purple-500`} />
+                        </Disclosure.Button>
+
+                        {/* <button className="flex grow justify-between  rounded-lg bg-purple-100 px-4 py-2 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
+                            <span>Expand All Notes</span>
+                            < ChevronDoubleDownIcon className="h-6 rounded-md text-sky-500  hover:scale-110" onClick={(e) => { e.stopPropagation(); setNoteExpanded('open') }} />
+                        </button>
+                        <button className="flex grow justify-between  rounded-lg bg-purple-100 px-4 py-2 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
+                            <span>Collapse All Notes</span>
+                            < ChevronDoubleUpIcon className="h-6 rounded-md text-sky-500  hover:scale-110" onClick={(e) => { e.stopPropagation(); setNoteExpanded(null)}} />
+                        </button> */}
+
+
+                    </div>
+                    <Disclosure.Panel className="flex grow flex-wrap  place-content-around">
+                        {locationCardsArray}
+                    </Disclosure.Panel>
+                </>
+            )}
+        </Disclosure>
+
+
     )
 }
 

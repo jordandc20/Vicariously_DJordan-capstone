@@ -17,9 +17,11 @@ const CityNotesContainer = ({ cityNotesData, type, onDelCityNote ,onEditCityNote
 
 
     return (
-        <div className='bg-white shadow rounded group mb-4'  >
-            <h3 className=' flex flex-1 p-4 font-semibold'>{type}</h3>
+        <div className='bg-white shadow rounded group my-1'  >
+            <h3 className=' flex flex-1 my-1 mx-2 font-semibold'>{type}</h3>
+            <div className='px-2 py-2 text-sm text-gray-500'>
             {cityNotesArray}
+            </div>
         </div>
     )
 }

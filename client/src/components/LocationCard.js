@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react'
 import { useAuth0 } from '@auth0/auth0-react'
 import { useParams } from 'react-router-dom'
-import { NoSymbolIcon, PencilSquareIcon, ChevronUpIcon, DocumentPlusIcon } from '@heroicons/react/24/solid'
+import { NoSymbolIcon, PencilSquareIcon, ChevronUpIcon, DocumentPlusIcon, MinusCircleIcon, PencilIcon } from '@heroicons/react/24/solid'
 import { Disclosure } from '@headlessui/react'
 import Delete from './Delete';
 import NoteForm from './NoteForm';
@@ -16,7 +16,7 @@ const LocationCard = ({ locationData, noteExpanded, onDelLocation, onEditLocatio
   const params = useParams();
   const [expandDelLocation, setExpandDelLocation] = useState(false);
   const [expandEditLocation, setExpandEditLocation] = useState(false);
-  const [expandNewNote, setExpandNewNote] = useState(false);
+  const [openNoteForm, setOpenNoteForm] = useState(false);
   const [userData] = useContext(UserdataContext);
 
 
@@ -24,25 +24,34 @@ const LocationCard = ({ locationData, noteExpanded, onDelLocation, onEditLocatio
     return <NotesCard key={note.id} noteData={note} onDelNote={onDelLocNote} path='locationnotes' onEditNote={onEditLocNote} />
   })
 
+  let date
+  if (date_visited !== null){
+   date = new Date(date_visited);
+  const month_render = date.getMonth() < 9 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1
+  const day_render = date.getDate() < 10 ? '0' + date.getDate() : date.getDate()
+  date = `${month_render}/${day_render}/${date.getFullYear()}` 
+  }
+  else {date = date_visited}
+
 
   // render loading message
   if (isLoading) { return <div>Loading ...</div> }
 
   return (
-    < div className="rounded hover:scale-105 m-2 shadow-md bg-amber-50" >
+    < div className="w-64 rounded hover:scale-105 m-2 shadow-md bg-amber-50" >
 
       <div className='flex justify-end'>
-        <div className=" grow px-6 py-3">
-          <h3 className="text-gray-700 text-xl font-bold capitalize ">{location_name}</h3>
+        <div className=" grow px-4 py-3">
+          <h3 className="h3 ">{location_name}</h3>
         </div>
         {(isAuthenticated && Number(params.userId) === userData.id) && (
-          <div className='mr-3 mt-1'>
+          <div className='mr-3 mt-3 flex'>
             <div >
-              <PencilSquareIcon className="h-5 w-5 lg:h-7 lg:w-7 mb-1 rounded-md text-sky-500  hover:scale-110" onClick={(e) => { e.stopPropagation(); setExpandEditLocation(true) }} />
+              <PencilSquareIcon className="h-3  lg:h-5  mb-1 rounded-md text-sky-500  hover:scale-110" onClick={(e) => { e.stopPropagation(); setExpandEditLocation(true) }} />
               <LocationForm show={expandEditLocation} locationData={locationData} type='editLocation' onFormClose={() => setExpandEditLocation(false)} onSubmit={onEditLocation} />
             </div>
             <div >
-              <NoSymbolIcon className="h-5 w-5 lg:h-7 lg:w-7  rounded-full text-red-500  hover:scale-110" onClick={(e) => { e.stopPropagation(); setExpandDelLocation(true) }} />
+              <MinusCircleIcon className="h-3 lg:h-5 ml-2   rounded-full bg-red-500 text-white  hover:scale-110" onClick={(e) => { e.stopPropagation(); setExpandDelLocation(true) }} />
               <Delete show={expandDelLocation} idToDel={id} path='locations' name={location_name} onFormClose={() => setExpandDelLocation(false)} onDelete={onDelLocation} />
             </div>
           </div>
@@ -53,39 +62,35 @@ const LocationCard = ({ locationData, noteExpanded, onDelLocation, onEditLocatio
         <br />
         {website && <a className="url" href={website} target="_blank" rel="noreferrer">website</a>}
       </div>
-      <div className="button-div">
+      <div className="button-div mt-2">
         <span className="px-2 py-1 block  bg-gray-200 rounded-xl  text-sm font-semibold text-gray-700 mb-2 ml-2 mr-1">Rating: {rating}</span>
-        <span className="px-2 py-1 block  bg-gray-200 rounded-xl  text-sm font-semibold text-gray-700 mb-2 ml-2 mr-1">Average Cost: {avg_cost}</span>
-        <span className="px-2 py-1 block  bg-gray-200 rounded-xl  text-sm font-semibold text-gray-700 mb-2 ml-2 mr-1">Date Visited: {date_visited}</span>
+        <span className="px-2 py-1 block  bg-gray-200 rounded-xl  text-sm font-semibold text-gray-700 mb-2 ml-2 mr-1">Avg. Cost: {avg_cost}</span>
+        <span className="px-2 py-1 block  bg-gray-200 rounded-xl  text-sm font-semibold text-gray-700 mb-2 ml-2 mr-1">Date: {date}</span>
       </div>
 
       <div className="mx-auto  w-full px-2 py-2 max-w-md rounded-2xl bg-white ">
         <Disclosure>
           {({ open }) => (
             <>
-              <div className='flex justify-end items-center '> 
+              <div className='flex justify-end items-center '>
                 <Disclosure.Button className="flex grow justify-between  rounded-lg bg-purple-100 px-4 py-2 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
                   <span>Notes</span>
-                  <ChevronUpIcon
-                    className={`${open ? 'rotate-180 transform' : ''
-                      } h-5 w-5 text-purple-500`}
-                  />
+                  <ChevronUpIcon className={`${open ? 'rotate-180 transform' : ''} h-5 w-5 text-purple-500`} />
                 </Disclosure.Button>
-                {(isAuthenticated && Number(params.userId) === userData.id) && (<>
-                  < DocumentPlusIcon className="h-6 rounded-md text-sky-500  hover:scale-110" onClick={(e) => { e.stopPropagation(); setExpandNewNote(true) }} />
-                  <NoteForm show={expandNewNote} noteData={{ "location_id": id, }} type='newLocNote' onFormClose={() => setExpandNewNote(false)} onSubmit={onNewLocNote} />
-                </>)}
+                {(isAuthenticated && Number(params.userId) === userData.id) && (
+                  <>
+                    < DocumentPlusIcon className="h-6 rounded-md text-sky-500  hover:scale-110" onClick={(e) => { e.stopPropagation(); setOpenNoteForm(true) }} />
+                    <NoteForm show={openNoteForm} noteData={{ "location_id": id, }} type='newLocNote' onFormClose={() => setOpenNoteForm(false)} onSubmit={onNewLocNote} />
+                  </>
+                )}
               </div>
-
-              <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm text-gray-500">
+              <Disclosure.Panel className="px-2 py-2 text-sm text-gray-500">
                 {locationNotesArray}
               </Disclosure.Panel>
             </>
           )}
         </Disclosure>
       </div>
-
-
     </div >
   )
 }
