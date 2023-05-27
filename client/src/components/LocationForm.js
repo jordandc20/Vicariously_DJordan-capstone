@@ -1,15 +1,16 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import axios from "axios"
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { useParams } from 'react-router-dom'
 import { toast } from 'react-hot-toast';
+import { Dialog, Transition } from '@headlessui/react'
 
 import API_URL from "../apiConfig.js";
 
 // https://regex101.com/r/V5Y7rn/1/
-const LocationForm = ({ locationData, onFormClose, onSubmit, type }) => {
+const LocationForm = ({ locationData, onFormClose, onSubmit, type, show }) => {
   const { isLoading, user } = useAuth0();
   const params = useParams();
 
@@ -95,7 +96,7 @@ const LocationForm = ({ locationData, onFormClose, onSubmit, type }) => {
         {
           success: `Success: ${new_values.location_name}`,
           loading: 'Loading...',
-          error: (err) => `Error: ${err.message}: ${err.response.data.error}`,
+          error: (err) => `Error: ${err.message}: ${err.response.data[Object.keys(err.response.data)[0]]}`
         }
       )
     },
@@ -107,87 +108,104 @@ const LocationForm = ({ locationData, onFormClose, onSubmit, type }) => {
 
 
   return (
-    <div className="grid place-items-center  bg-yellow-50 ">
 
-      <div className="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 ">
-        <h1>{header} Location</h1>
-        <form className="space-y-6" onSubmit={formik.handleSubmit}>
 
-          <label htmlFor="location_name" className="block mb-2 text-sm font-medium text-gray-900 ">Location Name</label>
-          <input id='location_name' type="text" name="location_name" placeholder="Location Name (foreign name)" {...formik.getFieldProps('location_name')}
-          />
-          {formik.touched.location_name && formik.errors.location_name ? (
-            <div>{formik.errors.location_name}</div>
-          ) : null}
+    <Transition appear show={show} as={Fragment}>
+      <Dialog as="div" className="relative z-10" onClose={onFormClose}>
+        <Transition.Child as={Fragment} enter="ease-out duration-300" enterFrom="opacity-0" enterTo="opacity-100" leave="ease-in duration-200" leaveFrom="opacity-100" leaveTo="opacity-0">
+          <div className="fixed inset-0 bg-black bg-opacity-25" />
+        </Transition.Child>
+        <div className="fixed inset-0 overflow-y-auto">
+          <div className="flex min-h-full items-center justify-center p-4 text-center">
+            <Transition.Child as={Fragment} enter="ease-out duration-300" enterFrom="opacity-0 scale-95" enterTo="opacity-100 scale-100" leave="ease-in duration-200" leaveFrom="opacity-100 scale-100" leaveTo="opacity-0 scale-95"                        >
+              <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">
+                  {header} Location
+                </Dialog.Title>
+                <div className="mt-2">
+                  <form className="space-y-6" onSubmit={formik.handleSubmit}>
 
-          <label htmlFor="category" className="block mb-2 text-sm font-medium text-gray-900 ">Category</label>
-          <select id='category' as="select" name="category"  {...formik.getFieldProps('category')}>
-            <option value="Other">Select a Category</option>
-            <option value="Shopping">Shopping</option>
-            <option value="Mart">Mart</option>
-            <option value="FoodDrink">Food/Drink</option>
-            <option value="OutdoorActivity">Outdoor Activity</option>
-            <option value="IndoorActivity">Indoor Activity</option>
-            <option value="Accommodation">Accommodation</option>
-            <option value="Other">Other</option>
-          </select>
-          {formik.touched.category && formik.errors.category ? (
-            <div>{formik.errors.category}</div>
-          ) : null}
+                    <label htmlFor="location_name" className="block mb-2 text-sm font-medium text-gray-900 ">Location Name</label>
+                    <input id='location_name' type="text" name="location_name" placeholder="Location Name (foreign name)" {...formik.getFieldProps('location_name')}
+                    />
+                    {formik.touched.location_name && formik.errors.location_name ? (
+                      <div>{formik.errors.location_name}</div>
+                    ) : null}
 
-          <label htmlFor="avg_cost" className="block mb-2 text-sm font-medium text-gray-900 ">Average Cost</label>
-          <select id='avg_cost' as="select" name="avg_cost"  {...formik.getFieldProps('avg_cost')}>
-            <option value="">Select a price level</option>
-            <option value="0">free</option>
-            <option value="1">$</option>
-            <option value="2">$$</option>
-            <option value="3">$$$</option>
-          </select>
-          {formik.touched.avg_cost && formik.errors.avg_cost ? (
-            <div>{formik.errors.avg_cost}</div>
-          ) : null}
+                    <label htmlFor="category" className="block mb-2 text-sm font-medium text-gray-900 ">Category</label>
+                    <select id='category' as="select" name="category"  {...formik.getFieldProps('category')}>
+                      <option value="Other">Select a Category</option>
+                      <option value="Shopping">Shopping</option>
+                      <option value="Mart">Mart</option>
+                      <option value="FoodDrink">Food/Drink</option>
+                      <option value="OutdoorActivity">Outdoor Activity</option>
+                      <option value="IndoorActivity">Indoor Activity</option>
+                      <option value="Accommodation">Accommodation</option>
+                      <option value="Other">Other</option>
+                    </select>
+                    {formik.touched.category && formik.errors.category ? (
+                      <div>{formik.errors.category}</div>
+                    ) : null}
 
-          <label htmlFor="google_map_url" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Google Maps URL</label>
-          <input id='google_map_url' type="text" name="google_map_url" placeholder="Google Maps URL" {...formik.getFieldProps('google_map_url')} />
-          {formik.touched.google_map_url && formik.errors.google_map_url ? (
-            <div>{formik.errors.google_map_url}</div>
-          ) : null}
+                    <label htmlFor="avg_cost" className="block mb-2 text-sm font-medium text-gray-900 ">Average Cost</label>
+                    <select id='avg_cost' as="select" name="avg_cost"  {...formik.getFieldProps('avg_cost')}>
+                      <option value="">Select a price level</option>
+                      <option value="0">free</option>
+                      <option value="1">$</option>
+                      <option value="2">$$</option>
+                      <option value="3">$$$</option>
+                    </select>
+                    {formik.touched.avg_cost && formik.errors.avg_cost ? (
+                      <div>{formik.errors.avg_cost}</div>
+                    ) : null}
 
-          <label htmlFor="website" className="block mb-2 text-sm font-medium text-gray-900 ">Website</label>
-          <input id='website' type="website" name="website" placeholder="Website" {...formik.getFieldProps('website')} />
-          {formik.touched.website && formik.errors.website ? (
-            <div>{formik.errors.website}</div>
-          ) : null}
+                    <label htmlFor="google_map_url" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Google Maps URL</label>
+                    <input id='google_map_url' type="text" name="google_map_url" placeholder="Google Maps URL" {...formik.getFieldProps('google_map_url')} />
+                    {formik.touched.google_map_url && formik.errors.google_map_url ? (
+                      <div>{formik.errors.google_map_url}</div>
+                    ) : null}
 
-          <label htmlFor="date_visited" className="block mb-2 text-sm font-medium text-gray-900 ">Date Visited</label>
-          <input id='date_visited' type="date_visited" name="date_visited" placeholder="mm/dd/yyyy" {...formik.getFieldProps('date_visited')} />
-          {formik.touched.date_visited && formik.errors.date_visited ? (
-            <div>{formik.errors.date_visited}</div>
-          ) : null}
+                    <label htmlFor="website" className="block mb-2 text-sm font-medium text-gray-900 ">Website</label>
+                    <input id='website' type="website" name="website" placeholder="Website" {...formik.getFieldProps('website')} />
+                    {formik.touched.website && formik.errors.website ? (
+                      <div>{formik.errors.website}</div>
+                    ) : null}
 
-          <label htmlFor="rating" className="block mb-2 text-sm font-medium text-gray-900 ">rating</label>
-          <select type='number' id='rating' as="select" name="rating"   {...formik.getFieldProps('rating')}>
-            <option value="">Select a rating level</option>
-            <option value="0">Never Again</option>
-            <option value="1">Kinda Bad</option>
-            <option value="2">Meh OK</option>
-            <option value="3">Pretty Good</option>
-            <option value="4">Must Go!</option>
-          </select>
-          {formik.touched.rating && formik.errors.rating ? (
-            <div>{formik.errors.rating}</div>
-          ) : null}
+                    <label htmlFor="date_visited" className="block mb-2 text-sm font-medium text-gray-900 ">Date Visited</label>
+                    <input id='date_visited' type="date_visited" name="date_visited" placeholder="mm/dd/yyyy" {...formik.getFieldProps('date_visited')} />
+                    {formik.touched.date_visited && formik.errors.date_visited ? (
+                      <div>{formik.errors.date_visited}</div>
+                    ) : null}
 
-          <button type="submit" className="w-full text-white-100 bg-emerald-400 hover:bg-emerald-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center ">Submit</button>
-          <button type="reset" className="w-full text-white-100 bg-emerald-400 hover:bg-emerald-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center " value="Cancel" onClick={() => {
-            // formik.resetForm();
-            onFormClose()
-          }}>Cancel</button>
-        </form>
+                    <label htmlFor="rating" className="block mb-2 text-sm font-medium text-gray-900 ">rating</label>
+                    <select type='number' id='rating' as="select" name="rating"   {...formik.getFieldProps('rating')}>
+                      <option value="">Select a rating level</option>
+                      <option value="0">Never Again</option>
+                      <option value="1">Kinda Bad</option>
+                      <option value="2">Meh OK</option>
+                      <option value="3">Pretty Good</option>
+                      <option value="4">Must Go!</option>
+                    </select>
+                    {formik.touched.rating && formik.errors.rating ? (
+                      <div>{formik.errors.rating}</div>
+                    ) : null}
+                    <div className='button-div'>
 
-      </div>
+                      <button type="submit" className="form-button">Submit</button>
+                      <button type="reset" className="form-button" value="Cancel" onClick={() => {
+                        // formik.resetForm();
+                        onFormClose()
+                      }}>Cancel</button>
+                    </div>
+                  </form>
+                </div>
+              </Dialog.Panel>
+            </Transition.Child>
+          </div>
+        </div>
+      </Dialog>
+    </Transition>
 
-    </div>
   )
 }
 

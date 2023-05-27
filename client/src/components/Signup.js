@@ -15,8 +15,8 @@ const Signup = () => {
     };
 
     return (
-        <button onClick={handleSignUp}>
-            This_is_the_SignUP_button
+        <button className="form-button  ml-2" onClick={handleSignUp}>
+            Sign Up
         </button>
     );
 }
