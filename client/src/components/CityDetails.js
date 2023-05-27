@@ -13,6 +13,7 @@ import { toast } from 'react-hot-toast';
 import { NoSymbolIcon, PencilSquareIcon, ChevronDoubleDownIcon, ChevronDoubleUpIcon, ChevronUpIcon, DocumentPlusIcon, MinusCircleIcon, PencilIcon } from '@heroicons/react/24/solid'
 
 import { Disclosure } from '@headlessui/react'
+import GoogleMapComponent from './GoogleMapComponent.js';
 
 const CityDetails = () => {
   const [categoryExpanded, setCategoryExpanded] = useState(null)
@@ -138,6 +139,7 @@ const CityDetails = () => {
 
   return (
     <div>
+      <GoogleMapComponent/>
       <h1 className="h1">{cityDetails?.city_name}</h1>
       {(isAuthenticated && Number(params.userId) === userData.id) && (<div>
         < button className="max-w-sm rounded overflow-hidden shadow-lg bg-slate-50" onClick={() => setExpandNewCity(true)}>New Location</button>
