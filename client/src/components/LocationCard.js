@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react'
 import { useAuth0 } from '@auth0/auth0-react'
 import { useParams } from 'react-router-dom'
-import { NoSymbolIcon, PencilSquareIcon, ChevronUpIcon, DocumentPlusIcon, MinusCircleIcon, PencilIcon } from '@heroicons/react/24/solid'
+import { NoSymbolIcon, PencilSquareIcon, ChevronUpIcon, DocumentPlusIcon, MinusCircleIcon, ArrowTopRightOnSquareIcon } from '@heroicons/react/24/solid'
 import { Disclosure } from '@headlessui/react'
 import Delete from './Delete';
 import NoteForm from './NoteForm';
@@ -58,9 +58,9 @@ const LocationCard = ({ locationData, noteExpanded, onDelLocation, onEditLocatio
         )}
       </div>
       <div className='button-div'>
-        {google_map_url && <a className="url" href={google_map_url} target="_blank" rel="noreferrer">Google map</a>}
+        {google_map_url && <a className="url flex items-center" href={google_map_url} target="_blank" rel="noreferrer">Google map<ArrowTopRightOnSquareIcon  className="h-3"/></a>}
         <br />
-        {website && <a className="url" href={website} target="_blank" rel="noreferrer">website</a>}
+        {website && <a className="url flex items-center" href={website} target="_blank" rel="noreferrer">website<ArrowTopRightOnSquareIcon  className="h-3"/></a>}
       </div>
       <div className="button-div mt-2">
         <span className="px-2 py-1 block  bg-gray-200 rounded-xl  text-sm font-semibold text-gray-700 mb-2 ml-2 mr-1">Rating: {rating}</span>
