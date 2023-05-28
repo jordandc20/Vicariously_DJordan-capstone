@@ -1,8 +1,6 @@
 
-import React, { useState, useEffect, useContext } from 'react'
-
-import { GoogleMap, useJsApiLoader, MarkerF, InfoWindow } from '@react-google-maps/api';
-import { useSearchParams } from 'react-router-dom';
+import React, { useState } from 'react'
+import { GoogleMap, useJsApiLoader, MarkerF, InfoWindowF } from '@react-google-maps/api';
 
 // <Marker
 //   position={{ lat: 18.52043, lng: 73.856743 }}
@@ -22,52 +20,21 @@ import { useSearchParams } from 'react-router-dom';
 
 
 
-const containerStyle = {
-  width: '400px',
-  height: '400px'
-};
 
 function GoogleMapComponent({ locations }) {
-
-
+  const [activeMarker, setActiveMarker] = useState(null);
   const key = process.env.REACT_APP_GOOGLE_API
-  const [infoWindowOpen, setInfoWindowOpen] = useState(false);
-  const showInfoWindow = () => { setInfoWindowOpen(true); };
   const [map, setMap] = React.useState(null)
-  const [selected, setSelected] = useState({});
+
+  
+
 
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
     googleMapsApiKey: key
   })
 
-  const markers = locations.map((marker, index) => {
-    if (marker.google_map_url) {
-      let regexp = /!8m2!3d([0-9.]*)!4d([0-9.]*)!16s/g
-      const coordinates = [...marker.google_map_url.matchAll(regexp)]
-      // setLats([...lats, Number(coordinates[0][1])])
-      // setLngs([...lngs, Number(coordinates[0][2])])
-
-      const position = { lat: Number(coordinates[0][1]), lng: Number(coordinates[0][2]) }
-      return (<MarkerF
-        key={index}
-        onClick={() => onSelect(marker.location_name, position)}
-        position={position}
-      />)
-    } else { return null }
-  })
-
-
-  function onSelect(location_name, position) {
-    const x = { name: location_name, location: position };
-    setSelected(x)
-    console.log(x)
-  }
-
-  const center = {
-    lat: 37.552,
-    lng: 126.988
-  };
+  
   const onLoad = marker => {
     console.log('marker: ', marker)
   }
@@ -76,30 +43,59 @@ function GoogleMapComponent({ locations }) {
     setMap(null)
   }, [])
 
+  let lats=[]
+  let lngs =[]
+  const markers = locations.map((marker, index) => {
+    if (marker.google_map_url) {
+      let regexp = /!8m2!3d([0-9.]*)!4d([0-9.]*)!16s/g
+      const coordinates = [...marker.google_map_url.matchAll(regexp)]
+      // setLats([...lats, Number(coordinates[0][1])])
+      // setLngs([...lngs, Number(coordinates[0][2])])
+lats.push( Number(coordinates[0][1]))
+lngs.push( Number(coordinates[0][2]))
+      const position = { lat: Number(coordinates[0][1]), lng: Number(coordinates[0][2]) }
+      return (<MarkerF
+        key={index}
+        onClick={() => handleActiveMarker(index)}
+        position={position}
+      >
+         {activeMarker === index ? (
+            <InfoWindowF onCloseClick={() => setActiveMarker(null)}>
+              <div>{marker.location_name}</div>
+            </InfoWindowF>
+          ) : null}
+      </MarkerF>)
+    } else { return null }
+  })
+
+  const handleActiveMarker = (marker) => {
+    if (marker === activeMarker) {
+      return;
+    }
+    setActiveMarker(marker);
+  };
+
+  const center = {
+    lat: (lats.reduce((a, b) => a + b, 0)/ lats.length),
+    lng: (lngs.reduce((a, b) => a + b, 0)/ lngs.length)
+  };
+
+
   if (!isLoaded) { return <div>Loading ...</div>; }
 
 
   return isLoaded ? (
     <GoogleMap
-      mapContainerStyle={containerStyle}
+      // mapContainerStyle={containerStyle}
+      
+      mapContainerStyle={{ width: "50vw", height: "50vh" }}
       center={center}
       zoom={10}
       onLoad={onLoad}
       onUnmount={onUnmount}
     >
       {markers}
-      {
-        selected.location &&
-        (
-          <InfoWindow
-            position={selected.location}
-            clickable={true}
-            onCloseClick={() => setSelected({})}
-          >
-            <p>{selected.name}</p>
-          </InfoWindow>
-        )
-      }
+      
     </GoogleMap>
   ) : <></>
 }

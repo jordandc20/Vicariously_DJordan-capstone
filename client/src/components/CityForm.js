@@ -92,13 +92,13 @@ const CityForm = ({ locationData, type, onFormClose, onSubmit, show }) => {
                 </Dialog.Title>
                 <div className="mt-2">
                   <form className="space-y-6" onSubmit={formik.handleSubmit}>
-                    <label htmlFor="city_name" className="block mb-2 text-sm font-medium text-gray-900 ">City Name</label>
+                    <label htmlFor="city_name" className="block mb-2 text-sm font-medium text-gray-900 after:content-['*'] after:text-red-700">City Name</label>
                     <input id='city_name' type="text" name="city_name" placeholder="City Name (foreign name)" {...formik.getFieldProps('city_name')}
                     />
                     {formik.touched.city_name && formik.errors.city_name ? (
                       <div>{formik.errors.city_name}</div>
                     ) : null}
-                    <label htmlFor="country" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Country Name</label>
+                    <label htmlFor="country" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white after:content-['*'] after:text-red-700">Country Name</label>
                     <input id='country' type="text" name="country" placeholder="Country Name" {...formik.getFieldProps('country')} />
                     {formik.touched.country && formik.errors.country ? (
                       <div>{formik.errors.country}</div>

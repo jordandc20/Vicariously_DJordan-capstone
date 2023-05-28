@@ -139,8 +139,8 @@ const CityDetails = () => {
 
   return (
     <div>
-      <GoogleMapComponent locations={cityDetails.locations}/>
       <h1 className="h1">{cityDetails?.city_name}</h1>
+     {cityDetails?.locations.length >0 &&  <GoogleMapComponent locations={cityDetails.locations}/>}
       {(isAuthenticated && Number(params.userId) === userData.id) && (<div>
         < button className="max-w-sm rounded overflow-hidden shadow-lg bg-slate-50" onClick={() => setExpandNewCity(true)}>New Location</button>
         <LocationForm show={expandNewCity} type='newLocation' onFormClose={() => setExpandNewCity(false)} onSubmit={handleAddLocation} />
