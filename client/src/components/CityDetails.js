@@ -23,7 +23,7 @@ const CityDetails = () => {
   const { isLoading, isAuthenticated } = useAuth0();
   const params = useParams();
   const [userData] = useContext(UserdataContext);
-
+  const [mapUrls, setMapUrls] = useState([])
 
 
   function fetchCityData() {
@@ -133,13 +133,13 @@ const CityDetails = () => {
   const indoor = cityDetails?.locations.filter(location => location.category === 'IndoorActivity')
   const acc = cityDetails?.locations.filter(location => location.category === 'Accommodation')
   const other = cityDetails?.locations.filter(location => location.category === 'Other')
-
+ 
   // render loading message
   if (isLoading) { return <div>Loading ...</div>; }
 
   return (
     <div>
-      <GoogleMapComponent/>
+      <GoogleMapComponent locations={cityDetails.locations}/>
       <h1 className="h1">{cityDetails?.city_name}</h1>
       {(isAuthenticated && Number(params.userId) === userData.id) && (<div>
         < button className="max-w-sm rounded overflow-hidden shadow-lg bg-slate-50" onClick={() => setExpandNewCity(true)}>New Location</button>
