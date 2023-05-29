@@ -4,6 +4,43 @@
 
 
 /* @layer components { */
+
+
+
+@layer utilities {
+    @variants responsive {
+
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .no-scrollbar::-webkit-scrollbar {
+            display:none;
+        }
+
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .no-scrollbar {
+            -ms-overflow-style:none;
+            /* IE and Edge */
+            scrollbar-width:none;
+            /* Firefox */
+        }
+    }
+
+    .snap {
+        scroll-snap-type:var(--scroll-snap-direction) var(--scroll-snap-constraint);
+    }
+
+    .snap-y {
+        --scroll-snap-direction:y;
+    }
+
+    .snap-mandatory {
+        --scroll-snap-constraint:mandatory;
+    }
+
+    .snap-start {
+        scroll-snap-align:start;
+    }
+}
+
 .url {
     @apply underline text-blue-600 hover:text-lg visited:text-purple-800
 }
@@ -14,11 +51,11 @@
 
 .form-button {
     @apply inline-flex justify-center rounded-md border border-transparent bg-sky-200 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-sky-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2
-    /* @apply px-6 py-2 block  text-base font-semibold text-white bg-sky-500 rounded-xl hover:bg-sky-600 hover:scale-105 transition duration-200 ease-in-out */
+        /* @apply px-6 py-2 block  text-base font-semibold text-white bg-sky-500 rounded-xl hover:bg-sky-600 hover:scale-105 transition duration-200 ease-in-out */
 }
 
 .button-div {
-    @apply flex justify-evenly md:flex-wrap 
+    @apply flex justify-evenly md:flex-wrap
 }
 
 .open-dialog-button {
@@ -30,6 +67,5 @@
 }
 
 .h3 {
-    @apply text-lg text-gray-700  font-bold capitalize
+    @apply text-lg text-gray-700 font-bold capitalize
 }
-
