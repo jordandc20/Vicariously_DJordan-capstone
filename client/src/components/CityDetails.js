@@ -25,7 +25,7 @@ const CityDetails = () => {
   const [userData] = useContext(UserdataContext);
   const [mapUrls, setMapUrls] = useState([])
 
-
+  // https://www.skillthrive.com/posts/react-resizable-split-panels
   function fetchCityData() {
     toast.promise(
       axios.get(`${API_URL}/cities/${params.cityId}`)
@@ -160,7 +160,7 @@ const CityDetails = () => {
                     </>
                   )}
                 </div>
-                <Disclosure.Panel className="flex grow flex-wrap  place-content-around">
+                <Disclosure.Panel className="flex  overflow-y-scroll justify-between flex-wrap">
                   {note_comm?.length > 0 && <CityNotesContainer cityNotesData={note_comm} type="communication" onDelCityNote={handleDeleteCityNote} onEditCityNote={handleEditCityNote} />}
                   {note_safety?.length > 0 && <CityNotesContainer cityNotesData={note_safety} type="safety" onDelCityNote={handleDeleteCityNote} onEditCityNote={handleEditCityNote} />}
                   {note_transp?.length > 0 && <CityNotesContainer cityNotesData={note_transp} type="transportation" onDelCityNote={handleDeleteCityNote} onEditCityNote={handleEditCityNote} />}
