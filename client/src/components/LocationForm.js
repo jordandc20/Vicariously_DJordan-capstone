@@ -125,7 +125,7 @@ const LocationForm = ({ locationData, onFormClose, onSubmit, type, show }) => {
                 <div className="mt-2">
                   <form className="space-y-6" onSubmit={formik.handleSubmit}>
 
-                    <label htmlFor="location_name" className="block mb-2 text-sm font-medium text-gray-900 ">Location Name</label>
+                    <label htmlFor="location_name" className="block mb-2 text-sm font-medium text-gray-900 after:content-['*'] after:text-red-700">Location Name</label>
                     <input id='location_name' type="text" name="location_name" placeholder="Location Name (foreign name)" {...formik.getFieldProps('location_name')}
                     />
                     {formik.touched.location_name && formik.errors.location_name ? (

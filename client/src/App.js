@@ -23,7 +23,7 @@ function App() {
   return (
     <>
     <div><Toaster/></div>
-    <div className=" bg-white-100 h-screen">
+    <div className=" bg-white-100 h-screen flex flex-col   ">
       <UserdataProvider >
         <Navbar />
         <Routes>

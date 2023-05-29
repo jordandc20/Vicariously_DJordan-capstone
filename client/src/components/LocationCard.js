@@ -79,7 +79,7 @@ const LocationCard = ({ locationData, noteExpanded, onDelLocation, onEditLocatio
                 </Disclosure.Button>
                 {(isAuthenticated && Number(params.userId) === userData.id) && (
                   <>
-                    < DocumentPlusIcon className="h-6 rounded-md text-sky-500  hover:scale-110" onClick={(e) => { e.stopPropagation(); setOpenNoteForm(true) }} />
+                    < DocumentPlusIcon className="h-6 rounded-md text-sky-500 object-scale-down  hover:scale-110" onClick={(e) => { e.stopPropagation(); setOpenNoteForm(true) }} />
                     <NoteForm show={openNoteForm} noteData={{ "location_id": id, }} type='newLocNote' onFormClose={() => setOpenNoteForm(false)} onSubmit={onNewLocNote} />
                   </>
                 )}

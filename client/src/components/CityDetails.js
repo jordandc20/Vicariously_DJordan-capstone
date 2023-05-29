@@ -10,9 +10,10 @@ import NoteForm from './NoteForm';
 import { UserdataContext } from "../context/UserData";
 import { toast } from 'react-hot-toast';
 
-import { NoSymbolIcon, PencilSquareIcon, ChevronDoubleDownIcon, ChevronDoubleUpIcon, ChevronUpIcon, DocumentPlusIcon, MinusCircleIcon, PencilIcon } from '@heroicons/react/24/solid'
+import { SquaresPlusIcon, PencilSquareIcon, ChevronDoubleDownIcon, ChevronDoubleUpIcon, ChevronUpIcon, DocumentPlusIcon, MinusCircleIcon, PencilIcon } from '@heroicons/react/24/solid'
 
 import { Disclosure } from '@headlessui/react'
+import GoogleMapComponent from './GoogleMapComponent.js';
 
 const CityDetails = () => {
   const [categoryExpanded, setCategoryExpanded] = useState(null)
@@ -22,7 +23,7 @@ const CityDetails = () => {
   const { isLoading, isAuthenticated } = useAuth0();
   const params = useParams();
   const [userData] = useContext(UserdataContext);
-
+  const [mapUrls, setMapUrls] = useState([])
 
 
   function fetchCityData() {
@@ -137,20 +138,19 @@ const CityDetails = () => {
   if (isLoading) { return <div>Loading ...</div>; }
 
   return (
-    <div>
-      <h1 className="h1">{cityDetails?.city_name}</h1>
-      {(isAuthenticated && Number(params.userId) === userData.id) && (<div>
-        < button className="max-w-sm rounded overflow-hidden shadow-lg bg-slate-50" onClick={() => setExpandNewCity(true)}>New Location</button>
-        <LocationForm show={expandNewCity} type='newLocation' onFormClose={() => setExpandNewCity(false)} onSubmit={handleAddLocation} />
-      </div>)}<div>
-
-        <div>
-          <Disclosure>
+    <div  className=' flex-1 max-h-full flex flex-col  '>
+        <div className='flex justify-center'>
+      <h1 className="h1 ">{cityDetails?.city_name}</h1>
+     </div>
+     
+      <div>
+        <div className="border-b border-gray-300  shadow-md">
+          <Disclosure >
             {({ open }) => (
               <>
                 <div className='flex justify-end items-center '>
                   <Disclosure.Button className="flex grow justify-between  rounded-lg bg-purple-100 px-4 py-2 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
-                    <span>General City Notes</span>
+                    <span>About {cityDetails?.city_name}</span>
                     <ChevronUpIcon className={`${open ? 'rotate-180 transform' : ''} h-5 w-5 text-purple-500`} />
                   </Disclosure.Button>
                   {(isAuthenticated && Number(params.userId) === userData.id) && (
@@ -171,13 +171,30 @@ const CityDetails = () => {
           </Disclosure>
         </div>
       </div>
-      {shop?.length > 0 && <CategoryContainer locationData={shop} categoryExpanded={categoryExpanded} type="shop" onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} onEditLocation={handleEditLocation} onEditLocNote={handleEditLocNote} />}
-      {mart?.length > 0 && <CategoryContainer locationData={mart} categoryExpanded={categoryExpanded} type="mart" onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} onEditLocation={handleEditLocation} onEditLocNote={handleEditLocNote} />}
-      {food?.length > 0 && <CategoryContainer locationData={food} categoryExpanded={categoryExpanded} type="food" onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} onEditLocation={handleEditLocation} onEditLocNote={handleEditLocNote} />}
-      {outdoor?.length > 0 && <CategoryContainer locationData={outdoor} categoryExpanded={categoryExpanded} type="outdoor" onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} onEditLocation={handleEditLocation} onEditLocNote={handleEditLocNote} />}
-      {indoor?.length > 0 && <CategoryContainer locationData={indoor} categoryExpanded={categoryExpanded} type="indoor" onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} onEditLocation={handleEditLocation} onEditLocNote={handleEditLocNote} />}
-      {acc?.length > 0 && <CategoryContainer locationData={acc} categoryExpanded={categoryExpanded} type="acc" onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} onEditLocation={handleEditLocation} onEditLocNote={handleEditLocNote} />}
-      {other?.length > 0 && <CategoryContainer locationData={other} categoryExpanded={categoryExpanded} type="other" onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} onEditLocation={handleEditLocation} onEditLocNote={handleEditLocNote} />}
+      <div className="flex justify-center py-2 items-center">
+<div className='flex-1'/>
+<h2  >My Places in {cityDetails?.city_name}</h2>
+<div className='flex-1'/>
+{(isAuthenticated && Number(params.userId) === userData.id) && (<div>
+        < SquaresPlusIcon className="h-7 w-7 lg:h-9 lg:w-8 mr-3 rounded text-sky-500 border-2 border-amber-400 hover:scale-105" onClick={() => setExpandNewCity(true)}/>
+        <LocationForm show={expandNewCity} type='newLocation' onFormClose={() => setExpandNewCity(false)} onSubmit={handleAddLocation} />
+      </div>)}
+</div>
+
+      <div className='p-4 grid md:grid-cols-5 gap-3 max-h-full h-full flex-initial '>
+        <div className='h-[40vh] md:h-full  md:col-span-2'>
+          {cityDetails?.locations.length > 0 && <GoogleMapComponent locations={cityDetails.locations} />}
+        </div>
+        <div className='overflow-y-scroll md:col-span-3 flex-initial bg-blue-200' >
+          {shop?.length > 0 && <CategoryContainer locationData={shop} categoryExpanded={categoryExpanded} type="shopping" onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} onEditLocation={handleEditLocation} onEditLocNote={handleEditLocNote} />}
+          {mart?.length > 0 && <CategoryContainer locationData={mart} categoryExpanded={categoryExpanded} type="marts" onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} onEditLocation={handleEditLocation} onEditLocNote={handleEditLocNote} />}
+          {food?.length > 0 && <CategoryContainer locationData={food} categoryExpanded={categoryExpanded} type="food/drinks" onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} onEditLocation={handleEditLocation} onEditLocNote={handleEditLocNote} />}
+          {outdoor?.length > 0 && <CategoryContainer locationData={outdoor} categoryExpanded={categoryExpanded} type="outdoor" onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} onEditLocation={handleEditLocation} onEditLocNote={handleEditLocNote} />}
+          {indoor?.length > 0 && <CategoryContainer locationData={indoor} categoryExpanded={categoryExpanded} type="indoor" onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} onEditLocation={handleEditLocation} onEditLocNote={handleEditLocNote} />}
+          {acc?.length > 0 && <CategoryContainer locationData={acc} categoryExpanded={categoryExpanded} type="accommodation" onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} onEditLocation={handleEditLocation} onEditLocNote={handleEditLocNote} />}
+          {other?.length > 0 && <CategoryContainer locationData={other} categoryExpanded={categoryExpanded} type="other" onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} onEditLocation={handleEditLocation} onEditLocNote={handleEditLocNote} />}
+      </div>
+      </div>
     </div>
   )
 }

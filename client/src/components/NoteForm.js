@@ -110,7 +110,7 @@ const NoteForm = ({ noteData, onFormClose, onSubmit, type,show }) => {
                 <div className="mt-2">
                   <form className="space-y-6" onSubmit={formik.handleSubmit}>
 
-                    <label htmlFor="note_body" className="block mb-2 text-sm font-medium text-gray-900 ">Note Text</label>
+                    <label htmlFor="note_body" className="block mb-2 text-sm font-medium text-gray-900 after:content-['*'] after:text-red-700">Note Text</label>
                     <input id='note_body' type="text" name="note_body" placeholder="note text" {...formik.getFieldProps('note_body')}
                     />
                     {formik.touched.note_body && formik.errors.note_body ? (
