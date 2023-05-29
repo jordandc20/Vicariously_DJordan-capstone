@@ -83,12 +83,12 @@ lngs.push( Number(coordinates[0][2]))
 
   if (!isLoaded) { return <div>Loading ...</div>; }
 
-
+ 
   return isLoaded ? (
     <GoogleMap
       // mapContainerStyle={containerStyle}
       
-      mapContainerStyle={{ width: "50vw", height: "50vh" }}
+      mapContainerStyle={{ width: "100%", height: "100%" }}
       center={center}
       zoom={10}
       onLoad={onLoad}
