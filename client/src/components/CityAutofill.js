@@ -41,6 +41,7 @@ const CityAutofill = ({ locationData, type, onFormClose, onSubmit, show }) => {
         initialValues: {
             city_name: city_name,
             country: country,
+            city_imgs: '',
             user_id: user_id
         },
         validationSchema: yup.object({
@@ -50,6 +51,7 @@ const CityAutofill = ({ locationData, type, onFormClose, onSubmit, show }) => {
         validateOnChange: false,
         validateOnBlur: false,
         onSubmit: values => {
+
             const new_values = { ...values }
             new_values['val_user_email'] = user.email
             toast.promise(
@@ -94,7 +96,7 @@ const CityAutofill = ({ locationData, type, onFormClose, onSubmit, show }) => {
             options
         );
         autoCompleteRef.current.addListener("place_changed", async function () {
-            const place = await autoCompleteRef.current.getPlace();
+           const  place = await autoCompleteRef.current.getPlace();
             console.log({ place })
             // Get each component of the address from the place details,
             // and then fill-in the corresponding field on the form.
@@ -119,14 +121,19 @@ const CityAutofill = ({ locationData, type, onFormClose, onSubmit, show }) => {
                         break;
                 }
             }
-            let city_imgs = []
-            place.photos.forEach(function (placePhoto) {
-                city_imgs.push(placePhoto.getUrl({
+
+            const city_imgs = []
+
+            place.photos.forEach(function (placePhoto) { 
+               city_imgs.push(placePhoto.getUrl({
                     maxWidth: 600,
                     maxHeight: 400
                 }))
-            });
-            console.log(city_imgs);
+            })
+            console.log(city_imgs.join(", "));
+            formik.values.city_imgs = city_imgs;
+            ;
+
         });
     }, []);
 
@@ -136,12 +143,12 @@ const CityAutofill = ({ locationData, type, onFormClose, onSubmit, show }) => {
 
     return (
         <div>
-               <h2 className="text-lg font-medium leading-6 text-gray-900">
-                  {header} City
-                </h2>
+            <h2 className="text-lg font-medium leading-6 text-gray-900">
+                {header} City
+            </h2>
             <form id="address-form" className="space-y-6" onSubmit={formik.handleSubmit}>
-                <label class="full-field">
-                    <span class="form-label">Deliver to*</span>
+                <label Name="full-field">
+                    <span Name="form-label">City Search: </span>
                     <input
                         ref={inputRef}
                         id="ship-address"

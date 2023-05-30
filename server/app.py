@@ -139,6 +139,7 @@ class Cities(Resource):
                 city_name=data['city_name'],
                 country=data['country'],
                 user_id=data['user_id'],
+                city_imgs=data['city_imgs'],
             )
             db.session.add(new_city)
             db.session.commit()

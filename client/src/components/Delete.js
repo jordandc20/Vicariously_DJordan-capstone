@@ -11,7 +11,6 @@ const Delete = ({ onDelete, onFormClose, idToDel, path, name, show }) => {
     const { user, isLoading } = useAuth0();
     const params = useParams();
 
-console.log(params)
     function handleDelete() {
         const new_values = {
             val_user_email: user.email,
