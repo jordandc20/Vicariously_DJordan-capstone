@@ -25,7 +25,7 @@ root.render(
     >
       <BrowserRouter>
         <App />
-      </BrowserRouter>,
+      </BrowserRouter>
     </Auth0Provider>
   </React.StrictMode>
 );

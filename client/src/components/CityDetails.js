@@ -138,7 +138,7 @@ const CityDetails = () => {
   if (isLoading) { return <div>Loading ...</div>; }
 
   return (
-    <div className=' flex-1 max-h-full flex flex-col  '>
+    <div className=' flex-1 max-h-full h-full flex flex-col  '>
       <div className='flex justify-center'>
         <h1 className="h1 ">{cityDetails?.city_name}</h1>
       </div>
@@ -178,7 +178,8 @@ const CityDetails = () => {
           {(isAuthenticated && Number(params.userId) === userData.id) && (<div>
             < SquaresPlusIcon className="ml-auto h-7 w-7 lg:h-9 lg:w-8 mr-3 rounded text-sky-500 border-2 border-amber-400 hover:scale-105" onClick={() => setExpandNewCity(true)} />
             <LocationForm show={expandNewCity} type='newLocation' onFormClose={() => setExpandNewCity(false)} onSubmit={handleAddLocation} />
-          </div>)}</div>
+          </div>)}
+        </div>
       </div>
 
       <div className='p-4 grid md:grid-cols-5 gap-3 max-h-full h-full flex-initial '>
