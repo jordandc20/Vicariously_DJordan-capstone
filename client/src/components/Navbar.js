@@ -37,7 +37,7 @@ const Navbar = () => {
 
 
   return (
-    <header className="sticky top-0  border-b border-gray-300 bg-white shadow-lg py-2">
+    <header className="sticky top-0 z-50 border-b border-gray-300 bg-white shadow-lg py-2">
       <div className='flex flex-wrap items-center justify-between  lg:mx-auto max-w-full pl-[3%]  pr-[1%]  w-full'>
         <NavLink to='/' >
           <img src={logo} className='object-scale-down md:h-12 h-9' alt='Vicariously logo' />

@@ -138,11 +138,11 @@ const CityDetails = () => {
   if (isLoading) { return <div>Loading ...</div>; }
 
   return (
-    <div  className=' flex-1 max-h-full flex flex-col  '>
-        <div className='flex justify-center'>
-      <h1 className="h1 ">{cityDetails?.city_name}</h1>
-     </div>
-     
+    <div className=' flex-1 max-h-full flex flex-col  '>
+      <div className='flex justify-center'>
+        <h1 className="h1 ">{cityDetails?.city_name}</h1>
+      </div>
+
       <div>
         <div className="border-b border-gray-300  shadow-md">
           <Disclosure >
@@ -172,14 +172,14 @@ const CityDetails = () => {
         </div>
       </div>
       <div className="flex justify-center py-2 items-center">
-<div className='flex-1'/>
-<h2  >My Places in {cityDetails?.city_name}</h2>
-<div className='flex-1'/>
-{(isAuthenticated && Number(params.userId) === userData.id) && (<div>
-        < SquaresPlusIcon className="h-7 w-7 lg:h-9 lg:w-8 mr-3 rounded text-sky-500 border-2 border-amber-400 hover:scale-105" onClick={() => setExpandNewCity(true)}/>
-        <LocationForm show={expandNewCity} type='newLocation' onFormClose={() => setExpandNewCity(false)} onSubmit={handleAddLocation} />
-      </div>)}
-</div>
+        <div className='flex-1' />
+        <h2  >My Places in {cityDetails?.city_name}</h2>
+        <div className='flex-1' >
+          {(isAuthenticated && Number(params.userId) === userData.id) && (<div>
+            < SquaresPlusIcon className="ml-auto h-7 w-7 lg:h-9 lg:w-8 mr-3 rounded text-sky-500 border-2 border-amber-400 hover:scale-105" onClick={() => setExpandNewCity(true)} />
+            <LocationForm show={expandNewCity} type='newLocation' onFormClose={() => setExpandNewCity(false)} onSubmit={handleAddLocation} />
+          </div>)}</div>
+      </div>
 
       <div className='p-4 grid md:grid-cols-5 gap-3 max-h-full h-full flex-initial '>
         <div className='h-[40vh] md:h-full  md:col-span-2'>
@@ -193,7 +193,7 @@ const CityDetails = () => {
           {indoor?.length > 0 && <CategoryContainer locationData={indoor} categoryExpanded={categoryExpanded} type="indoor" onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} onEditLocation={handleEditLocation} onEditLocNote={handleEditLocNote} />}
           {acc?.length > 0 && <CategoryContainer locationData={acc} categoryExpanded={categoryExpanded} type="accommodation" onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} onEditLocation={handleEditLocation} onEditLocNote={handleEditLocNote} />}
           {other?.length > 0 && <CategoryContainer locationData={other} categoryExpanded={categoryExpanded} type="other" onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} onEditLocation={handleEditLocation} onEditLocNote={handleEditLocNote} />}
-      </div>
+        </div>
       </div>
     </div>
   )
