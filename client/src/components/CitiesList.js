@@ -62,10 +62,10 @@ const CitiesList = () => {
   if (error) { return <div>Oops... {error.message}</div>; }
 
   return (
-    <div className=' h-screen '>
+    <div className=' h-full '>
       <div className='flex flex-col w-full'>
         <div className='flex justify-center'>
-          <h1 className="h1">{pageUser.username}  Cities</h1>
+          <h1 className="h1">{pageUser.username}'s Cities</h1>
         </div>
         <div className='flex justify-center'>
           <span className="inline-block bg-gray-200 rounded-bl-xl rounded-tr-xl px-3 py-1 text-sm font-semibold text-gray-700 mx-3 ">Cities Visited: {cities.length}</span>
@@ -77,7 +77,7 @@ const CitiesList = () => {
               <CityForm show={isOpen} type='newCity' onFormClose={() => setIsOpen(false)} onSubmit={handleAddCity} />
           </div>)}
       </div>
-      <div className='flex grow flex-wrap  place-content-around'>
+      <div className='flex h-full grow bg-purple-400 flex-wrap  justify-evenly'>
         {cityCardsArray}
       </div>
     </div>

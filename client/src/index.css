@@ -63,7 +63,7 @@
 }
 
 .h1 {
-    @apply text-2xl
+    @apply text-2xl py-3
 }
 
 .h3 {

@@ -31,7 +31,7 @@ const CityCard = ({ cityData, onDelCity, handleEditCity }) => {
     < div className="rounded hover:scale-105 m-2 shadow-md bg-amber-50"  onClick={handleCityCardClick} >
         <div className='flex justify-end'>
           <div className=" grow px-6 py-3">
-            <h3 className="text-gray-700 text-xl text-base font-bold capitalize ">{city_name}</h3>
+            <h3 className="text-gray-700 text-xl  font-bold capitalize ">{city_name}</h3>
             <p className=" text-m mb-2 capitalize">{country}</p>
           </div>
           {(isAuthenticated && Number(params.userId) === userData.id) && (

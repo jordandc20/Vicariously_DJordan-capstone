@@ -26,7 +26,7 @@ function GoogleMapComponent({ locations }) {
   const key = process.env.REACT_APP_GOOGLE_API
   const [map, setMap] = React.useState(null)
 
-  
+
 
 
   const { isLoaded } = useJsApiLoader({
@@ -34,7 +34,7 @@ function GoogleMapComponent({ locations }) {
     googleMapsApiKey: key
   })
 
-  
+
   const onLoad = marker => {
     console.log('marker: ', marker)
   }
@@ -43,27 +43,25 @@ function GoogleMapComponent({ locations }) {
     setMap(null)
   }, [])
 
-  let lats=[]
-  let lngs =[]
+  let lats = []
+  let lngs = []
   const markers = locations.map((marker, index) => {
     if (marker.google_map_url) {
       let regexp = /!8m2!3d([0-9.]*)!4d([0-9.]*)!16s/g
       const coordinates = [...marker.google_map_url.matchAll(regexp)]
-      // setLats([...lats, Number(coordinates[0][1])])
-      // setLngs([...lngs, Number(coordinates[0][2])])
-lats.push( Number(coordinates[0][1]))
-lngs.push( Number(coordinates[0][2]))
+      lats.push(Number(coordinates[0][1]))
+      lngs.push(Number(coordinates[0][2]))
       const position = { lat: Number(coordinates[0][1]), lng: Number(coordinates[0][2]) }
       return (<MarkerF
         key={index}
         onClick={() => handleActiveMarker(index)}
         position={position}
       >
-         {activeMarker === index ? (
-            <InfoWindowF onCloseClick={() => setActiveMarker(null)}>
-              <div>{marker.location_name}</div>
-            </InfoWindowF>
-          ) : null}
+        {activeMarker === index ? (
+          <InfoWindowF onCloseClick={() => setActiveMarker(null)}>
+            <div>{marker.location_name}</div>
+          </InfoWindowF>
+        ) : null}
       </MarkerF>)
     } else { return null }
   })
@@ -76,18 +74,18 @@ lngs.push( Number(coordinates[0][2]))
   };
 
   const center = {
-    lat: (lats.reduce((a, b) => a + b, 0)/ lats.length),
-    lng: (lngs.reduce((a, b) => a + b, 0)/ lngs.length)
+    lat: (lats.reduce((a, b) => a + b, 0) / lats.length),
+    lng: (lngs.reduce((a, b) => a + b, 0) / lngs.length)
   };
 
 
   if (!isLoaded) { return <div>Loading ...</div>; }
 
- 
+
   return isLoaded ? (
     <GoogleMap
       // mapContainerStyle={containerStyle}
-      
+
       mapContainerStyle={{ width: "100%", height: "100%" }}
       center={center}
       zoom={10}
@@ -95,7 +93,7 @@ lngs.push( Number(coordinates[0][2]))
       onUnmount={onUnmount}
     >
       {markers}
-      
+
     </GoogleMap>
   ) : <></>
 }
