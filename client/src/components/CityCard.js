@@ -6,6 +6,7 @@ import { NoSymbolIcon, PencilSquareIcon } from '@heroicons/react/24/solid'
 import Delete from './Delete';
 import { UserdataContext } from "../context/UserData";
 import CityForm from './CityForm';
+import Carousel from './Carousel';
 
 const CityCard = ({ cityData, onDelCity, handleEditCity }) => {
   const [userData] = useContext(UserdataContext);
@@ -14,7 +15,7 @@ const CityCard = ({ cityData, onDelCity, handleEditCity }) => {
   const [expandEditCity, setExpandEditCity] = useState(false);
   const params = useParams();
   const navigate = useNavigate()
-  const { city_name, city_notes, country, id, locations, user_id } = cityData;
+  const { city_name, city_notes, country, id, locations, user_id ,city_imgs} = cityData;
 
   if (!cityData) { return <div>Loading city data...</div> }
 
@@ -28,9 +29,9 @@ const CityCard = ({ cityData, onDelCity, handleEditCity }) => {
 
 
   return (
-    < div className="rounded hover:scale-105 m-2 shadow-md bg-amber-50"  onClick={handleCityCardClick} >
-        <div className='flex justify-end'>
-          <div className=" grow px-6 py-3">
+    < div className="rounded hover:scale-105 m-2 shadow-md bg-amber-50"   >
+        <div className='flex justify-end cursor-pointer'  onClick={handleCityCardClick}>
+          <div className=" grow px-6 py-3" >
             <h3 className="text-gray-700 text-xl  font-bold capitalize ">{city_name}</h3>
             <p className=" text-m mb-2 capitalize">{country}</p>
           </div>
@@ -52,8 +53,10 @@ const CityCard = ({ cityData, onDelCity, handleEditCity }) => {
           <span className="px-2 py-1 block  bg-gray-200 rounded-xl  text-sm font-semibold text-gray-700 mb-2 ml-2 mr-1">City notes: {city_notes.length}</span>
           <span className="px-2 py-1 block  bg-gray-200 rounded-xl  text-sm font-semibold text-gray-700 mb-2 mr-2 ml-1">Places: {locations.length}</span>
         </div>
+        <Carousel images={city_imgs}/>
       </div>
   )
 }
 
 export default CityCard
+
