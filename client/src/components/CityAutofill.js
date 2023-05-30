@@ -96,7 +96,7 @@ const CityAutofill = ({ locationData, type, onFormClose, onSubmit, show }) => {
             options
         );
         autoCompleteRef.current.addListener("place_changed", async function () {
-           const  place = await autoCompleteRef.current.getPlace();
+            const place = await autoCompleteRef.current.getPlace();
             console.log({ place })
             // Get each component of the address from the place details,
             // and then fill-in the corresponding field on the form.
@@ -124,8 +124,8 @@ const CityAutofill = ({ locationData, type, onFormClose, onSubmit, show }) => {
 
             const city_imgs = []
 
-            place.photos.forEach(function (placePhoto) { 
-               city_imgs.push(placePhoto.getUrl({
+            place.photos.forEach(function (placePhoto) {
+                city_imgs.push(placePhoto.getUrl({
                     maxWidth: 600,
                     maxHeight: 400
                 }))
@@ -146,24 +146,27 @@ const CityAutofill = ({ locationData, type, onFormClose, onSubmit, show }) => {
             <h2 className="text-lg font-medium leading-6 text-gray-900">
                 {header} City
             </h2>
-            <form id="address-form" className="space-y-6" onSubmit={formik.handleSubmit}>
-                <label Name="full-field">
-                    <span Name="form-label">City Search: </span>
-                    <input
-                        ref={inputRef}
-                        id="ship-address"
-                        name="ship-address"
-
-                        autocomplete="off"
-                    />
-                </label>
-
-                <label htmlFor="city_name" className="block mb-2 text-sm font-medium text-gray-900 after:content-['*'] after:text-red-700">City Name</label>
-                <input id='city_name' type="text" name="city_name" placeholder="City Name" {...formik.getFieldProps('city_name')} />
-                {formik.touched.city_name && formik.errors.city_name ? (
-                    <div>{formik.errors.city_name}</div>
-                ) : null}
-
+            <form id="address-form" className="py-4" onSubmit={formik.handleSubmit}>
+                <div className='py-4 border-b-2 border-opacity-50   border-slate-500 '>
+                    <label Name="full-field">
+                        <span Name="form-label">City Search: </span>
+                        <input autoFocus
+                            ref={inputRef}
+                            id="city-autofill"
+                            name="city-autofill"
+                            autocomplete="off"
+                            placeholder=" start typing a city"
+                        />
+                    </label>
+                </div>
+                <h3 className="text-md my-3">You entered: </h3>
+                <div>
+                    <label htmlFor="city_name" className="block mb-2 text-sm font-medium text-gray-900 after:content-['*'] after:text-red-700">City Name</label>
+                    <input id='city_name' type="text" name="city_name" placeholder="City Name" {...formik.getFieldProps('city_name')} />
+                    {formik.touched.city_name && formik.errors.city_name ? (
+                        <div>{formik.errors.city_name}</div>
+                    ) : null}
+                </div>
                 <label htmlFor="state" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white ">State/Province Name</label>
                 <input id='state' type="text" name="state" placeholder="state Name" {...formik.getFieldProps('state')} />
 

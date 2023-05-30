@@ -2,19 +2,17 @@ import React, { useState, useContext,useEffect } from 'react'
 
 let count = 0;
 const Carousel = ({images}) => {
-  console.log(images)
-  const featuredImages = ['https://bit.ly/3CoiKiQ', 'https://bit.ly/3DtZm5p', 'https://bit.ly/3l52A8v'];
     const [currentIndex, setCurrentIndex] = useState(0);
     const handleOnNextClick = () => {
       count = (count + 1) % images.length;
       setCurrentIndex(count);
     };
 
-    const handleOnPrevClick = () => {
-      const productsLength = images.length;
-      count = (currentIndex + productsLength - 1) % productsLength;
-      setCurrentIndex(count);
-    };
+    // const handleOnPrevClick = () => {
+    //   const productsLength = images.length;
+    //   count = (currentIndex + productsLength - 1) % productsLength;
+    //   setCurrentIndex(count);
+    // };
 
     useEffect(() => {
       startSlider();
