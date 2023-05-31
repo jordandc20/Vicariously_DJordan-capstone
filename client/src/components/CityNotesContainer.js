@@ -17,7 +17,7 @@ const CityNotesContainer = ({ cityNotesData, type, onDelCityNote ,onEditCityNote
 
 
     return (
-        <div className='bg-white grow  group my-1 px-2 h-full self-start'  >
+        <div className='bg-transparent grow  group my-1 px-2 h-full self-start'  >
             <h3 className=' flex flex-1 my-1 mx-2 h3'>{type}</h3>
             <div className='px-2 py-2 text-sm divide-y   text-gray-500 '>
             {cityNotesArray}

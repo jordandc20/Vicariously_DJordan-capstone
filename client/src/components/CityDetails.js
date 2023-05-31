@@ -55,7 +55,7 @@ const CityDetails = () => {
 
   function handleAddCityNote(newCityNote) {
     setCityDetails({
-      ...cityDetails, city_notes: [ newCityNote, ...cityDetails.city_notes],
+      ...cityDetails, city_notes: [newCityNote, ...cityDetails.city_notes],
     })
   }
 
@@ -67,7 +67,7 @@ const CityDetails = () => {
           if (loc.id === newLocNote.location_id) {
             return (
               {
-                ...loc, location_notes: [newLocNote, ...loc.location_notes ],
+                ...loc, location_notes: [newLocNote, ...loc.location_notes],
               })
           } else { return loc }
         })
@@ -142,14 +142,17 @@ const CityDetails = () => {
   if (isLoading) { return <div>Loading ...</div>; }
 
   return (
-    <div className=' max-h-full h-full flex flex-col my-3 bg-green-200  '>
-      <div className='flex justify-center'>
-        <h1 className="h1">{cityDetails?.city_name}</h1>
-
+    <div className=' max-h-full h-full flex flex-col my-3  '>
+      <div className='flex mt-2 justify-center  w-full'>
+        <div className='flex h-fit mb-1  z-25 relative '>
+          <span class="block absolute shadow -inset-1 -skew-y-12 translate-x-3 bg-opacity-80 bg-amber-500 rounded "></span>
+          <span class="block absolute shadow -inset-1 skew-y-6 bg-sky-500 rounded  bg-opacity-80 " ></span>
+          <h1 className="relative px-2 h1 tracking-wider text-white">{cityDetails?.city_name}</h1>
+        </div>
       </div>
       <div>
         <div id='1' className='flex justify-center item-center '>
-          <div id='2' className={`w-full md:w-[95%] mx-auto rounded-lg p-6 shadow h-full group  ${openDetails ? 'is-active bg-white' : 'bg-purple-200'}`}>
+          <div id='2' className={`w-full md:w-[95%] mx-auto rounded-lg p-3  h-full group  ${openDetails ? 'is-active bg-amber-100 border-2' : 'bg-amber-200'}`}>
             <div id='3' className='flex items-center cursor-pointer group-[.is-active]:border-b-2 group-[.is-active]:pb-2  ' onClick={handleToggleActive}>
               <h2 className='w-full group-[.is-active]:font-bold h2'>About <span className="  underline decoration-sky-500 ">{cityDetails?.city_name}</span></h2>
               <ChevronUpIcon className='h-5 w-5 group-[.is-active]:rotate-[180deg] mr-3 ' />
@@ -161,7 +164,7 @@ const CityDetails = () => {
               )}
             </div>
             {cityDetails?.city_notes.length > 0 ? (
-              <div className="overflow-hidden max-h-0 group-[.is-active]:max-h-[20vh]  flex flex-wrap md:flex-nowrap h-full w-full justify-between border-b border-gray-300 border-opacity-40 divide-x overflow-y-auto snap snap-y ">
+              <div id='4' className="overflow-hidden max-h-0 group-[.is-active]:max-h-[20vh] bg-neutral-50 bg-opacity-80 flex flex-wrap md:flex-nowrap h-full w-full justify-between  border-gray-300 border-opacity-40 divide-x overflow-y-auto snap snap-y ">
                 <CityNotesContainer cityNotesData={note_comm} type="communication" onDelCityNote={handleDeleteCityNote} onEditCityNote={handleEditCityNote} />
                 <CityNotesContainer cityNotesData={note_transp} type="transportation" onDelCityNote={handleDeleteCityNote} onEditCityNote={handleEditCityNote} />
                 <CityNotesContainer cityNotesData={note_other} type="other" onDelCityNote={handleDeleteCityNote} onEditCityNote={handleEditCityNote} />
@@ -182,13 +185,13 @@ const CityDetails = () => {
         </div>
       </div>
 
-      <div className='p-4 grid md:grid-cols-5 gap-3 max-h-full h-full flex-initial '>
+      <div className='p-4 grid md:grid-cols-5 gap-3 h-full flex-initial '>
         {cityDetails?.locations.length > 0 ? (
           <>
             <div className='h-[40vh] md:h-full  md:col-span-2'>
               <GoogleMapComponent locations={cityDetails.locations} />
             </div>
-            <div className='overflow-y-scroll md:col-span-3 flex-initial bg-blue-200' >
+            <div className='h-full max-h-full overflow-y-auto overflow-hidden md:col-span-3 flex-initial bg-blue-200' >
               {shop?.length > 0 && <CategoryContainer locationData={shop} categoryExpanded={categoryExpanded} type="shopping" onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} onEditLocation={handleEditLocation} onEditLocNote={handleEditLocNote} />}
               {mart?.length > 0 && <CategoryContainer locationData={mart} categoryExpanded={categoryExpanded} type="marts" onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} onEditLocation={handleEditLocation} onEditLocNote={handleEditLocNote} />}
               {food?.length > 0 && <CategoryContainer locationData={food} categoryExpanded={categoryExpanded} type="food/drinks" onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} onEditLocation={handleEditLocation} onEditLocNote={handleEditLocNote} />}

@@ -31,7 +31,7 @@ const NotesCard = ({ noteData, onDelNote, path, onEditNote }) => {
                     </div>
                 </div>
             )} 
-            <div className=' mx-2'>
+            <div className=' mx-2 text-gray-900'>
                 <p key={noteData.id}>{noteData.note_body}</p>
             </div>
            
