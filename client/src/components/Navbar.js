@@ -37,10 +37,10 @@ const Navbar = () => {
 
 
   return (
-    <header className="sticky top-0 z-50 border-b border-gray-300 bg-white shadow-lg py-2">
-      <div className='flex flex-wrap items-center justify-between  lg:mx-auto max-w-full pl-[3%]  pr-[1%]  w-full'>
+    <header className="sticky top-0 z-50 border-b border-gray-300 bg-white shadow-lg py-1">
+      <div className='flex flex-wrap items-center justify-between  lg:mx-auto max-w-full pl-[1%]  pr-[1%]  w-full'>
         <NavLink to='/' >
-          <img src={logo} className='object-scale-down md:h-12 h-9' alt='Vicariously logo' />
+          <img src={logo} className='object-scale-down md:h-14 h-9' alt='Vicariously logo' />
         </NavLink>
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="lg:hidden block h-6 w-6 cursor-pointer">
           <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" onClick={() => setOpenNavMenu(!openNavMenu)} />

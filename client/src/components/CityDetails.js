@@ -172,7 +172,7 @@ const CityDetails = () => {
       </div>
       <div className="flex justify-center py-2 items-center">
         <div className='flex-1' />
-        <h2  >My Places in {cityDetails?.city_name}</h2>
+        <h2 className='h2' >My Places in {cityDetails?.city_name}</h2>
         <div className='flex-1' >
           {(isAuthenticated && Number(params.userId) === userData.id) && (<div>
             < SquaresPlusIcon className="ml-auto h-7 w-7 lg:h-9 lg:w-8 mr-3 rounded text-sky-500 border-2 border-amber-400 hover:scale-105" onClick={() => setExpandNewCity(true)} />
