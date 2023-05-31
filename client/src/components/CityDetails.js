@@ -25,7 +25,7 @@ const CityDetails = () => {
   const [userData] = useContext(UserdataContext);
   const [mapUrls, setMapUrls] = useState([])
 
-
+  // https://www.skillthrive.com/posts/react-resizable-split-panels
   function fetchCityData() {
     toast.promise(
       axios.get(`${API_URL}/cities/${params.cityId}`)
@@ -138,20 +138,19 @@ const CityDetails = () => {
   if (isLoading) { return <div>Loading ...</div>; }
 
   return (
-    <div  className=' flex-1 max-h-full flex flex-col  '>
-        <div className='flex justify-center'>
-      <h1 className="h1 ">{cityDetails?.city_name}</h1>
-     </div>
-     
+    <div className=' max-h-full h-full flex flex-col my-3  '>
+      <div className='flex justify-center'>
+        <h1 className="h1">{cityDetails?.city_name}</h1>
+      </div>
       <div>
-        <div className="border-b border-gray-300  shadow-md">
+        <div className="">
           <Disclosure >
             {({ open }) => (
               <>
                 <div className='flex justify-end items-center '>
-                  <Disclosure.Button className="flex grow justify-between  rounded-lg bg-purple-100 px-4 py-2 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
+                  <Disclosure.Button className="flex grow justify-between  bg-amber-100 px-4 py-2 text-left text-sm font-medium text-amber-900 hover:bg-amber-200 focus:outline-none focus-visible:ring focus-visible:ring-amber-500 focus-visible:ring-opacity-75">
                     <span>About {cityDetails?.city_name}</span>
-                    <ChevronUpIcon className={`${open ? 'rotate-180 transform' : ''} h-5 w-5 text-purple-500`} />
+                    <ChevronUpIcon className={`${open ? 'rotate-180 transform' : ''} h-5 w-5 text-amber-500`} />
                   </Disclosure.Button>
                   {(isAuthenticated && Number(params.userId) === userData.id) && (
                     <>
@@ -160,11 +159,11 @@ const CityDetails = () => {
                     </>
                   )}
                 </div>
-                <Disclosure.Panel className="flex grow flex-wrap  place-content-around">
-                  {note_comm?.length > 0 && <CityNotesContainer cityNotesData={note_comm} type="communication" onDelCityNote={handleDeleteCityNote} onEditCityNote={handleEditCityNote} />}
-                  {note_safety?.length > 0 && <CityNotesContainer cityNotesData={note_safety} type="safety" onDelCityNote={handleDeleteCityNote} onEditCityNote={handleEditCityNote} />}
-                  {note_transp?.length > 0 && <CityNotesContainer cityNotesData={note_transp} type="transportation" onDelCityNote={handleDeleteCityNote} onEditCityNote={handleEditCityNote} />}
-                  {note_other?.length > 0 && <CityNotesContainer cityNotesData={note_other} type="other" onDelCityNote={handleDeleteCityNote} onEditCityNote={handleEditCityNote} />}
+                <Disclosure.Panel className="md:flex h-40  justify-between flex-wrap border-b border-gray-300  overflow-y-scroll  shadow-md">
+                  <CityNotesContainer cityNotesData={note_comm} type="communication" onDelCityNote={handleDeleteCityNote} onEditCityNote={handleEditCityNote} />
+                  <CityNotesContainer cityNotesData={note_safety} type="safety" onDelCityNote={handleDeleteCityNote} onEditCityNote={handleEditCityNote} />
+                  <CityNotesContainer cityNotesData={note_transp} type="transportation" onDelCityNote={handleDeleteCityNote} onEditCityNote={handleEditCityNote} />
+                  <CityNotesContainer cityNotesData={note_other} type="other" onDelCityNote={handleDeleteCityNote} onEditCityNote={handleEditCityNote} />
                 </Disclosure.Panel>
               </>
             )}
@@ -172,14 +171,15 @@ const CityDetails = () => {
         </div>
       </div>
       <div className="flex justify-center py-2 items-center">
-<div className='flex-1'/>
-<h2  >My Places in {cityDetails?.city_name}</h2>
-<div className='flex-1'/>
-{(isAuthenticated && Number(params.userId) === userData.id) && (<div>
-        < SquaresPlusIcon className="h-7 w-7 lg:h-9 lg:w-8 mr-3 rounded text-sky-500 border-2 border-amber-400 hover:scale-105" onClick={() => setExpandNewCity(true)}/>
-        <LocationForm show={expandNewCity} type='newLocation' onFormClose={() => setExpandNewCity(false)} onSubmit={handleAddLocation} />
-      </div>)}
-</div>
+        <div className='flex-1' />
+        <h2  >My Places in {cityDetails?.city_name}</h2>
+        <div className='flex-1' >
+          {(isAuthenticated && Number(params.userId) === userData.id) && (<div>
+            < SquaresPlusIcon className="ml-auto h-7 w-7 lg:h-9 lg:w-8 mr-3 rounded text-sky-500 border-2 border-amber-400 hover:scale-105" onClick={() => setExpandNewCity(true)} />
+            <LocationForm show={expandNewCity} type='newLocation' onFormClose={() => setExpandNewCity(false)} onSubmit={handleAddLocation} />
+          </div>)}
+        </div>
+      </div>
 
       <div className='p-4 grid md:grid-cols-5 gap-3 max-h-full h-full flex-initial '>
         <div className='h-[40vh] md:h-full  md:col-span-2'>
@@ -193,7 +193,7 @@ const CityDetails = () => {
           {indoor?.length > 0 && <CategoryContainer locationData={indoor} categoryExpanded={categoryExpanded} type="indoor" onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} onEditLocation={handleEditLocation} onEditLocNote={handleEditLocNote} />}
           {acc?.length > 0 && <CategoryContainer locationData={acc} categoryExpanded={categoryExpanded} type="accommodation" onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} onEditLocation={handleEditLocation} onEditLocNote={handleEditLocNote} />}
           {other?.length > 0 && <CategoryContainer locationData={other} categoryExpanded={categoryExpanded} type="other" onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} onEditLocation={handleEditLocation} onEditLocNote={handleEditLocNote} />}
-      </div>
+        </div>
       </div>
     </div>
   )

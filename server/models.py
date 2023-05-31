@@ -62,6 +62,7 @@ class City(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     city_name = db.Column(db.String, nullable=False)
     country = db.Column(db.String, nullable=False)
+    city_imgs = db.Column(db.PickleType)
     created_at = db.Column(db.DateTime, server_default=db.func.now())
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)

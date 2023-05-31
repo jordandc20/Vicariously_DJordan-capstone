@@ -18,7 +18,7 @@ const NotesCard = ({ noteData, onDelNote, path, onEditNote }) => {
     if (isLoading) { return <div>Loading ...</div> }
 
     return (
-        <div className='flex justify-start items-center'>
+        <div className='flex justify-start items-center '>
             {(isAuthenticated && Number(params.userId) === userData.id) && (
                 <div className='flex '>
                     <div>
@@ -30,8 +30,9 @@ const NotesCard = ({ noteData, onDelNote, path, onEditNote }) => {
                         <Delete show={isOpen} idToDel={noteData.id} path={path} name={noteData.note_body} onFormClose={() => setIsOpen(false)} onDelete={onDelNote} />
                     </div>
                 </div>
-            )} <div className='grow mx-2'>
-                <p key={noteData.id} >{noteData.note_body}</p>
+            )} 
+            <div className=' mx-2'>
+                <p key={noteData.id}>{noteData.note_body}</p>
             </div>
            
         </div>

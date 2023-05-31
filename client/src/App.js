@@ -23,11 +23,11 @@ function App() {
   return (
     <>
     <div><Toaster/></div>
-    <div className=" bg-white-100 h-screen flex flex-col   ">
+    <div className=" bg-white-100  h-screen">
       <UserdataProvider >
         <Navbar />
         <Routes>
-          <Route exact path="/" element={<Home />} />
+          <Route  exact path="/" element={<Home />} />
           <Route exact path="/about" element={<About />} />
           {/* <Route exact path="/:userId/cities" element={<CitiesList />} /> */}
           <Route exact path="/users/:userId/cities" element={<CitiesList />} />

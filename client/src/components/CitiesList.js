@@ -17,6 +17,19 @@ const CitiesList = () => {
   const [cities, setCities] = useState([])
   const [userData] = useContext(UserdataContext);
   const [pageUser, setPageUser] = useState({})
+  const [currentIndex, setCurrentIndex] = useState(0);
+  let count = 0;
+
+  useEffect(() => {
+    startSlider();
+  }, []);
+
+  const startSlider = () => {
+    setInterval(() => {
+      count = (count + 1) % 10
+      setCurrentIndex(count);
+    }, 5000);
+  };
 
   useEffect(() => {
     toast.promise(
@@ -35,10 +48,10 @@ const CitiesList = () => {
   }, [params.userId]);
   if (!cities) { return <div>Loading cities...</div> }
 
-  let loc_count=0
+  let loc_count = 0
   const cityCardsArray = cities.map((city) => {
     loc_count += city.locations.length
-    return <CityCard key={city.id} cityData={city} onDelCity={handleDeleteCity} handleEditCity={handleEditCity} />
+    return <CityCard key={city.id} cityData={city} currentIndex={currentIndex} onDelCity={handleDeleteCity} handleEditCity={handleEditCity} />
   })
 
   function handleAddCity(newCity) {
@@ -62,22 +75,25 @@ const CitiesList = () => {
   if (error) { return <div>Oops... {error.message}</div>; }
 
   return (
-    <div className=' h-screen '>
-      <div className='flex flex-col w-full'>
+    <div className=' min-h-full  flex max-w-screen flex-col justify-center -mb-4 '>
+      <div className='my-3 flex flex-col'>
         <div className='flex justify-center'>
-          <h1 className="h1">{pageUser.username}  Cities</h1>
+          <h1 className="h1 ">{pageUser.username}'s Cities</h1>
         </div>
-        <div className='flex justify-center'>
+        <div className='flex justify-center items-center'>
+          <div className='flex-1' />
           <span className="inline-block bg-gray-200 rounded-bl-xl rounded-tr-xl px-3 py-1 text-sm font-semibold text-gray-700 mx-3 ">Cities Visited: {cities.length}</span>
           <span className="inline-block bg-gray-200 rounded-bl-xl rounded-tr-xl px-3 py-1 text-sm font-semibold text-gray-700 mx-3">Places Visited: {loc_count}</span>
+          <div className='flex-1' >
+            {(isAuthenticated && Number(params.userId) === userData.id) && (
+              <div >
+                <SquaresPlusIcon className="ml-auto h-7 w-7 lg:h-9 lg:w-8 mr-3 rounded text-sky-500 border-2 border-amber-400 hover:scale-105 cursor-pointer" onClick={() => setIsOpen(true)} />
+                <CityForm show={isOpen} type='newCity' onFormClose={() => setIsOpen(false)} onSubmit={handleAddCity} />
+              </div>)}
+          </div>
         </div>
-        {(isAuthenticated && Number(params.userId) === userData.id) && (
-          <div className='flex justify-end'>
-            <SquaresPlusIcon className="h-7 w-7 lg:h-9 lg:w-8 mr-3 rounded text-sky-500 border-2 border-amber-400 hover:scale-105" onClick={() => setIsOpen(true)} />
-              <CityForm show={isOpen} type='newCity' onFormClose={() => setIsOpen(false)} onSubmit={handleAddCity} />
-          </div>)}
       </div>
-      <div className='flex grow flex-wrap  place-content-around'>
+      <div className='grid sm:grid-cols-2   md:grid-cols-3  lg:grid-cols-3 xl:grid-cols-4 gap-4 justify-items-stretch    min-h-full  bg-slate-100 p-6 '>
         {cityCardsArray}
       </div>
     </div>
