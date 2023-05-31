@@ -45,7 +45,7 @@ const Delete = ({ onDelete, onFormClose, idToDel, path, name, show }) => {
                             <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                                 <Dialog.Title className=" leading-6 text-gray-900">
                                    <div className='h3'> Do you want to delete:</div> 
-                                    <div className='font-base border-double border-2 p-2 rounded-lg border-opacity-70 border-slate-200'>{name}</div>
+                                    <div className='font-base border-double border-y-2 p-2  border-opacity-70 border-slate-200'>{name}</div>
                                 </Dialog.Title>
                                 <div className="button-div mt-3">
                                     <button type="submit" className="form-button" onClick={handleDelete}>Yes</button>

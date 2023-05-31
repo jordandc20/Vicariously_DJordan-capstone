@@ -146,7 +146,7 @@ const LocationForm = ({ locationData, onFormClose, onSubmit, type, show }) => {
                       <option value="Other">Other</option>
                     </select>
                     {formik.touched.category && formik.errors.category ? (
-                      <div>{formik.errors.category}</div>
+                      <div className='text-red-700'>{formik.errors.category}</div>
                     ) : null}
                   </div>
                   <div className='pb-3'>
@@ -159,28 +159,28 @@ const LocationForm = ({ locationData, onFormClose, onSubmit, type, show }) => {
                       <option value="3">$$$</option>
                     </select>
                     {formik.touched.avg_cost && formik.errors.avg_cost ? (
-                      <div>{formik.errors.avg_cost}</div>
+                      <div className='text-red-700'>{formik.errors.avg_cost}</div>
                     ) : null}
                   </div>
                   <div className='pb-3'>
                     <label htmlFor="google_map_url" className="form-label dark:text-white">Google Maps URL</label>
                     <input className='form-field w-full'  id='google_map_url' type="text" name="google_map_url" placeholder="Google Maps link" {...formik.getFieldProps('google_map_url')} />
                     {formik.touched.google_map_url && formik.errors.google_map_url ? (
-                      <div>{formik.errors.google_map_url}</div>
+                      <div className='text-red-700'>{formik.errors.google_map_url}</div>
                     ) : null}
                   </div>
                   <div className='pb-3'>
                     <label htmlFor="website" className="form-label ">Website URL</label>
                     <input className='form-field w-full' id='website' type="website" name="website" placeholder="Website link" {...formik.getFieldProps('website')} />
                     {formik.touched.website && formik.errors.website ? (
-                      <div>{formik.errors.website}</div>
+                      <div className='text-red-700'>{formik.errors.website}</div>
                     ) : null}
                   </div>
                   <div className='pb-3'>
                     <label htmlFor="date_visited" className="form-label ">Date Visited</label>
                     <input className='form-field ' id='date_visited' type="date_visited" name="date_visited" placeholder="mm/dd/yyyy" {...formik.getFieldProps('date_visited')} />
                     {formik.touched.date_visited && formik.errors.date_visited ? (
-                      <div>{formik.errors.date_visited}</div>
+                      <div className='text-red-700'>{formik.errors.date_visited}</div>
                     ) : null}
                   </div>
                   <div className='pb-3'>
@@ -194,7 +194,7 @@ const LocationForm = ({ locationData, onFormClose, onSubmit, type, show }) => {
                       <option value="4">Must Go!</option>
                     </select>
                     {formik.touched.rating && formik.errors.rating ? (
-                      <div>{formik.errors.rating}</div>
+                      <div className='text-red-700'>{formik.errors.rating}</div>
                     ) : null}
                   </div>
                   <div className='button-div'>

@@ -18,7 +18,7 @@ const NotesCard = ({ noteData, onDelNote, path, onEditNote }) => {
     if (isLoading) { return <div>Loading ...</div> }
 
     return (
-        <div className='flex justify-start items-center '>
+        <div className='flex justify-start items-baseline'>
             {(isAuthenticated && Number(params.userId) === userData.id) && (
                 <div className='flex '>
                     <div>

@@ -79,7 +79,7 @@ const EditUsernameForm = ({ onEditUsername, onFormClose, show }) => {
                                         <input id='username' type="text" name="username" placeholder="username" {...formik.getFieldProps('username')}
                                         />
                                         {formik.touched.username && formik.errors.username ? (
-                                            <div>{formik.errors.username}</div>
+                                            <div className='text-red-700'>{formik.errors.username}</div>
                                         ) : null}
                                         <div className='button-div'>
                                             <button type="submit" className="form-button">Submit</button>

@@ -24,6 +24,8 @@ const CityDetails = () => {
   const params = useParams();
   const [userData] = useContext(UserdataContext);
   const [mapUrls, setMapUrls] = useState([])
+  const [openNavMenu, setOpenNavMenu] = useState(false);
+  const [openDetails, setOpenDetails] = useState(true)
 
   // https://www.skillthrive.com/posts/react-resizable-split-panels
   function fetchCityData() {
@@ -53,7 +55,7 @@ const CityDetails = () => {
 
   function handleAddCityNote(newCityNote) {
     setCityDetails({
-      ...cityDetails, city_notes: [...cityDetails.city_notes, newCityNote],
+      ...cityDetails, city_notes: [ newCityNote, ...cityDetails.city_notes],
     })
   }
 
@@ -65,7 +67,7 @@ const CityDetails = () => {
           if (loc.id === newLocNote.location_id) {
             return (
               {
-                ...loc, location_notes: [...loc.location_notes, newLocNote],
+                ...loc, location_notes: [newLocNote, ...loc.location_notes ],
               })
           } else { return loc }
         })
@@ -118,10 +120,12 @@ const CityDetails = () => {
     fetchCityData()
   }
 
+  function handleToggleActive() {
+    setOpenDetails(!openDetails)
+  }
 
   // sort city notes into note-categories
   const note_other = cityDetails?.city_notes.filter(note => note.note_type === 'Other')
-  const note_safety = cityDetails?.city_notes.filter(note => note.note_type === 'Safety')
   const note_transp = cityDetails?.city_notes.filter(note => note.note_type === 'Transportation')
   const note_comm = cityDetails?.city_notes.filter(note => note.note_type === 'Communication')
 
@@ -138,37 +142,34 @@ const CityDetails = () => {
   if (isLoading) { return <div>Loading ...</div>; }
 
   return (
-    <div className=' max-h-full h-full flex flex-col my-3  '>
+    <div className=' max-h-full h-full flex flex-col my-3 bg-green-200  '>
       <div className='flex justify-center'>
         <h1 className="h1">{cityDetails?.city_name}</h1>
+
       </div>
       <div>
-        <div className="">
-          <Disclosure >
-            {({ open }) => (
-              <>
-                <div className='flex justify-end items-center '>
-                  <Disclosure.Button className="flex grow justify-between  bg-amber-100 px-4 py-2 text-left text-sm font-medium text-amber-900 hover:bg-amber-200 focus:outline-none focus-visible:ring focus-visible:ring-amber-500 focus-visible:ring-opacity-75">
-                    <span>About {cityDetails?.city_name}</span>
-                    <ChevronUpIcon className={`${open ? 'rotate-180 transform' : ''} h-5 w-5 text-amber-500`} />
-                  </Disclosure.Button>
-                  {(isAuthenticated && Number(params.userId) === userData.id) && (
-                    <>
-                      <DocumentPlusIcon className="h-6 rounded-md text-sky-500  hover:scale-110" onClick={(e) => { e.stopPropagation(); setExpandNewNote(true) }} />
-                      <NoteForm show={expandNewNote} type='newCityNote' onFormClose={() => setExpandNewNote(false)} onSubmit={handleAddCityNote} />
-                    </>
-                  )}
-                </div>
-              {   cityDetails?.city_notes.length > 0 ? (  <Disclosure.Panel className="md:flex h-40  justify-between flex-wrap border-b border-gray-300  overflow-y-scroll  shadow-md">
-                 <CityNotesContainer cityNotesData={note_comm} type="communication" onDelCityNote={handleDeleteCityNote} onEditCityNote={handleEditCityNote} />
-                  <CityNotesContainer cityNotesData={note_safety} type="safety" onDelCityNote={handleDeleteCityNote} onEditCityNote={handleEditCityNote} />
-                  <CityNotesContainer cityNotesData={note_transp} type="transportation" onDelCityNote={handleDeleteCityNote} onEditCityNote={handleEditCityNote} />
-                  <CityNotesContainer cityNotesData={note_other} type="other" onDelCityNote={handleDeleteCityNote} onEditCityNote={handleEditCityNote} />
-                </Disclosure.Panel>) : <div>Please add some city notes</div>}
-              </>
-            )}
-          </Disclosure>
+        <div id='1' className='flex justify-center item-center '>
+          <div id='2' className={`w-full md:w-[95%] mx-auto rounded-lg p-6 shadow h-full group  ${openDetails ? 'is-active bg-white' : 'bg-purple-200'}`}>
+            <div id='3' className='flex items-center cursor-pointer group-[.is-active]:border-b-2 group-[.is-active]:pb-2  ' onClick={handleToggleActive}>
+              <h2 className='w-full group-[.is-active]:font-bold h2'>About <span className="  underline decoration-sky-500 ">{cityDetails?.city_name}</span></h2>
+              <ChevronUpIcon className='h-5 w-5 group-[.is-active]:rotate-[180deg] mr-3 ' />
+              {(isAuthenticated && Number(params.userId) === userData.id) && (
+                <>
+                  <DocumentPlusIcon className="h-6  text-sky-500  hover:scale-110 lg:border-l-2 pl-3" onClick={(e) => { e.stopPropagation(); setExpandNewNote(true) }} />
+                  <NoteForm show={expandNewNote} type='newCityNote' onFormClose={() => setExpandNewNote(false)} onSubmit={handleAddCityNote} />
+                </>
+              )}
+            </div>
+            {cityDetails?.city_notes.length > 0 ? (
+              <div className="overflow-hidden max-h-0 group-[.is-active]:max-h-[20vh]  flex flex-wrap md:flex-nowrap h-full w-full justify-between border-b border-gray-300 border-opacity-40 divide-x overflow-y-auto snap snap-y ">
+                <CityNotesContainer cityNotesData={note_comm} type="communication" onDelCityNote={handleDeleteCityNote} onEditCityNote={handleEditCityNote} />
+                <CityNotesContainer cityNotesData={note_transp} type="transportation" onDelCityNote={handleDeleteCityNote} onEditCityNote={handleEditCityNote} />
+                <CityNotesContainer cityNotesData={note_other} type="other" onDelCityNote={handleDeleteCityNote} onEditCityNote={handleEditCityNote} />
+              </div>
+            ) : <div>Please add some city notes</div>}
+          </div>
         </div>
+
       </div>
       <div className="flex justify-center py-2 items-center">
         <div className='flex-1' />
@@ -203,3 +204,5 @@ const CityDetails = () => {
 }
 
 export default CityDetails
+
+// https://iwconnect.com/creating-a-fully-functional-accordion-component-with-react-js-and-tailwindcss/
