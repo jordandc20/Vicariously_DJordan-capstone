@@ -105,11 +105,11 @@ class Login(Resource):
                     )
                 db.session.add(new_user)
                 db.session.commit()
-                print(new_user)
+                print(new_user.to_dict())
             except Exception as errors:
                 return make_response({"errors": [errors.__str__()]}, 422)
-            return make_response(new_user.to_dict(), 201)
-        return make_response(user.to_dict(), 200, {"Content-Type": "application/json"})
+            return make_response(new_user.to_dict(rules=("-cities",)), 201)
+        return make_response(user.to_dict(rules=("-cities",)), 200, {"Content-Type": "application/json"})
 
 
 api.add_resource(Login, '/login')
@@ -157,7 +157,7 @@ class CityById(Resource):
         city = City.query.filter_by(id=id).first()
         if not city:
             return make_response({'error': 'City not found'}, 404)
-        return make_response(city.to_dict(), 200, {"Content-Type": "application/json"})
+        return make_response(city.to_dict(rules=("-city_imgs",)), 200, {"Content-Type": "application/json"})
 
     def patch(self, id):
         data = request.get_json()

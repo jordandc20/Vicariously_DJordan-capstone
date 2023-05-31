@@ -24,9 +24,8 @@ class User(db.Model, SerializerMixin):
 
     # users=association_proxy('checkout_logs','user')
 
-    serialize_rules = ("-cities", "-cities.locations.user",
-                       "-locations", "-created_at", )
-# "-locations.user","-locations.city.user"
+    serialize_rules = ( "-cities.locations.user","-cities.locations.avg_cost","-cities.locations.category","-cities.locations.date_visited","-cities.locations.google_map_url","-cities.locations.location_name","-cities.locations.location_notes","-cities.locations.rating","-cities.locations.website","-cities.locations.user_id","-cities.locations.city_id","-cities.city_notes.note_body","-cities.city_notes.note_type", "-locations", "-created_at", )
+
 
     @validates('email')
     def validate_email(self, key, value):
@@ -105,7 +104,7 @@ class CityNote(db.Model, SerializerMixin):
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
     city_id = db.Column(db.Integer, db.ForeignKey('cities.id'), nullable=False)
 
-    serialize_rules = ("-city.city_notes", "-created_at", "-updated_at",)
+    serialize_rules = ("-city.city_notes", "-created_at", "-updated_at","-city_id",)
 
     @validates('note_body')
     def validates_nullable(self, key, value):
@@ -155,7 +154,7 @@ class Location(db.Model, SerializerMixin):
         "LocationNote", backref='location', cascade='all, delete, delete-orphan')
 
     serialize_rules = ("-city",
-                       "-user", "-location_notes.location", "-created_at", "-updated_at",)
+                       "-user", "-location_notes.location", "-created_at", "-updated_at","-city_id","-user_id",)
 
     @validates('category')
     def validates_category(self, key, value):
@@ -218,7 +217,7 @@ class LocationNote(db.Model, SerializerMixin):
         'locations.id'), nullable=False)
 
     serialize_rules = ("-location",
-                       "-created_at", "-updated_at",)
+                       "-created_at", "-updated_at","-location_id",)
 
     @validates('note_body')
     def validates_nullable(self, key, value):
