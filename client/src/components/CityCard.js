@@ -32,13 +32,12 @@ const CityCard = ({ cityData, onDelCity, handleEditCity, currentIndex }) => {
 
 
   return (
-    < div className="   rounded-lg overflow-hidden shadow-lg border-l-2 border-r-2 border-b-2 border-opacity-20   border-amber-500 hover:scale-105 m-2  cursor-pointer pb-2" onClick={handleCityCardClick} >
-      {(city_imgs && city_imgs.length > 0) ?
-        <div className="aspect-w-16 aspect-h-9 w-full relative select-none">
-          <img src={city_imgs[currentIndex]} alt="google generated city" />
-        </div>
-        : <div className="aspect-w-16 aspect-h-9 w-full relative select-none"></div>}
-      <div className='flex justify-end cursor-pointer ' >
+    < div className="rounded-lg flex md:flex-col overflow-hidden shadow-lg border-l-2 border-r-2 border-b-2 border-opacity-20  border-amber-500 hover:scale-105 m-2  cursor-pointer md:pb-2" onClick={handleCityCardClick} >
+      <div className=" hidden md:block aspect-w-16 aspect-h-9 w-full relative select-none">
+        {(city_imgs && city_imgs.length > 0) && <img src={city_imgs[currentIndex]} alt="google generated city" />}
+      </div>
+
+      <div className='flex justify-end  grow cursor-pointer  md:w-full ' >
         <div className=" grow px-6 py-3" >
           <h3 className="text-gray-700 text-xl  font-bold capitalize ">{city_name}</h3>
           <p className=" text-m mb-2 capitalize">{country}</p>
@@ -57,9 +56,9 @@ const CityCard = ({ cityData, onDelCity, handleEditCity, currentIndex }) => {
           </div>
         )}
       </div>
-      <div className="button-div">
-        <span className="px-2 py-1 block  bg-gray-200 rounded-xl  text-sm font-semibold text-gray-700 mb-2 ml-2 mr-1">City notes: {city_notes.length}</span>
-        <span className="px-2 py-1 block  bg-gray-200 rounded-xl  text-sm font-semibold text-gray-700 mb-2 mr-2 ml-1">Places: {locations.length}</span>
+      <div className="button-div ">
+        <span className="px-2 py-1   h-fit bg-gray-200 rounded-xl  text-sm font-semibold text-gray-700 mb-2 ml-2 mr-1">City notes: {city_notes.length}</span>
+        <span className="px-2 py-1  h-fit bg-gray-200 rounded-xl  text-sm font-semibold text-gray-700 mb-2 mr-2 ml-1">Places: {locations.length}</span>
       </div>
 
     </div>
