@@ -20,9 +20,6 @@ const CitiesList = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   let count = 0;
 
-  useEffect(() => {
-    startSlider();
-  }, []);
 
   const startSlider = () => {
     setInterval(() => {
@@ -35,6 +32,7 @@ const CitiesList = () => {
     toast.promise(
       axios.get(`${API_URL}/users/${params.userId}`)
         .then(r => {
+          r.data.cities.sort((a,b) => (a.city_name > b.city_name) ? 1 : ((b.city_name > a.city_name) ? -1 : 0))
           setCities(r.data.cities)
           setPageUser({ username: r.data.username, travel_style: r.data.travel_style })
         }),
@@ -46,8 +44,14 @@ const CitiesList = () => {
       }
     )
   }, [params.userId]);
+  
+  useEffect(() => {
+    startSlider();
+  }, []);
+  
   if (!cities) { return <div>Loading cities...</div> }
-
+  
+  
   let loc_count = 0
   const cityCardsArray = cities.map((city) => {
     loc_count += city.locations.length

@@ -55,7 +55,7 @@
 }
 
 .button-div {
-    @apply flex justify-evenly items-center ml-auto  flex-wrap md:flex-nowrap
+    @apply flex justify-evenly items-center   flex-wrap md:flex-nowrap
 }
 
 .open-dialog-button {
