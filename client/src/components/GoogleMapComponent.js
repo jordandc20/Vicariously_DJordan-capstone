@@ -28,7 +28,6 @@ function GoogleMapComponent({ locations }) {
 
 
 
-
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
     googleMapsApiKey: key
@@ -45,10 +44,12 @@ function GoogleMapComponent({ locations }) {
 
   let lats = []
   let lngs = []
+
   const markers = locations.map((marker, index) => {
     if (marker.google_map_url) {
-      let regexp = /!8m2!3d([0-9.]*)!4d([0-9.]*)!16s/g
+      let regexp = /!8m2!3d([0-9.]*)!4d([0-9.]*)!/g
       const coordinates = [...marker.google_map_url.matchAll(regexp)]
+      console.log(coordinates)
       lats.push(Number(coordinates[0][1]))
       lngs.push(Number(coordinates[0][2]))
       const position = { lat: Number(coordinates[0][1]), lng: Number(coordinates[0][2]) }
@@ -88,7 +89,7 @@ function GoogleMapComponent({ locations }) {
 
       mapContainerStyle={{ width: "100%", height: "100%" }}
       center={center}
-      zoom={10}
+      zoom={11}
       onLoad={onLoad}
       onUnmount={onUnmount}
     >

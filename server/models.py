@@ -154,7 +154,7 @@ class Location(db.Model, SerializerMixin):
         "LocationNote", backref='location', cascade='all, delete, delete-orphan')
 
     serialize_rules = ("-city",
-                       "-user", "-location_notes.location", "-created_at", "-updated_at","-city_id","-user_id",)
+                       "-user", "-location_notes.location", "-created_at", "-updated_at",)
 
     @validates('category')
     def validates_category(self, key, value):

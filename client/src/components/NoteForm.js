@@ -60,7 +60,7 @@ const NoteForm = ({ noteData, onFormClose, onSubmit, type,show }) => {
     initialValues: init_vals,
     validationSchema: yup.object({
       note_body: yup.string().required("Must enter a Note").min(3, 'Must be at least 3 characters')
-        .max(50, 'Must be less  than 50 characters'),
+        .max(80, 'Must be less  than 80 characters'),
       note_type: yup.string()
 
     }),
@@ -111,7 +111,7 @@ const NoteForm = ({ noteData, onFormClose, onSubmit, type,show }) => {
                   <form className="space-y-6" onSubmit={formik.handleSubmit}>
 
                     <label htmlFor="note_body" className="block mb-2 text-sm font-medium text-gray-900 after:content-['*'] after:text-red-700">Note Text</label>
-                    <input id='note_body' type="text" name="note_body" placeholder="note text" {...formik.getFieldProps('note_body')}
+                    <input className='form-field w-full' id='note_body' type="text" name="note_body" placeholder="note text" {...formik.getFieldProps('note_body')}
                     />
                     {formik.touched.note_body && formik.errors.note_body ? (
                       <div>{formik.errors.note_body}</div>
