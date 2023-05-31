@@ -15,7 +15,6 @@ const UserdataProvider = ({ children }) => {
     const { isLoading, isAuthenticated, user } = useAuth0();
 
     const navigate = useNavigate()
-
     // authentication using auth0
     // fetches db userdata (username, travel_style, id) corresponding to that email using /login API route
     // set that userdata as context
@@ -32,7 +31,7 @@ const UserdataProvider = ({ children }) => {
                 })
                 .catch((err) => toast.error(`Error: ${err.message}: ${err.response.data.error}`))
         }
-    }, [user, isAuthenticated]);
+    }, [isAuthenticated]);
 
     // useEffect(() => {
     //     if (isAuthenticated) {

@@ -31,3 +31,5 @@ const Home = () => {
 }
 
 export default Home
+
+// https://daily-dev-tips.com/posts/making-a-fullscreen-vertical-slider-with-tailwind-and-eleventy/

@@ -59,7 +59,7 @@ const CitiesList = () => {
   })
 
   function handleAddCity(newCity) {
-    setCities([...cities, newCity])
+    setCities([newCity,...cities ])
   }
 
   function handleDeleteCity(delCityId) {

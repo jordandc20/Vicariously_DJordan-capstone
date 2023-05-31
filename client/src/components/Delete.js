@@ -43,10 +43,11 @@ const Delete = ({ onDelete, onFormClose, idToDel, path, name, show }) => {
                     <div className="flex min-h-full items-center justify-center p-4 text-center">
                         <Transition.Child as={Fragment} enter="ease-out duration-300" enterFrom="opacity-0 scale-95" enterTo="opacity-100 scale-100" leave="ease-in duration-200" leaveFrom="opacity-100 scale-100" leaveTo="opacity-0 scale-95"                        >
                             <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                                <Dialog.Title className="h3 leading-6 text-gray-900">
-                                    Do you want to delete: {name}
+                                <Dialog.Title className=" leading-6 text-gray-900">
+                                   <div className='h3'> Do you want to delete:</div> 
+                                    <div className='font-base border-double border-y-2 p-2  border-opacity-70 border-slate-200'>{name}</div>
                                 </Dialog.Title>
-                                <div className="button-div">
+                                <div className="button-div mt-3">
                                     <button type="submit" className="form-button" onClick={handleDelete}>Yes</button>
                                     <button type="reset" className="form-button" value="Cancel" onClick={onFormClose}>No</button>
                                 </div>

@@ -123,7 +123,7 @@ class CityNote(db.Model, SerializerMixin):
 
     @validates('note_type')
     def validates_note_type(self, key, value):
-        note_types = ['Safety', 'Communication', 'Transportation', 'Other']
+        note_types = ['Communication', 'Transportation', 'Other']
         if value not in note_types:
             raise ValueError(f'{value} not an allowed value for note_type.')
         return value
@@ -154,7 +154,7 @@ class Location(db.Model, SerializerMixin):
         "LocationNote", backref='location', cascade='all, delete, delete-orphan')
 
     serialize_rules = ("-city",
-                       "-user", "-location_notes.location", "-created_at", "-updated_at","-city_id","-user_id",)
+                       "-user", "-location_notes.location", "-created_at", "-updated_at",)
 
     @validates('category')
     def validates_category(self, key, value):

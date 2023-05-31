@@ -4,6 +4,7 @@ import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 import axios from "axios"
 import { useParams } from 'react-router-dom'
 import { Dialog, Transition } from '@headlessui/react'
+import { NoSymbolIcon, PencilSquareIcon, MagnifyingGlassIcon } from '@heroicons/react/24/solid'
 
 
 import { useFormik } from "formik";
@@ -149,13 +150,17 @@ const CityAutofill = ({ locationData, type, onFormClose, onSubmit, show }) => {
                 <div className='py-4 border-b-2 border-opacity-50   border-slate-500 '>
                     <label >
                         <span className="form-label">City Search: </span>
-                        <input autoFocus className='form-field w-full'
+                        <div className='flex form-field w-full items-center '>
+
+                        <MagnifyingGlassIcon  className='text-slate-400 h-4 px-1 font-bold ' />
+                        <input autoFocus className='bg-transparent w-full'
                             ref={inputRef}
                             id="city-autofill"
                             name="city-autofill"
                             autocomplete="off"
-                            placeholder=" start typing a city"
-                        />
+                            placeholder="start typing a city"
+                            />
+                            </div>
                     </label>
                 </div>
                 <h3 className="h3 my-3">You entered: </h3>
@@ -163,7 +168,7 @@ const CityAutofill = ({ locationData, type, onFormClose, onSubmit, show }) => {
                     <label htmlFor="city_name" className="form-label after:content-['*'] after:text-red-700">City Name</label>
                     <input className='form-field w-full' id='city_name' type="text" name="city_name" placeholder="City Name" {...formik.getFieldProps('city_name')} />
                     {formik.touched.city_name && formik.errors.city_name ? (
-                        <div>{formik.errors.city_name}</div>
+                        <div className='text-red-700'>{formik.errors.city_name}</div>
                     ) : null}
                 </div>
                 <div className='pb-3'>
@@ -173,7 +178,7 @@ const CityAutofill = ({ locationData, type, onFormClose, onSubmit, show }) => {
                 <div className='pb-3'>   <label htmlFor="country" className="form-label  after:content-['*'] after:text-red-700">Country Name</label>
                     <input className='form-field w-full' id='country' type="text" name="country" placeholder="Country Name" {...formik.getFieldProps('country')} />
                     {formik.touched.country && formik.errors.country ? (
-                        <div>{formik.errors.country}</div>
+                        <div className='text-red-700'>{formik.errors.country}</div>
                     ) : null}
                 </div>
                 <div className='button-div'>
