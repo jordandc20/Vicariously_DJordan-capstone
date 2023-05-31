@@ -88,7 +88,7 @@ const CityAutofill = ({ locationData, type, onFormClose, onSubmit, show }) => {
 
     const options = {
         fields: ["photos", "place_id", 'address_components'],
-        types: ["(cities)"]
+        // types: ["(cities)"]
     };
     useEffect(() => {
         autoCompleteRef.current = new window.google.maps.places.Autocomplete(
@@ -97,7 +97,7 @@ const CityAutofill = ({ locationData, type, onFormClose, onSubmit, show }) => {
         );
         autoCompleteRef.current.addListener("place_changed", async function () {
             const place = await autoCompleteRef.current.getPlace();
-            console.log({ place })
+            console.log({place})
             // Get each component of the address from the place details,
             // and then fill-in the corresponding field on the form.
             // place.address_components are google.maps.GeocoderAddressComponent objects
@@ -130,7 +130,6 @@ const CityAutofill = ({ locationData, type, onFormClose, onSubmit, show }) => {
                     maxHeight: 400
                 }))
             })
-            console.log(city_imgs.join(", "));
             formik.values.city_imgs = city_imgs;
             ;
 
@@ -143,14 +142,14 @@ const CityAutofill = ({ locationData, type, onFormClose, onSubmit, show }) => {
 
     return (
         <div>
-            <h2 className="text-lg font-medium leading-6 text-gray-900">
+            <h3 className="h3  leading-6 text-gray-900">
                 {header} City
-            </h2>
+            </h3>
             <form id="address-form" className="py-4" onSubmit={formik.handleSubmit}>
                 <div className='py-4 border-b-2 border-opacity-50   border-slate-500 '>
-                    <label Name="full-field">
-                        <span Name="form-label">City Search: </span>
-                        <input autoFocus
+                    <label >
+                        <span className="form-label">City Search: </span>
+                        <input autoFocus className='form-field w-full'
                             ref={inputRef}
                             id="city-autofill"
                             name="city-autofill"
@@ -159,23 +158,24 @@ const CityAutofill = ({ locationData, type, onFormClose, onSubmit, show }) => {
                         />
                     </label>
                 </div>
-                <h3 className="text-md my-3">You entered: </h3>
-                <div>
-                    <label htmlFor="city_name" className="block mb-2 text-sm font-medium text-gray-900 after:content-['*'] after:text-red-700">City Name</label>
-                    <input id='city_name' type="text" name="city_name" placeholder="City Name" {...formik.getFieldProps('city_name')} />
+                <h3 className="h3 my-3">You entered: </h3>
+                <div className='pb-3'>
+                    <label htmlFor="city_name" className="form-label after:content-['*'] after:text-red-700">City Name</label>
+                    <input className='form-field w-full' id='city_name' type="text" name="city_name" placeholder="City Name" {...formik.getFieldProps('city_name')} />
                     {formik.touched.city_name && formik.errors.city_name ? (
                         <div>{formik.errors.city_name}</div>
                     ) : null}
                 </div>
-                <label htmlFor="state" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white ">State/Province Name</label>
-                <input id='state' type="text" name="state" placeholder="state Name" {...formik.getFieldProps('state')} />
-
-                <label htmlFor="country" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white after:content-['*'] after:text-red-700">Country Name</label>
-                <input id='country' type="text" name="country" placeholder="Country Name" {...formik.getFieldProps('country')} />
-                {formik.touched.country && formik.errors.country ? (
-                    <div>{formik.errors.country}</div>
-                ) : null}
-
+                <div className='pb-3'>
+                    <label htmlFor="state" className="form-label  ">State/Province Name</label>
+                    <input className='form-field w-full' id='state' type="text" name="state" placeholder="State/Province/Locality" {...formik.getFieldProps('state')} />
+                </div>
+                <div className='pb-3'>   <label htmlFor="country" className="form-label  after:content-['*'] after:text-red-700">Country Name</label>
+                    <input className='form-field w-full' id='country' type="text" name="country" placeholder="Country Name" {...formik.getFieldProps('country')} />
+                    {formik.touched.country && formik.errors.country ? (
+                        <div>{formik.errors.country}</div>
+                    ) : null}
+                </div>
                 <div className='button-div'>
                     <button id='cityFormSubmit' type="submit" className="form-button">Submit</button>
                     <button id='cityFormCancel' type="reset" className="form-button" value="Cancel" onClick={() => {
