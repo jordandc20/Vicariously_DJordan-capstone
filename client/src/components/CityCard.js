@@ -37,7 +37,7 @@ const CityCard = ({ cityData, onDelCity, handleEditCity, currentIndex }) => {
         {(city_imgs && city_imgs.length > 0) && <img src={city_imgs[currentIndex]} alt="google generated city" />}
       </div>
 
-      <div className='flex justify-end  grow cursor-pointer  md:w-full ' >
+      <div className='flex justify-end min-h-fit  grow cursor-pointer  md:w-full ' >
         <div className=" grow px-6 py-3" >
           <h3 className="text-gray-700 text-xl  font-bold capitalize ">{city_name}</h3>
           <p className=" text-m mb-2 capitalize">{country}</p>
