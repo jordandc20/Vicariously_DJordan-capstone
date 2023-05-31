@@ -10,7 +10,7 @@ import About from './About';
 import { UserdataContext } from "../context/UserData";
 // import { FiMenu } from "react-icons/fi"
 const Navbar = () => {
-  const { isAuthenticated, isLoading } = useAuth0();
+  const { isAuthenticated, isLoading, user } = useAuth0();
   const [userData] = useContext(UserdataContext);
   const [openNavMenu, setOpenNavMenu] = useState(false);
   const ref = useRef();
@@ -66,7 +66,17 @@ const Navbar = () => {
                 </>
               )}
               {isAuthenticated && 'username' in userData && (
-                <Logout />
+                <>
+                  <Logout />
+                  <div className='lg:border-l-2 lg: pl-3  lg:max-h-12 max-h-9   '>
+                    <div className='max-h-full h-full flex-col flex justify-center lg:items-center rounded-full '>
+                      <div className='flex content-end items-end'>
+                        <img src={user.picture} className='object-scale-down self-end lg:block rounded-full  lg:max-h-10 max-h-6  p-1' alt='user icon' />
+                      </div>
+                      <div className='lg:block italic font-[475] tracking-wide text-xs'>{userData.username}</div>
+                    </div>
+                  </div>
+                </>
               )}
             </div>
           </div>
