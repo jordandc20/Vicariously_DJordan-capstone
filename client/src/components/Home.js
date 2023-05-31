@@ -5,8 +5,8 @@ import bgimg from '../images/v660-mon-35-travelbadge.jpg'
 const Home = () => {
 
     return (
-        <div class="h-full max-h-full overflow-y-scroll no-scrollbar snap snap-y snap-mandatory">
-            <div className='w-full h-full bg-red-200  snap-start'>sec 1</div>
+        <div className="h-full max-h-full overflow-y-scroll no-scrollbar snap snap-y snap-mandatory ">
+            <div className='w-full h-full bg-red-200 text-5xl snap-start'>PLACEHOLDER homepage</div>
             <div  className='w-full h-full bg-green-200  snap-start'>sec 2</div>
             <div className='w-full h-full bg-blue-200  snap-start'>sec 2</div>
 
