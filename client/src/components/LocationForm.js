@@ -195,6 +195,16 @@ const LocationForm = ({ locationData, onFormClose, onSubmit, type, show }) => {
                       <option value="2">Meh OK</option>
                       <option value="3">Pretty Good</option>
                       <option value="4">Must Go!</option>
+{/* 
+     <TrashIcon className={`h-4 rounded-full shadow-sm text-slate-500 bg-transparent  ${rating === 0 ? ' bg-white fill-red-700 text-white' : ''}`} />
+          <FaceFrownIcon className={`h-4 rounded-full shadow-sm text-slate-500 bg-transparent ${rating === 1 ? ' bg-white text-yellow-700 ' : ''}`} />
+          <HandThumbDownIcon className={`h-4 rounded-full shadow-sm rotate-45 text-slate-500 bg-transparent ${rating === 2 ? ' bg-white fill-yellow-600 text-white' : ''}`} />
+          <HandThumbUpIcon className={`h-4 rounded-full shadow-sm text-slate-500 bg-transparent  rotate-45 ${rating === 2 ? ' bg-white fill-yellow-600 text-white' : ''}`} />
+          <FaceSmileIcon className={`h-4 rounded-full shadow-sm text-slate-500 bg-transparent ${rating === 3 ? ' bg-white text-green-700 ' : ''}`} />
+          <FireIcon className={`h-4 rounded-full shadow-sm text-slate-500 bg-transparent ${rating === 4 ? ' bg-white fill-orange-700 text-white' : ''}`} />
+ */}
+
+
                     </select>
                     {formik.touched.rating && formik.errors.rating ? (
                       <div className='text-red-700'>{formik.errors.rating}</div>
