@@ -4,6 +4,7 @@ import { useAuth0 } from '@auth0/auth0-react'
 import 'react-toastify/dist/ReactToastify.css';
 import { toast } from 'react-hot-toast';
 import { useParams, useNavigate } from 'react-router-dom'
+import {LifebuoyIcon} from '@heroicons/react/24/solid'
 
 import API_URL from "../apiConfig.js";
 import { validateYupSchema } from 'formik';
@@ -42,7 +43,7 @@ const UserdataProvider = ({ children }) => {
     // }, [userData]);
 
     // render loading message
-    if (isLoading) { return <div>Loading ...</div> }
+    if (isLoading)     { return (<><LifebuoyIcon className='h-5 animate-spin'/><div>Loading...</div></>) }
 
     return (
         <UserdataContext.Provider value={[userData, setUserData]}>{children}</UserdataContext.Provider>

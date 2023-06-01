@@ -5,6 +5,7 @@ import API_URL from "../apiConfig.js";
 import { useParams } from 'react-router-dom'
 import { toast } from 'react-hot-toast';
 import { Dialog, Transition } from '@headlessui/react'
+import {LifebuoyIcon} from '@heroicons/react/24/solid'
 
 
 const Delete = ({ onDelete, onFormClose, idToDel, path, name, show }) => {
@@ -31,7 +32,7 @@ const Delete = ({ onDelete, onFormClose, idToDel, path, name, show }) => {
         )
     }
 
-    if (isLoading) { return <div>Loading ...</div>; }
+    if (isLoading)     { return (<><LifebuoyIcon className='h-5 animate-spin'/><div>Loading...</div></>) }
 
     return (
         <Transition appear show={show} as={Fragment}>

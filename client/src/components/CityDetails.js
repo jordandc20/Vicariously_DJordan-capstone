@@ -10,7 +10,7 @@ import NoteForm from './NoteForm';
 import { UserdataContext } from "../context/UserData";
 import { toast } from 'react-hot-toast';
 
-import { SquaresPlusIcon, PencilSquareIcon, ChevronDoubleDownIcon, ChevronDoubleUpIcon, ChevronUpIcon, DocumentPlusIcon, MinusCircleIcon, PencilIcon } from '@heroicons/react/24/solid'
+import { SquaresPlusIcon, PencilSquareIcon, SparklesIcon, LifebuoyIcon, RectangleGroupIcon, ChevronDoubleDownIcon, ChevronDoubleUpIcon, ChevronUpIcon, DocumentPlusIcon, MinusCircleIcon, PencilIcon } from '@heroicons/react/24/solid'
 
 import { Disclosure } from '@headlessui/react'
 import GoogleMapComponent from './GoogleMapComponent.js';
@@ -24,7 +24,6 @@ const CityDetails = () => {
   const params = useParams();
   const [userData] = useContext(UserdataContext);
   const [mapUrls, setMapUrls] = useState([])
-  const [openNavMenu, setOpenNavMenu] = useState(false);
   const [openDetails, setOpenDetails] = useState(true)
 
   // https://www.skillthrive.com/posts/react-resizable-split-panels
@@ -44,8 +43,7 @@ const CityDetails = () => {
 
   useEffect(() => { fetchCityData() }, [params.cityId]);
 
-  if (!cityDetails) { return <div>Loading city details...</div> }
-
+  if (!cityDetails) { return (<><LifebuoyIcon className='h-5 animate-spin' /><div>Loading...</div></>) }
 
   function handleAddLocation(new_location) {
     setCityDetails({
@@ -139,26 +137,26 @@ const CityDetails = () => {
   const other = cityDetails?.locations.filter(location => location.category === 'Other')
 
   // render loading message
-  if (isLoading) { return <div>Loading ...</div>; }
+  if (isLoading) { return (<><LifebuoyIcon className='h-5 animate-spin' /><div>Loading...</div></>) }
 
   return (
     <div className=' max-h-full h-full flex flex-col my-3  '>
-      <div className='flex mt-2 justify-center  w-full'>
+      <div className='flex mt-2 mb-3 justify-center  w-full'>
         <div className='flex h-fit mb-1  z-25 relative '>
-          <span class="block absolute shadow -inset-1 -skew-y-12 translate-x-3 bg-opacity-80 bg-amber-500 rounded "></span>
-          <span class="block absolute shadow -inset-1 skew-y-6 bg-sky-500 rounded  bg-opacity-80 " ></span>
-          <h1 className="relative px-2 h1 tracking-wider text-white">{cityDetails?.city_name}</h1>
+          <span class="block absolute shadow -inset-1 -skew-y-6 translate-x-3 bg-opacity-80 bg-amber-500 rounded "></span>
+          <span class="block absolute shadow -inset-1 skew-y-3 bg-sky-500 rounded  bg-opacity-80 " ></span>
+          <h1 className="h1">{cityDetails?.city_name}</h1>
         </div>
       </div>
       <div>
         <div id='1' className='flex justify-center item-center '>
           <div id='2' className={`w-full md:w-[95%] mx-auto rounded-lg p-3  h-full group  ${openDetails ? 'is-active bg-amber-100 border-2' : 'bg-amber-200'}`}>
             <div id='3' className='flex items-center cursor-pointer group-[.is-active]:border-b-2 group-[.is-active]:pb-2  ' onClick={handleToggleActive}>
-              <h2 className='w-full group-[.is-active]:font-bold h2'>About <span className="  underline decoration-sky-500 ">{cityDetails?.city_name}</span></h2>
-              <ChevronUpIcon className='h-5 w-5 group-[.is-active]:rotate-[180deg] mr-3 ' />
+              <h2 className='w-full group-[.is-active]:font-bold h2'>About <span className="  underline underline-offset-4 decoration-sky-500 ">{cityDetails?.city_name}</span></h2>
+              <ChevronUpIcon className='h-5 w-5 group-[.is-active]:rotate-[180deg] transition duration-300 mr-3 ' />
               {(isAuthenticated && Number(params.userId) === userData.id) && (
                 <>
-                  <DocumentPlusIcon className="h-6  text-sky-500  hover:scale-110 lg:border-l-2 pl-3" onClick={(e) => { e.stopPropagation(); setExpandNewNote(true) }} />
+                  <DocumentPlusIcon className="h-6  text-sky-500  hover:scale-110 border-slate-500 group-[.is-active]:border-slate-300 lg:border-l-2 pl-3" onClick={(e) => { e.stopPropagation(); setExpandNewNote(true) }} />
                   <NoteForm show={expandNewNote} type='newCityNote' onFormClose={() => setExpandNewNote(false)} onSubmit={handleAddCityNote} />
                 </>
               )}
@@ -185,7 +183,7 @@ const CityDetails = () => {
         </div>
       </div>
 
-      <div className='p-4 grid md:grid-cols-5 gap-3 h-full flex-initial '>
+      <div className='p-4 grid md:grid-cols-5 gap-3 h-full flex-initial items-start'>
         {cityDetails?.locations.length > 0 ? (
           <>
             <div className='h-[40vh] md:h-full  md:col-span-2'>

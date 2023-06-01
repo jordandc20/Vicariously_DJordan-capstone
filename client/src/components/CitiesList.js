@@ -8,7 +8,7 @@ import { useAuth0 } from '@auth0/auth0-react'
 import API_URL from "../apiConfig.js";
 import CityCard from './CityCard';
 import { UserdataContext } from "../context/UserData";
-import { SquaresPlusIcon } from '@heroicons/react/24/solid'
+import { SquaresPlusIcon,LifebuoyIcon } from '@heroicons/react/24/solid'
 
 const CitiesList = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -27,12 +27,11 @@ const CitiesList = () => {
       setCurrentIndex(count);
     }, 5000);
   };
-
   useEffect(() => {
     toast.promise(
       axios.get(`${API_URL}/users/${params.userId}`)
         .then(r => {
-          r.data.cities.sort((a,b) => (a.city_name > b.city_name) ? 1 : ((b.city_name > a.city_name) ? -1 : 0))
+          r.data.cities.sort((a, b) => (a.city_name > b.city_name) ? 1 : ((b.city_name > a.city_name) ? -1 : 0))
           setCities(r.data.cities)
           setPageUser({ username: r.data.username, travel_style: r.data.travel_style })
         }),
@@ -44,14 +43,15 @@ const CitiesList = () => {
       }
     )
   }, [params.userId]);
-  
+
   useEffect(() => {
     startSlider();
   }, []);
-  
-  if (!cities) { return <div>Loading cities...</div> }
-  
-  
+
+
+  if ( Object.keys(pageUser).length === 0 || !cities)  { return (<><LifebuoyIcon className='h-5 animate-spin'/><div>Loading ...</div></>) }
+
+
   let loc_count = 0
   const cityCardsArray = cities.map((city) => {
     loc_count += city.locations.length
@@ -59,7 +59,7 @@ const CitiesList = () => {
   })
 
   function handleAddCity(newCity) {
-    setCities([newCity,...cities ])
+    setCities([newCity, ...cities])
   }
 
   function handleDeleteCity(delCityId) {
@@ -75,14 +75,18 @@ const CitiesList = () => {
   }
 
   // render loading message
-  if (isLoading) { return <div>Loading ...</div> }
+  if (isLoading) { return (<><LifebuoyIcon className='h-5 animate-spin'/><div>Loading...</div></>) }
   if (error) { return <div>Oops... {error.message}</div>; }
 
   return (
     <div className=' min-h-full  flex max-w-screen flex-col justify-center -mb-4 '>
       <div className='my-3 flex flex-col'>
-        <div className='flex justify-center'>
-          <h1 className="h1 ">{pageUser.username}'s Cities</h1>
+        <div className='flex mt-2 mb-5 justify-center  w-full'>
+          <div className='flex h-fit mb-1  z-25 relative '>
+            <span class="block absolute shadow -inset-1 -skew-y-6 translate-x-3 bg-opacity-80 bg-amber-500 rounded "></span>
+            <span class="block absolute shadow -inset-1 skew-y-3 bg-sky-500 rounded  bg-opacity-80 " ></span>
+            <h1 className="h1 ">{pageUser.username}'s Cities</h1>
+          </div>
         </div>
         <div className='flex justify-center items-center'>
           <div className='flex-1' />

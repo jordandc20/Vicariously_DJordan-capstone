@@ -1,5 +1,6 @@
 import React from 'react'
 import { useAuth0 } from '@auth0/auth0-react'
+import {LifebuoyIcon} from '@heroicons/react/24/solid'
 
 import NotesCard from './NotesCard';
 
@@ -13,7 +14,7 @@ const CityNotesContainer = ({ cityNotesData, type, onDelCityNote ,onEditCityNote
     })
 
  // render loading message
-    if (isLoading) { return <div>Loading ...</div> }
+    if (isLoading)     { return (<><LifebuoyIcon className='h-5 animate-spin'/><div>Loading...</div></>) }
 
 
     return (

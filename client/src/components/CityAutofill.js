@@ -4,7 +4,7 @@ import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 import axios from "axios"
 import { useParams } from 'react-router-dom'
 import { Dialog, Transition } from '@headlessui/react'
-import { NoSymbolIcon, PencilSquareIcon, MagnifyingGlassIcon } from '@heroicons/react/24/solid'
+import { NoSymbolIcon, PencilSquareIcon, MagnifyingGlassIcon ,LifebuoyIcon} from '@heroicons/react/24/solid'
 
 
 import { useFormik } from "formik";
@@ -51,7 +51,7 @@ const CityAutofill = ({ locationData, type, onFormClose, onSubmit, show }) => {
         }),
         validateOnChange: false,
         validateOnBlur: false,
-        onSubmit: values => {
+        onSubmit:  (values, { resetForm }) => {
 
             const new_values = { ...values }
             new_values['val_user_email'] = user.email
@@ -66,7 +66,9 @@ const CityAutofill = ({ locationData, type, onFormClose, onSubmit, show }) => {
                     .then(r => {
                         onSubmit(r.data)
                     })
-                    .then(onFormClose())
+                    .then(()=>
+                    {resetForm();
+                        onFormClose()})
                 ,
                 {
                     success: (`Success: ${values.city_name}, ${values.country}`),
@@ -139,7 +141,7 @@ const CityAutofill = ({ locationData, type, onFormClose, onSubmit, show }) => {
 
 
     // render loading message
-    if (isLoading) { return <div>Loading ...</div>; }
+    if (isLoading) { return (<><LifebuoyIcon className='h-5 animate-spin'/><div>Loading...</div></>) }
 
     return (
         <div>

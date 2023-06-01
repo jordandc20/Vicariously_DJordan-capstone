@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useAuth0 } from '@auth0/auth0-react'
-import { NoSymbolIcon, PencilSquareIcon } from '@heroicons/react/24/solid'
+import { LifebuoyIcon, NoSymbolIcon, PencilSquareIcon } from '@heroicons/react/24/solid'
 
 import Delete from './Delete';
 import { UserdataContext } from "../context/UserData";
@@ -18,8 +18,7 @@ const CityCard = ({ cityData, onDelCity, handleEditCity, currentIndex }) => {
   const { city_name, city_notes, country, id, locations, user_id, city_imgs } = cityData;
 
 
-  if (!cityData) { return <div>Loading city data...</div> }
-
+  if (!cityData)   { return (<><LifebuoyIcon className='h-5 animate-spin'/><div>Loading  city data...</div></>) }
 
   function handleCityCardClick(e) {
     navigate(`/users/${params.userId}/cities/${id}`)
@@ -28,7 +27,7 @@ const CityCard = ({ cityData, onDelCity, handleEditCity, currentIndex }) => {
 
 
   // render loading message
-  if (isLoading) { return <div>Loading ...</div> }
+  if (isLoading)     { return (<><LifebuoyIcon className='h-5 animate-spin'/><div>Loading...</div></>) }
 
 
   return (

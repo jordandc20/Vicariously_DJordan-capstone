@@ -42,13 +42,15 @@ const EditUsernameForm = ({ onEditUsername, onFormClose, show }) => {
             // )
             ,
         }),
-        onSubmit: values => {
+        onSubmit:  (values, { resetForm }) => {
             toast.promise(
                 axios.patch(`${API_URL}/users/${userData.id}`, values)
                     .then(r => {
                         onEditUsername(r.data.username)
                     })
-                    .then(onFormClose()),
+                    .then(()=>
+                    {resetForm()
+                        onFormClose()}),
                 {
                     success: (`Successfully updated: ${values.username}`),
                     loading: 'Loading...',

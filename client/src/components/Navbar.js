@@ -8,7 +8,7 @@ import Logout from './Logout';
 import Signup from './Signup';
 import About from './About';
 import { UserdataContext } from "../context/UserData";
-import { Bars3Icon} from '@heroicons/react/24/solid'
+import { Bars3Icon, LifebuoyIcon} from '@heroicons/react/24/solid'
 
 // import { FiMenu } from "react-icons/fi"
 const Navbar = () => {
@@ -35,7 +35,7 @@ const Navbar = () => {
 
 
   // render loading message
-  if (isLoading) { return <div>Loading ...</div> }
+  if (isLoading)     { return (<><LifebuoyIcon className='h-5 animate-spin'/><div>Loading...</div></>) }
 
 
   return (
@@ -44,9 +44,7 @@ const Navbar = () => {
         <NavLink to='/' >
           <img src={logo} className='object-scale-down md:h-14 h-9' alt='Vicariously logo' />
         </NavLink>
-        <Bars3Icon  className="lg:hidden block md:h-10 h-9 text-blue-800 cursor-pointer hover:bg-slate-200 rounded-full p-2">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" onClick={() => setOpenNavMenu(!openNavMenu)} />
-        </Bars3Icon>
+        <Bars3Icon  className="lg:hidden block md:h-10 h-9 text-blue-800 cursor-pointer hover:bg-slate-200 rounded-full p-2" onClick={() => setOpenNavMenu(!openNavMenu)} />
 
         {/* < FiMenu className='lg:hidden block h-6 w-6 cursor-pointer' onClick={() => setOpenNavMenu(!openNavMenu)} /> */}
         <nav ref={ref} className={`${openNavMenu ? "block" : "hidden"}   w-full lg:grow lg:flex lg:justify-between lg:items-center lg:mx-auto lg:w-auto`}>

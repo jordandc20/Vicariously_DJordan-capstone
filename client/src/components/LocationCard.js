@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react'
 import { useAuth0 } from '@auth0/auth0-react'
 import { useParams } from 'react-router-dom'
-import { NoSymbolIcon, PencilSquareIcon, ChevronUpIcon, DocumentPlusIcon, MinusCircleIcon, ArrowTopRightOnSquareIcon } from '@heroicons/react/24/solid'
+import { NoSymbolIcon, PencilSquareIcon,LifebuoyIcon, ChevronUpIcon, DocumentPlusIcon, MinusCircleIcon, ArrowTopRightOnSquareIcon } from '@heroicons/react/24/solid'
 import { Disclosure } from '@headlessui/react'
 import Delete from './Delete';
 import NoteForm from './NoteForm';
@@ -35,12 +35,12 @@ const LocationCard = ({ locationData, noteExpanded, onDelLocation, onEditLocatio
 
 
   // render loading message
-  if (isLoading) { return <div>Loading ...</div> }
+  if (isLoading)    { return (<><LifebuoyIcon className='h-5 animate-spin'/><div>Loading...</div></>) }
 
   return (
     < div className="w-64 rounded hover:scale-105 m-2 shadow-md bg-amber-50" >
 
-      <div className='flex justify-end'>
+      <div className='flex '>
         <div className=" grow px-4 py-3">
           <h3 className="h3 ">{location_name}</h3>
         </div>
