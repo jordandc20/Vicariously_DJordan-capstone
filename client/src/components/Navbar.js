@@ -41,11 +41,9 @@ const Navbar = () => {
     <header className="sticky top-0 z-50 border-b border-gray-300 bg-white shadow-lg py-1">
       <div className='flex flex-wrap items-center justify-between  lg:mx-auto max-w-full pl-[1%]  pr-[1%]  w-full'>
         <NavLink to='/' >
-          <img src={logo} className='object-scale-down md:h-14 h-9' alt='Vicariously logo' />
+          <img src={logo} className='object-scale-down md:h-16 h-9' alt='Vicariously logo' />
         </NavLink>
         <Bars3Icon  className="lg:hidden block md:h-10 h-9 text-blue-800 cursor-pointer hover:bg-slate-200 rounded-full p-2" onClick={() => setOpenNavMenu(!openNavMenu)} />
-
-        {/* < FiMenu className='lg:hidden block h-6 w-6 cursor-pointer' onClick={() => setOpenNavMenu(!openNavMenu)} /> */}
         <nav ref={ref} className={`${openNavMenu ? "block" : "hidden"}   w-full lg:grow lg:flex lg:justify-between lg:items-center lg:mx-auto lg:w-auto`}>
           <div className='w-full lg:flex lg:justify-between lg:items-center  lg:w-auto lg:grow '>
             <div className=' lg:grow  lg:flex lg:justify-center lg:items-center lg:w-auto '>
