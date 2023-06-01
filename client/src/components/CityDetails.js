@@ -21,7 +21,6 @@ const CityDetails = () => {
   const { isLoading, isAuthenticated } = useAuth0();
   const params = useParams();
   const [userData] = useContext(UserdataContext);
-  const [mapUrls, setMapUrls] = useState([])
   const [openDetails, setOpenDetails] = useState(true)
 
   // https://www.skillthrive.com/posts/react-resizable-split-panels
@@ -178,7 +177,7 @@ const CityDetails = () => {
         <div className='flex-1' >
           {(isAuthenticated && Number(params.userId) === userData.id) && (
             <div className="ml-auto items-end h-7 w-7 lg:h-9 lg:w-8 mr-3 ">
-              <Tooltip message={"Add New Location!"}>
+              <Tooltip message={"Add New Location"}>
                 < SquaresPlusIcon className="hover:rotate-45 transition h-7 w-7 lg:h-9 lg:w-8 mr-3 rounded text-sky-500 border-2 border-amber-400 hover:scale-105" onClick={() => setExpandNewCity(true)} />
                 <LocationForm show={expandNewCity} type='newLocation' onFormClose={() => setExpandNewCity(false)} onSubmit={handleAddLocation} />
               </Tooltip>

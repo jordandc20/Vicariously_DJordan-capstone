@@ -6,7 +6,6 @@ import logo from '../images/vicariously_logo_trans.png'
 import Login from './Login';
 import Logout from './Logout';
 import Signup from './Signup';
-import About from './About';
 import { UserdataContext } from "../context/UserData";
 import { Bars3Icon, LifebuoyIcon} from '@heroicons/react/24/solid'
 
