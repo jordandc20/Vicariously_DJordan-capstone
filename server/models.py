@@ -179,7 +179,7 @@ class Location(db.Model, SerializerMixin):
 
     @validates('rating')
     def validates_rating(self, key, value):
-        styles = range(5)
+        styles = range(1,6)
         if value and value not in styles:
             raise ValueError(f'{value} not an allowed value for rating.')
         return value

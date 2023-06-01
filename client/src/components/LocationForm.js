@@ -190,11 +190,11 @@ const LocationForm = ({ locationData, onFormClose, onSubmit, type, show }) => {
                     <label htmlFor="rating" className="form-label ">Rating</label>
                     <select  className='form-field '  type='number' id='rating' as="select" name="rating"   {...formik.getFieldProps('rating')}>
                       <option value="">Select a rating level</option>
-                      <option value="0">Never Again</option>
-                      <option value="1">Kinda Bad</option>
-                      <option value="2">Meh OK</option>
-                      <option value="3">Pretty Good</option>
-                      <option value="4">Must Go!</option>
+                      <option value="1">Never Again</option>
+                      <option value="2">Kinda Bad</option>
+                      <option value="3">Meh OK</option>
+                      <option value="4">Pretty Good</option>
+                      <option value="5">Must Go!</option>
 {/* 
      <TrashIcon className={`h-4 rounded-full shadow-sm text-slate-500 bg-transparent  ${rating === 0 ? ' bg-white fill-red-700 text-white' : ''}`} />
           <FaceFrownIcon className={`h-4 rounded-full shadow-sm text-slate-500 bg-transparent ${rating === 1 ? ' bg-white text-yellow-700 ' : ''}`} />
