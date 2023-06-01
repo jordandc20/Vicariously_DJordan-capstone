@@ -116,21 +116,22 @@ const LocationCard = ({ locationData, noteExpanded, onDelLocation, onEditLocatio
         {date && <span className="px-1  block  bg-gray-200 rounded-xl  text-sm  text-gray-700 mb-2 ml-2 mr-1">{date}</span>}
       </div>
 
-      <div className="mx-auto  w-full px-2 py-2 max-w-md rounded-2xl bg-white ">
+      <div className="h-fit max-h-full overflow-y-auto overflow-hidden md:col-span-3 flex-initial  rounded-lg  shadow mx-auto w-full">
         <Disclosure>
           {({ open }) => (
             <>
-                <Disclosure.Button className="flex grow justify-between  rounded-lg bg-purple-100 px-4 py-2 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
+                <Disclosure.Button className={`flex w-full justify-between  ${open ? 'bg-sky-50 border-l-2 border-sky-700' : 'bg-slate-50'}  px-2 py-2 text-left text-sm font-medium text-indigo hover:bg-sky-100 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75 cursor-pointer items-center`}>
                   <span>Notes</span>
-                  <ChevronUpIcon className={`${open ? 'rotate-180 transform' : ''} h-5 w-5 text-purple-500`} />
-                </Disclosure.Button>
-                {(isAuthenticated && Number(params.userId) === userData.id) && (
+                  <ChevronUpIcon className={`${open ? 'rotate-180 transform' : ''} h-5 w-5 text-cyan-800 transition`}/>
+                 {(isAuthenticated && Number(params.userId) === userData.id) && (
                   <>
                     < DocumentPlusIcon className="h-6 rounded-md text-sky-500 object-scale-down  hover:scale-110" onClick={(e) => { e.stopPropagation(); setOpenNoteForm(true) }} />
                     <NoteForm show={openNoteForm} noteData={{ "location_id": id, }} type='newLocNote' onFormClose={() => setOpenNoteForm(false)} onSubmit={onNewLocNote} />
                   </>
                 )}
-              <Disclosure.Panel className="px-2 py-2 text-sm text-gray-500">
+                 </Disclosure.Button>
+              
+              <Disclosure.Panel className="overflow-hidden border-l-2 px-1 divide-y bg-neutral-50 bg-opacity-80 border-slate-300 leading-normal flex flex-wrap">
                 {locationNotesArray}
               </Disclosure.Panel>
             </>
