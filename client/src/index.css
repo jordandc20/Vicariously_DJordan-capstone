@@ -1,4 +1,5 @@
 @tailwind base;
+
 @tailwind components;
 @tailwind utilities;
 
@@ -23,6 +24,28 @@
             /* Firefox */
         }
     }
+
+
+    .scrollbar::-webkit-scrollbar {
+        width: 20px;
+        height: 15px;
+      }
+    
+      .scrollbar::-webkit-scrollbar-track {
+        border-radius: 100vh;
+        background: #f7f4ed;
+      }
+    
+      .scrollbar::-webkit-scrollbar-thumb {
+        background: #98dbe4;
+        border-radius: 100vh;
+        border: 3px solid #f6f7ed;
+      }
+    
+      .scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #5fb8c4;
+      }
+
 
     .snap {
         scroll-snap-type:var(--scroll-snap-direction) var(--scroll-snap-constraint);
@@ -75,3 +98,7 @@
 .h3 {
     @apply text-lg text-gray-700 font-medium capitalize
 }
+
+.h-screen{
+    height:calc(100vh - 4.5rem)!important;
+  }

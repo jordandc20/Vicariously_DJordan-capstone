@@ -1,10 +1,9 @@
 
 import React, { Fragment, useRef, useEffect } from 'react'
-import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
+import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios"
 import { useParams } from 'react-router-dom'
-import { Dialog, Transition } from '@headlessui/react'
-import { NoSymbolIcon, PencilSquareIcon, MagnifyingGlassIcon ,LifebuoyIcon} from '@heroicons/react/24/solid'
+import {  MagnifyingGlassIcon , LifebuoyIcon} from '@heroicons/react/24/solid'
 
 
 import { useFormik } from "formik";

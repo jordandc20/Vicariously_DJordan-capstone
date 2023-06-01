@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useAuth0 } from '@auth0/auth0-react'
 import { LifebuoyIcon, NoSymbolIcon, PencilSquareIcon } from '@heroicons/react/24/solid'
@@ -15,7 +15,7 @@ const CityCard = ({ cityData, onDelCity, handleEditCity, currentIndex }) => {
   const params = useParams();
   const navigate = useNavigate()
 
-  const { city_name, city_notes, country, id, locations, user_id, city_imgs } = cityData;
+  const { city_name, city_notes, country, id, locations, city_imgs } = cityData;
 
 
   if (!cityData)   { return (<><LifebuoyIcon className='h-5 animate-spin'/><div>Loading  city data...</div></>) }

@@ -17,7 +17,7 @@ function App() {
   return (
     <>
     <div><Toaster/></div>
-    <div className="   h-screen scroll-py-6">
+    <div className=" w-full  h-screen scroll-py-6">
       <UserdataProvider >
         <Navbar />
         <Routes>

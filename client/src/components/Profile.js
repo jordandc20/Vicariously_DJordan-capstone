@@ -34,8 +34,8 @@ const Profile = () => {
 
             <div className='flex mt-5 mb-5 justify-center  w-full'>
                 <div className='flex h-fit mb-1  z-25 relative '>
-                    <span class="block absolute shadow -inset-1 -skew-y-6 translate-x-3 bg-opacity-80 bg-amber-500 rounded "></span>
-                    <span class="block absolute shadow -inset-1 skew-y-3 bg-sky-500 rounded  bg-opacity-80 " ></span>
+                    <span className="block absolute shadow -inset-1 -skew-y-6 translate-x-3 bg-opacity-80 bg-amber-500 rounded "></span>
+                    <span className="block absolute shadow -inset-1 skew-y-3 bg-sky-500 rounded  bg-opacity-80 " ></span>
                     <h1 className='h1'>Hello {userData.username} !</h1>
                 </div>
             </div>

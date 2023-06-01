@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react'
 import { useAuth0 } from '@auth0/auth0-react'
 import { useParams } from 'react-router-dom'
-import { NoSymbolIcon, PencilSquareIcon, LifebuoyIcon,ChevronUpIcon, DocumentPlusIcon, MinusCircleIcon, PencilIcon } from '@heroicons/react/24/solid'
+import { PencilSquareIcon, LifebuoyIcon, MinusCircleIcon } from '@heroicons/react/24/solid'
 
 import { UserdataContext } from "../context/UserData";
 import Delete from './Delete';
@@ -15,7 +15,7 @@ const NotesCard = ({ noteData, onDelNote, path, onEditNote }) => {
     const params = useParams();
 
     // render loading message
-    if (isLoading)     { return (<><LifebuoyIcon className='h-5 animate-spin'/><div>Loading...</div></>) }
+    if (isLoading) { return (<><LifebuoyIcon className='h-5 animate-spin' /><div>Loading...</div></>) }
 
     return (
         <div className='flex justify-start items-baseline'>
@@ -30,11 +30,11 @@ const NotesCard = ({ noteData, onDelNote, path, onEditNote }) => {
                         <Delete show={isOpen} idToDel={noteData.id} path={path} name={noteData.note_body} onFormClose={() => setIsOpen(false)} onDelete={onDelNote} />
                     </div>
                 </div>
-            )} 
+            )}
             <div className=' mx-2 text-gray-900'>
                 <p key={noteData.id}>{noteData.note_body}</p>
             </div>
-           
+
         </div>
     )
 }
