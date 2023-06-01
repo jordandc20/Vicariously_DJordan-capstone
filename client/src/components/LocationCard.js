@@ -78,14 +78,14 @@ const LocationCard = ({ locationData, noteExpanded, onDelLocation, onEditLocatio
         )}
       </div>
       <div className="flex flex-wrap md:flex-nowrap w-full  md:justify-items-center md:justify-around items-end  mb-1 ">
-        <span className="px-1 h-5 items-center bg-gray-200 rounded-xl  text-sm font-semibold text-gray-700 mb-2 mx-auto flex">
+       { rating && <span className="px-1 h-5 items-center bg-gray-200 rounded-xl  text-sm font-semibold text-gray-700 mb-2 mx-auto flex">
           <TrashIcon className={`h-4 rounded-full shadow-sm text-slate-500 bg-transparent  ${rating === 0 ? ' bg-white fill-red-700 text-white' : ''}`} />
           <FaceFrownIcon className={`h-4 rounded-full shadow-sm text-slate-500 bg-transparent ${rating === 1 ? ' bg-white text-yellow-700 ' : ''}`} />
           <HandThumbDownIcon className={`h-4 rounded-full shadow-sm rotate-45 text-slate-500 bg-transparent ${rating === 2 ? ' bg-white fill-yellow-600 text-white' : ''}`} />
           <HandThumbUpIcon className={`h-4 rounded-full shadow-sm text-slate-500 bg-transparent  rotate-45 ${rating === 2 ? ' bg-white fill-yellow-600 text-white' : ''}`} />
           <FaceSmileIcon className={`h-4 rounded-full shadow-sm text-slate-500 bg-transparent ${rating === 3 ? ' bg-white text-green-700 ' : ''}`} />
           <FireIcon className={`h-4 rounded-full shadow-sm text-slate-500 bg-transparent ${rating === 4 ? ' bg-white fill-orange-700 text-white' : ''}`} />
-        </span>
+        </span>}
         {cost && <span className="px-1  block  bg-gray-200 rounded-xl  text-sm font-semibold text-gray-700 mb-2 mx-auto">{cost}</span>}
         {date && <span className="px-1  block  bg-gray-200 rounded-xl  text-sm  text-gray-700 mb-2 mx-auto">{date}</span>}
       </div>
