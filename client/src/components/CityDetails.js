@@ -9,10 +9,8 @@ import CityNotesContainer from './CityNotesContainer';
 import NoteForm from './NoteForm';
 import { UserdataContext } from "../context/UserData";
 import { toast } from 'react-hot-toast';
-
-import { SquaresPlusIcon, PencilSquareIcon, SparklesIcon, LifebuoyIcon, RectangleGroupIcon, ChevronDoubleDownIcon, ChevronDoubleUpIcon, ChevronUpIcon, DocumentPlusIcon, MinusCircleIcon, PencilIcon } from '@heroicons/react/24/solid'
-
-import { Disclosure } from '@headlessui/react'
+import { SquaresPlusIcon, LifebuoyIcon, ChevronUpIcon, DocumentPlusIcon } from '@heroicons/react/24/solid'
+import Tooltip from './Tooltip.js';
 import GoogleMapComponent from './GoogleMapComponent.js';
 
 const CityDetails = () => {
@@ -136,6 +134,8 @@ const CityDetails = () => {
   const acc = cityDetails?.locations.filter(location => location.category === 'Accommodation')
   const other = cityDetails?.locations.filter(location => location.category === 'Other')
 
+
+
   // render loading message
   if (isLoading) { return (<><LifebuoyIcon className='h-5 animate-spin' /><div>Loading...</div></>) }
 
@@ -176,10 +176,14 @@ const CityDetails = () => {
         <div className='flex-1' />
         <h2 className='h2' >My Places in {cityDetails?.city_name}</h2>
         <div className='flex-1' >
-          {(isAuthenticated && Number(params.userId) === userData.id) && (<div>
-            < SquaresPlusIcon className="ml-auto h-7 w-7 lg:h-9 lg:w-8 mr-3 rounded text-sky-500 border-2 border-amber-400 hover:scale-105" onClick={() => setExpandNewCity(true)} />
-            <LocationForm show={expandNewCity} type='newLocation' onFormClose={() => setExpandNewCity(false)} onSubmit={handleAddLocation} />
-          </div>)}
+          {(isAuthenticated && Number(params.userId) === userData.id) && (
+            <div className="ml-auto items-end h-7 w-7 lg:h-9 lg:w-8 mr-3 ">
+              <Tooltip message={"Add New Location!"}>
+                < SquaresPlusIcon className="hover:rotate-45 transition h-7 w-7 lg:h-9 lg:w-8 mr-3 rounded text-sky-500 border-2 border-amber-400 hover:scale-105" onClick={() => setExpandNewCity(true)} />
+                <LocationForm show={expandNewCity} type='newLocation' onFormClose={() => setExpandNewCity(false)} onSubmit={handleAddLocation} />
+              </Tooltip>
+            </div>
+          )}
         </div>
       </div>
 
