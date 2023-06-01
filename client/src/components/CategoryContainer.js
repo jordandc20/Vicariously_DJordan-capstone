@@ -24,9 +24,9 @@ const CategoryContainer = ({ locationData, type, categoryExpanded, onDelLocation
                 < >
                     <Disclosure.Button className={`flex w-full justify-between  ${open ? 'bg-sky-50 border-l-2 border-sky-700' : 'bg-amber-50'}  px-4 py-2 text-left text-sm font-medium text-indigo hover:bg-sky-100 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75 cursor-pointer`}>
                         <span className='capitalize'>{type}</span>
-                        <ChevronUpIcon className={`${open ? 'rotate-180 transform' : ''} h-5 w-5 text-indigo-500 transition`} />
+                        <ChevronUpIcon className={`${open ? 'rotate-180 transform' : ''} h-5 w-5 text-cyan-800 transition`} />
                     </Disclosure.Button>
-                    <Disclosure.Panel className=" overflow-hidden border-l-2 bg-neutral-50 bg-opacity-80 border-slate-300 leading-normal">
+                    <Disclosure.Panel className=" overflow-hidden border-l-2 bg-neutral-50 bg-opacity-80 border-slate-300 leading-normal flex flex-wrap">
                         {locationCardsArray}
                     </Disclosure.Panel>
                 </>

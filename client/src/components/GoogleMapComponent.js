@@ -50,7 +50,6 @@ function GoogleMapComponent({ locations }) {
     if (marker.google_map_url) {
       let regexp = /!8m2!3d([0-9.]*)!4d([0-9.]*)!/g
       const coordinates = [...marker.google_map_url.matchAll(regexp)]
-      console.log(coordinates)
       lats.push(Number(coordinates[0][1]))
       lngs.push(Number(coordinates[0][2]))
       const position = { lat: Number(coordinates[0][1]), lng: Number(coordinates[0][2]) }
