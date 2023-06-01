@@ -26,7 +26,7 @@ const CategoryContainer = ({ locationData, type, categoryExpanded, onDelLocation
                         <span className='capitalize'>{type}</span>
                         <ChevronUpIcon className={`${open ? 'rotate-180 transform' : ''} h-5 w-5 text-cyan-800 transition`} />
                     </Disclosure.Button>
-                    <Disclosure.Panel className=" overflow-hidden border-l-2 bg-neutral-50 bg-opacity-80 border-slate-300 leading-normal flex flex-wrap">
+                    <Disclosure.Panel className=" overflow-hidden border-l-2 bg-neutral-50 bg-opacity-80 border-slate-300 leading-normal flex flex-wrap mx-auto  justify-evenly ">
                         {locationCardsArray}
                     </Disclosure.Panel>
                 </>

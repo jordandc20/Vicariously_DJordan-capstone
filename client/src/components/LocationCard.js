@@ -36,7 +36,7 @@ const LocationCard = ({ locationData, noteExpanded, onDelLocation, onEditLocatio
   let cost = ''
   switch (avg_cost) {
     case 0:
-      cost = "free.99"
+      cost = "free"
       break;
     case 1:
       cost = "$"
@@ -52,59 +52,33 @@ const LocationCard = ({ locationData, noteExpanded, onDelLocation, onEditLocatio
   };
 
 
-  let rate_icon = ''
-
-  switch (rating) {
-    case 0:
-      rate_icon = "free.99"
-      break;
-    case 1:
-      rate_icon = "$"
-      break;
-    case 2:
-      rate_icon = "$$"
-      break;
-    case 3:
-      rate_icon = "$$$"
-      break;
-    case 4:
-      rate_icon = "$$$"
-      break;
-    default:
-      rate_icon = 'n/a'
-      break;
-  };
- 
 
   // render loading message
   if (isLoading) { return (<><LifebuoyIcon className='h-5 animate-spin' /><div>Loading...</div></>) }
 
   return (
-    < div className="w-64 rounded hover:scale-105 m-2 p-2 shadow-md bg-amber-50" >
-
-      <div className='flex  '>
-        <div className=" grow  mb-1">
+    < div className="w-64 rounded-lg hover:scale-105 m-2 p-2 content-around shadow-md bg-white" >
+      <div className='flex  mb-1 '>
           <h3 className=" ">{location_name}</h3>
-        </div>
-        {/* {(isAuthenticated && Number(params.userId) === userData.id) && (
-          <div className='mr-3 mt-3 flex'>
+      </div>
+      <div className='flex flex-wrap md:flex-nowrap w-full  md:justify-items-center md:justify-around items-end  mb-2 '>
+        {google_map_url && <a className="url flex items-center" href={google_map_url} target="_blank" rel="noreferrer">GoogleMap<ArrowTopRightOnSquareIcon className="h-3" /></a>}
+        {website && <a className="url flex items-center" href={website} target="_blank" rel="noreferrer">url<ArrowTopRightOnSquareIcon className="h-3" /></a>}
+          {(isAuthenticated && Number(params.userId) === userData.id) && (
+          <div className='flex items-end no-wrap pl-2 border-l-2 border-slate-200'>
             <div >
-              <PencilSquareIcon className="h-3  lg:h-5  mb-1 rounded-md text-sky-500  hover:scale-110" onClick={(e) => { e.stopPropagation(); setExpandEditLocation(true) }} />
+              <PencilSquareIcon className="h-3  lg:h-5   rounded-md text-sky-500  hover:scale-110" onClick={(e) => { e.stopPropagation(); setExpandEditLocation(true) }} />
               <LocationForm show={expandEditLocation} locationData={locationData} type='editLocation' onFormClose={() => setExpandEditLocation(false)} onSubmit={onEditLocation} />
             </div>
             <div >
-              <MinusCircleIcon className="h-3 lg:h-5 ml-2   rounded-full bg-red-500 text-white  hover:scale-110" onClick={(e) => { e.stopPropagation(); setExpandDelLocation(true) }} />
+              <MinusCircleIcon className="h-3 lg:h-5 ml-1   rounded-full text-red-500  hover:scale-110" onClick={(e) => { e.stopPropagation(); setExpandDelLocation(true) }} />
               <Delete show={expandDelLocation} idToDel={id} path='locations' name={location_name} onFormClose={() => setExpandDelLocation(false)} onDelete={onDelLocation} />
             </div>
           </div>
-        )} */}
+        )}
       </div>
-      <div className='flex flex-wrap md:grid md:grid-cols-2 md:flex-none w-full md:items-end md:justify-items-center mb-1'>
-        {google_map_url && <a className="url flex items-center" href={google_map_url} target="_blank" rel="noreferrer">Google map<ArrowTopRightOnSquareIcon className="h-3" /></a>}
-        {website && <a className="url flex items-center" href={website} target="_blank" rel="noreferrer">website<ArrowTopRightOnSquareIcon className="h-3" /></a>}
-      </div>
-      <div className="flex flex-wrap md:flex-nowrap w-full  md:justify-items-center items-end   mb-1 ">
-        <span className="px-1 h-5 items-center bg-gray-200 rounded-xl  text-sm font-semibold text-gray-700 mb-2 mx-1 flex">
+      <div className="flex flex-wrap md:flex-nowrap w-full  md:justify-items-center md:justify-around items-end  mb-1 ">
+        <span className="px-1 h-5 items-center bg-gray-200 rounded-xl  text-sm font-semibold text-gray-700 mb-2 mx-auto flex">
           <TrashIcon className={`h-4 rounded-full shadow-sm text-slate-500 bg-transparent  ${rating === 0 ? ' bg-white fill-red-700 text-white' : ''}`} />
           <FaceFrownIcon className={`h-4 rounded-full shadow-sm text-slate-500 bg-transparent ${rating === 1 ? ' bg-white text-yellow-700 ' : ''}`} />
           <HandThumbDownIcon className={`h-4 rounded-full shadow-sm rotate-45 text-slate-500 bg-transparent ${rating === 2 ? ' bg-white fill-yellow-600 text-white' : ''}`} />
@@ -112,15 +86,15 @@ const LocationCard = ({ locationData, noteExpanded, onDelLocation, onEditLocatio
           <FaceSmileIcon className={`h-4 rounded-full shadow-sm text-slate-500 bg-transparent ${rating === 3 ? ' bg-white text-green-700 ' : ''}`} />
           <FireIcon className={`h-4 rounded-full shadow-sm text-slate-500 bg-transparent ${rating === 4 ? ' bg-white fill-orange-700 text-white' : ''}`} />
         </span>
-        {cost && <span className="px-1  block  bg-gray-200 rounded-xl  text-sm font-semibold text-gray-700 mb-2 ml-2 mr-1">{cost}</span>}
-        {date && <span className="px-1  block  bg-gray-200 rounded-xl  text-sm  text-gray-700 mb-2 ml-2 mr-1">{date}</span>}
+        {cost && <span className="px-1  block  bg-gray-200 rounded-xl  text-sm font-semibold text-gray-700 mb-2 mx-auto">{cost}</span>}
+        {date && <span className="px-1  block  bg-gray-200 rounded-xl  text-sm  text-gray-700 mb-2 mx-auto">{date}</span>}
       </div>
 
       <div className="h-fit max-h-full overflow-y-auto overflow-hidden md:col-span-3 flex-initial  rounded-lg  shadow mx-auto w-full">
         <Disclosure>
           {({ open }) => (
             <>
-                <Disclosure.Button className={`flex w-full justify-between  ${open ? 'bg-sky-50 border-l-2 border-sky-700' : 'bg-slate-50'}  px-2 py-2 text-left text-sm font-medium text-indigo hover:bg-sky-100 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75 cursor-pointer items-center`}>
+                <Disclosure.Button className={`flex w-full justify-between  ${open ? 'bg-sky-50 border-l-2 border-sky-700' : 'bg-slate-50'}  px-2 py-1 text-left text-sm font-medium text-indigo hover:bg-sky-100 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75 cursor-pointer items-center`}>
                   <span>Notes</span>
                   <ChevronUpIcon className={`${open ? 'rotate-180 transform' : ''} h-5 w-5 text-cyan-800 transition`}/>
                  {(isAuthenticated && Number(params.userId) === userData.id) && (
@@ -130,7 +104,6 @@ const LocationCard = ({ locationData, noteExpanded, onDelLocation, onEditLocatio
                   </>
                 )}
                  </Disclosure.Button>
-              
               <Disclosure.Panel className="overflow-hidden border-l-2 px-1 divide-y bg-neutral-50 bg-opacity-80 border-slate-300 leading-normal flex flex-wrap">
                 {locationNotesArray}
               </Disclosure.Panel>
