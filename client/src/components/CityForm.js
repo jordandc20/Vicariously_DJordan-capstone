@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react'
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
+import {LifebuoyIcon} from '@heroicons/react/24/solid'
 
 import { Dialog, Transition } from '@headlessui/react'
 
@@ -11,7 +12,7 @@ const CityForm = ({ locationData, type, onFormClose, onSubmit, show }) => {
 
 
   // render loading message
-  if (isLoading) { return <div>Loading ...</div>; }
+  if (isLoading)     { return (<><LifebuoyIcon className='h-5 animate-spin'/><div>Loading...</div></>) }
 
   return (
 

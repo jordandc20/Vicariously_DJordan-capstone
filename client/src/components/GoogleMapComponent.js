@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react'
 import { GoogleMap, useJsApiLoader, MarkerF, InfoWindowF } from '@react-google-maps/api';
+import {LifebuoyIcon} from '@heroicons/react/24/solid'
 
 // <Marker
 //   position={{ lat: 18.52043, lng: 73.856743 }}
@@ -49,7 +50,6 @@ function GoogleMapComponent({ locations }) {
     if (marker.google_map_url) {
       let regexp = /!8m2!3d([0-9.]*)!4d([0-9.]*)!/g
       const coordinates = [...marker.google_map_url.matchAll(regexp)]
-      console.log(coordinates)
       lats.push(Number(coordinates[0][1]))
       lngs.push(Number(coordinates[0][2]))
       const position = { lat: Number(coordinates[0][1]), lng: Number(coordinates[0][2]) }
@@ -80,7 +80,7 @@ function GoogleMapComponent({ locations }) {
   };
 
 
-  if (!isLoaded) { return <div>Loading ...</div>; }
+  if (!isLoaded)     { return (<><LifebuoyIcon className='h-5 animate-spin'/><div>Loading...</div></>) }
 
 
   return isLoaded ? (

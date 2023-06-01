@@ -6,6 +6,7 @@ import * as yup from "yup";
 import { useParams } from 'react-router-dom'
 import { toast } from 'react-hot-toast';
 import { Dialog, Transition } from '@headlessui/react'
+import {LifebuoyIcon} from '@heroicons/react/24/solid'
 
 import API_URL from "../apiConfig.js";
 
@@ -70,7 +71,7 @@ const LocationForm = ({ locationData, onFormClose, onSubmit, type, show }) => {
       date_visited: yup.string().matches('^(0[1-9]|1[012])/(0[1-9]|[12][0-9]|3[01])/[0-9]{4}$', 'Enter date as mm/dd/yyyy').typeError("must be date"),
       rating: yup.number()
     }),
-    onSubmit: values => {
+    onSubmit:  (values, { resetForm }) => {
       const new_values = { ...values }
       Object.keys(new_values).forEach((key) => {
         if (new_values[key] === '') {
@@ -92,7 +93,9 @@ const LocationForm = ({ locationData, onFormClose, onSubmit, type, show }) => {
           .then(r => {
             onSubmit(r.data)
           })
-          .then(onFormClose()),
+          .then(()=>
+          {resetForm()
+            onFormClose()}),
         {
           success: `Success: ${new_values.location_name}`,
           loading: 'Loading...',
@@ -103,7 +106,7 @@ const LocationForm = ({ locationData, onFormClose, onSubmit, type, show }) => {
   });
 
   // render loading message
-  if (isLoading) { return <div>Loading ...</div>; }
+  if (isLoading)     { return (<><LifebuoyIcon className='h-5 animate-spin'/><div>Loading...</div></>) }
 
 
 
@@ -201,7 +204,6 @@ const LocationForm = ({ locationData, onFormClose, onSubmit, type, show }) => {
 
                     <button type="submit" className="form-button">Submit</button>
                     <button type="reset" className="form-button" value="Cancel" onClick={() => {
-                      // formik.resetForm();
                       onFormClose()
                     }}>Cancel</button>
                   </div>

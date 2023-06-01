@@ -4,6 +4,7 @@ import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 import axios from "axios"
 import { useParams } from 'react-router-dom'
 import { Dialog, Transition } from '@headlessui/react'
+import {LifebuoyIcon} from '@heroicons/react/24/solid'
 
 import { toast } from 'react-hot-toast';
 
@@ -93,7 +94,7 @@ const NoteForm = ({ noteData, onFormClose, onSubmit, type,show }) => {
   });
 
   // render loading message
-  if (isLoading) { return <div>Loading ...</div>; }
+  if (isLoading)     { return (<><LifebuoyIcon className='h-5 animate-spin'/><div>Loading...</div></>) }
 
   return (
 
@@ -138,7 +139,6 @@ const NoteForm = ({ noteData, onFormClose, onSubmit, type,show }) => {
 
                       <button type="submit" className="form-button">Submit</button>
                       <button type="reset" className="form-button" value="Cancel" onClick={() => {
-                        // formik.resetForm();
                         onFormClose()
                       }}>Cancel</button>
                     </div>

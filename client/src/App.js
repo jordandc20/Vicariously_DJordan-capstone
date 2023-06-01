@@ -1,7 +1,6 @@
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 import './App.css';
-import 'react-toastify/dist/ReactToastify.css';
 import {  Toaster } from 'react-hot-toast';
 
 import Home from './components/Home'
@@ -13,12 +12,7 @@ import { UserdataProvider } from "./context/UserData";
 import About from './components/About';
 
 function App() {
-//   const location = useLocation();
-//   useEffect(() => {
-//     // Dismiss all active toasts
-    
-//     toast.dismiss()
-//    }, [location])
+
  
   return (
     <>
