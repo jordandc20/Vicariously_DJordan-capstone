@@ -172,7 +172,7 @@ const CityDetails = () => {
         </div>
 
       </div>
-      <div className="flex justify-center py-2 items-center">
+      <div className="flex justify-center mt-4 py-2 items-center">
         <div className='flex-1' />
         <h2 className='h2' >My Places in {cityDetails?.city_name}</h2>
         <div className='flex-1' >
@@ -189,7 +189,7 @@ const CityDetails = () => {
             <div className='h-[40vh] md:h-full  md:col-span-2'>
               <GoogleMapComponent locations={cityDetails.locations} />
             </div>
-            <div className='h-full max-h-full overflow-y-auto overflow-hidden md:col-span-3 flex-initial bg-blue-200' >
+            <div className='h-fit max-h-full overflow-y-auto overflow-hidden md:col-span-3 flex-initial  rounded-lg  shadow-md mx-auto w-full ' >
               {shop?.length > 0 && <CategoryContainer locationData={shop} categoryExpanded={categoryExpanded} type="shopping" onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} onEditLocation={handleEditLocation} onEditLocNote={handleEditLocNote} />}
               {mart?.length > 0 && <CategoryContainer locationData={mart} categoryExpanded={categoryExpanded} type="marts" onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} onEditLocation={handleEditLocation} onEditLocNote={handleEditLocNote} />}
               {food?.length > 0 && <CategoryContainer locationData={food} categoryExpanded={categoryExpanded} type="food/drinks" onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} onEditLocation={handleEditLocation} onEditLocNote={handleEditLocNote} />}
@@ -207,3 +207,4 @@ const CityDetails = () => {
 export default CityDetails
 
 // https://iwconnect.com/creating-a-fully-functional-accordion-component-with-react-js-and-tailwindcss/
+// https://www.tailwindtoolbox.com/components/accordion
