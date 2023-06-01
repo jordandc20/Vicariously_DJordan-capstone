@@ -96,7 +96,7 @@ const Home = () => {
                 <div className='flex-1' />
                 {/* <ArrowDownIcon class="animate-bounce text-lg  w-7 h-7 mt-auto self-center p-1 font-extrabold bg-white bg-opacity-40 rounded-full shadow-lg border-2 border-slate-200 border-opacity-50  " /> */}
             </section>
-            <section className='w-full h-full bg-blue-200  snap-start'>sec 2</section>
+            {/* <section className='w-full h-full bg-blue-200  snap-start'>sec 2</section> */}
         </div>
 
 
