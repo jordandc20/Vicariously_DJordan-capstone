@@ -190,7 +190,7 @@ const CityDetails = () => {
         {cityDetails?.locations.length > 0 ? (
           <>
             <div className='h-[40vh] md:h-full  md:col-span-2'>
-              {/* <GoogleMapComponent locations={cityDetails.locations} /> */}
+              <GoogleMapComponent locations={cityDetails.locations} />
             </div>
             <div className='h-fit max-h-full overflow-y-auto overflow-hidden md:col-span-3 flex-initial  rounded-lg  shadow-md mx-auto w-full ' >
               {shop?.length > 0 && <CategoryContainer locationData={shop} categoryExpanded={categoryExpanded} type="shopping" onDelLocation={handleDeleteLocation} onNewLocNote={handleAddLocNote} onDelLocNote={handleDelLocNote} onEditLocation={handleEditLocation} onEditLocNote={handleEditLocNote} />}
