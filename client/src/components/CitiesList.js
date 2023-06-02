@@ -25,7 +25,7 @@ const CitiesList = () => {
     setInterval(() => {
       count = (count + 1) % 10
       setCurrentIndex(count);
-    }, 5000);
+    }, 6000);
   };
   useEffect(() => {
     toast.promise(
