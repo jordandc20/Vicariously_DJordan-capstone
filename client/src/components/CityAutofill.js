@@ -124,15 +124,15 @@ const CityAutofill = ({ locationData, type, onFormClose, onSubmit, show }) => {
                 }
             }
 
-            const city_imgs = []
+            // const city_imgs = []
 
-            place.photos.forEach(function (placePhoto) {
-                city_imgs.push(placePhoto.getUrl({
-                    maxWidth: 600,
-                    maxHeight: 400
-                }))
-            })
-            formik.values.city_imgs = city_imgs;
+            // place.photos.forEach(function (placePhoto) {
+            //     city_imgs.push(placePhoto.getUrl({
+            //         maxWidth: 600,
+            //         maxHeight: 400
+            //     }))
+            // })
+            // formik.values.city_imgs = city_imgs;
             ;
 
         });
