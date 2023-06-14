@@ -23,9 +23,9 @@ const CitiesList = () => {
 
   const startSlider = () => {
     setInterval(() => {
-      count = (count + 1) % 10
+      count = (count + 1) % 2
       setCurrentIndex(count);
-    }, 6000);
+    }, 9000);
   };
   useEffect(() => {
     toast.promise(

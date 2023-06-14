@@ -30,7 +30,7 @@ const Home = () => {
                     </div>
                 </div>
                 <div className='flex-1' />
-                <ArrowDownIcon class="animate-bounce text-lg  w-7 h-7 mt-auto self-center p-1 font-extrabold bg-white bg-opacity-40 rounded-full shadow-lg border-2 border-slate-200 border-opacity-50  " />
+                <ArrowDownIcon className="animate-bounce text-lg  w-7 h-7 mt-auto self-center p-1 font-extrabold bg-white bg-opacity-40 rounded-full shadow-lg border-2 border-slate-200 border-opacity-50  " />
             </section>
             <section className='flex flex-col justify-center justify-items-center py-2 w-full h-screen bg-center bg-cover snap-start'>
                 <div className='flex-1' />

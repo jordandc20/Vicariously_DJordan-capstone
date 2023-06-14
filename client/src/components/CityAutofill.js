@@ -3,7 +3,7 @@ import React, { Fragment, useRef, useEffect } from 'react'
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios"
 import { useParams } from 'react-router-dom'
-import {  MagnifyingGlassIcon , LifebuoyIcon} from '@heroicons/react/24/solid'
+import { MagnifyingGlassIcon, LifebuoyIcon } from '@heroicons/react/24/solid'
 
 
 import { useFormik } from "formik";
@@ -50,7 +50,7 @@ const CityAutofill = ({ locationData, type, onFormClose, onSubmit, show }) => {
         }),
         validateOnChange: false,
         validateOnBlur: false,
-        onSubmit:  (values, { resetForm }) => {
+        onSubmit: (values, { resetForm }) => {
 
             const new_values = { ...values }
             new_values['val_user_email'] = user.email
@@ -65,9 +65,10 @@ const CityAutofill = ({ locationData, type, onFormClose, onSubmit, show }) => {
                     .then(r => {
                         onSubmit(r.data)
                     })
-                    .then(()=>
-                    {resetForm();
-                        onFormClose()})
+                    .then(() => {
+                        resetForm();
+                        onFormClose()
+                    })
                 ,
                 {
                     success: (`Success: ${values.city_name}, ${values.country}`),
@@ -99,7 +100,7 @@ const CityAutofill = ({ locationData, type, onFormClose, onSubmit, show }) => {
         );
         autoCompleteRef.current.addListener("place_changed", async function () {
             const place = await autoCompleteRef.current.getPlace();
-            console.log({place})
+            console.log({ place })
             // Get each component of the address from the place details,
             // and then fill-in the corresponding field on the form.
             // place.address_components are google.maps.GeocoderAddressComponent objects
@@ -124,15 +125,20 @@ const CityAutofill = ({ locationData, type, onFormClose, onSubmit, show }) => {
                 }
             }
 
-            // const city_imgs = []
+            const city_imgs = []
+            if (place.photos.length > 0) {
+                const len = (place.photos.length >= 2) ? 2 : place.photos.length
+                for (let i = 0; i < len; i++) {
+                    city_imgs.push(place.photos[i].getUrl({
+                        maxWidth: 600,
+                        maxHeight: 400
+                    }))
+                }
+                console.log(city_imgs)
+            }
 
-            // place.photos.forEach(function (placePhoto) {
-            //     city_imgs.push(placePhoto.getUrl({
-            //         maxWidth: 600,
-            //         maxHeight: 400
-            //     }))
-            // })
-            // formik.values.city_imgs = city_imgs;
+
+            formik.values.city_imgs = city_imgs;
             ;
 
         });
@@ -140,7 +146,7 @@ const CityAutofill = ({ locationData, type, onFormClose, onSubmit, show }) => {
 
 
     // render loading message
-    if (isLoading) { return (<><LifebuoyIcon className='h-5 animate-spin'/><div>Loading...</div></>) }
+    if (isLoading) { return (<><LifebuoyIcon className='h-5 animate-spin' /><div>Loading...</div></>) }
 
     return (
         <div>
@@ -153,15 +159,15 @@ const CityAutofill = ({ locationData, type, onFormClose, onSubmit, show }) => {
                         <span className="form-label">City Search: </span>
                         <div className='flex form-field w-full items-center '>
 
-                        <MagnifyingGlassIcon  className='text-slate-400 h-4 px-1 font-bold ' />
-                        <input autoFocus className='bg-transparent w-full'
-                            ref={inputRef}
-                            id="city-autofill"
-                            name="city-autofill"
-                            autocomplete="off"
-                            placeholder="start typing a city"
+                            <MagnifyingGlassIcon className='text-slate-400 h-4 px-1 font-bold ' />
+                            <input autoFocus className='bg-transparent w-full'
+                                ref={inputRef}
+                                id="city-autofill"
+                                name="city-autofill"
+                                autocomplete="off"
+                                placeholder="start typing a city"
                             />
-                            </div>
+                        </div>
                     </label>
                 </div>
                 <h3 className="h3 my-3">You entered: </h3>

@@ -33,7 +33,7 @@ const CityCard = ({ cityData, onDelCity, handleEditCity, currentIndex }) => {
   return (
     < div className="rounded-lg min-h-fit  flex md:flex-col overflow-hidden shadow-lg border-l-2 border-r-2 border-b-2 border-opacity-20  border-amber-500 hover:scale-105 m-2  cursor-pointer md:pb-2" onClick={handleCityCardClick} >
       <div className=" hidden md:block aspect-w-16 aspect-h-9 w-full relative select-none">
-        {(city_imgs && city_imgs.length > 0) && <img src={city_imgs[currentIndex]} alt="google generated city" />}
+        {(city_imgs && city_imgs.length > 0) && <img src={city_imgs[currentIndex]}  alt="google generated city" />}
       </div>
 
       <div className='flex justify-end min-h-fit  grow cursor-pointer  md:w-full ' >
