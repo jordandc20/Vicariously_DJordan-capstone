@@ -42,6 +42,8 @@ const EditUsernameForm = ({ onEditUsername, onFormClose, show }) => {
             // )
             ,
         }),
+    validateOnBlur: false,
+
         onSubmit:  (values, { resetForm }) => {
             toast.promise(
                 axios.patch(`${API_URL}/users/${userData.id}`, values)
@@ -86,6 +88,7 @@ const EditUsernameForm = ({ onEditUsername, onFormClose, show }) => {
                                         <div className='button-div'>
                                             <button type="submit" className="form-button">Submit</button>
                                             <button type="reset" className="form-button" value="Cancel" onClick={() => {
+                                                formik.resetForm()
                                                 onFormClose()
                                             }}>Cancel</button>
                                         </div>

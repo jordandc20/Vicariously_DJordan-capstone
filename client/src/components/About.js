@@ -27,13 +27,11 @@ const About = () => {
                     <li><span className="underline underline-offset-4 font-semibold decoration-sky-500">Tailwind CSS</span>, supported with <span className="underline underline-offset-4 font-semibold decoration-sky-500">headlessui</span> for dialog modals and <span className="underline underline-offset-4 font-semibold decoration-sky-500">heroicons</span> icons</li>
                     <li>User authentication using <span className="underline underline-offset-4 font-semibold decoration-sky-500">Auth0</span></li>
                     <li>Form creation using <span className="underline underline-offset-4 font-semibold decoration-sky-500">Formik</span>, integrated with <span className="underline underline-offset-4 font-semibold decoration-sky-500">Yup</span> for validations </li>
-                    <li>City/country search using Google Places API and map integration using Maps JavaScript API via <span className="underline underline-offset-4 font-semibold decoration-sky-500">react-google-maps/api</span> </li>
+                    <li>City/country search using <span className="underline underline-offset-4 font-semibold decoration-sky-500">Google Places API</span> and map integration using <span className="underline underline-offset-4 font-semibold decoration-sky-500">Google Maps JavaScript API</span> via react-google-maps/api </li>
                     <li>Data fetching via <span className="underline underline-offset-4 font-semibold decoration-sky-500">Axios</span></li>
                     <li>Toasts via <span className="underline underline-offset-4 font-semibold decoration-sky-500">react-hot-toast</span></li>
-
-                    <li>Flask</li>
-                    <li>gunicorn</li>
-                    <li>flask-sqlalchemy</li>
+                    <li><span className="underline underline-offset-4 font-semibold decoration-sky-500">Flask</span> with Flask-SQLAlchemy</li>
+                    <li>Deployed on <span className="underline underline-offset-4 font-semibold decoration-sky-500">Render</span> running Gunicorn</li>
                     <li>PostgreSQL</li>
                 </ul>
 

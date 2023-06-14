@@ -4,14 +4,14 @@ import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 import axios from "axios"
 import { useParams } from 'react-router-dom'
 import { Dialog, Transition } from '@headlessui/react'
-import {LifebuoyIcon} from '@heroicons/react/24/solid'
+import { LifebuoyIcon } from '@heroicons/react/24/solid'
 
 import { toast } from 'react-hot-toast';
 
 import { useFormik } from "formik";
 import * as yup from "yup";
 import API_URL from "../apiConfig.js";
-const NoteForm = ({ noteData, onFormClose, onSubmit, type,show }) => {
+const NoteForm = ({ noteData, onFormClose, onSubmit, type, show }) => {
   const { user, isLoading } = useAuth0();
   const params = useParams();
 
@@ -65,7 +65,11 @@ const NoteForm = ({ noteData, onFormClose, onSubmit, type,show }) => {
       note_type: yup.string()
 
     }),
-    onSubmit: (values, { resetForm })  => {
+    validateOnChange: true,
+    validateOnMount: true,
+    validateOnBlur: false,
+    initialTouched: {},
+    onSubmit: (values, { resetForm }) => {
       const new_values = { ...values }
       new_values['val_user_email'] = user.email
       new_values['user_id'] = Number(params.userId)
@@ -80,10 +84,11 @@ const NoteForm = ({ noteData, onFormClose, onSubmit, type,show }) => {
           .then(r => {
             onSubmit(r.data)
           })
-          .then(()=>
-            {resetForm()
-            onFormClose()}
-            ),
+          .then(() => {
+            resetForm()
+            onFormClose()
+          }
+          ),
         {
           success: `Success: ${new_values.note_body}`,
           loading: 'Loading...',
@@ -94,12 +99,15 @@ const NoteForm = ({ noteData, onFormClose, onSubmit, type,show }) => {
   });
 
   // render loading message
-  if (isLoading)     { return (<><LifebuoyIcon className='h-5 animate-spin'/><div>Loading...</div></>) }
+  if (isLoading) { return (<><LifebuoyIcon className='h-5 animate-spin' /><div>Loading...</div></>) }
 
   return (
 
     <Transition appear show={show} as={Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={onFormClose}>
+      <Dialog as="div" className="relative z-10" onClose={() => {
+        // formik.resetForm()
+        onFormClose()
+      }}>
         <Transition.Child as={Fragment} enter="ease-out duration-300" enterFrom="opacity-0" enterTo="opacity-100" leave="ease-in duration-200" leaveFrom="opacity-100" leaveTo="opacity-0">
           <div className="fixed inset-0 bg-black bg-opacity-25" />
         </Transition.Child>
@@ -138,7 +146,8 @@ const NoteForm = ({ noteData, onFormClose, onSubmit, type,show }) => {
                     <div className='button-div'>
 
                       <button type="submit" className="form-button">Submit</button>
-                      <button type="reset" className="form-button" value="Cancel" onClick={() => {
+                      <button type="reset" className="form-button" value="Cancel" onClick={(e) => {
+                        formik.resetForm()
                         onFormClose()
                       }}>Cancel</button>
                     </div>

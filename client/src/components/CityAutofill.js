@@ -184,7 +184,7 @@ const CityAutofill = ({ locationData, type, onFormClose, onSubmit, show }) => {
                 </div>
                 <div className='button-div'>
                     <button id='cityFormSubmit' type="submit" className="form-button">Submit</button>
-                    <button id='cityFormCancel' type="reset" className="form-button" value="Cancel" onClick={() => {
+                    <button id='cityFormCancel' type="button" className="form-button" value="Cancel" onClick={() => {
                         onFormClose()
                     }}>Cancel</button></div>
             </form>
