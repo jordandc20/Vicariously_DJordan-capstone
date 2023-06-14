@@ -100,7 +100,6 @@ const CityAutofill = ({ locationData, type, onFormClose, onSubmit, show }) => {
         );
         autoCompleteRef.current.addListener("place_changed", async function () {
             const place = await autoCompleteRef.current.getPlace();
-            console.log({ place })
             // Get each component of the address from the place details,
             // and then fill-in the corresponding field on the form.
             // place.address_components are google.maps.GeocoderAddressComponent objects
@@ -134,7 +133,6 @@ const CityAutofill = ({ locationData, type, onFormClose, onSubmit, show }) => {
                         maxHeight: 400
                     }))
                 }
-                console.log(city_imgs)
             }
 
 

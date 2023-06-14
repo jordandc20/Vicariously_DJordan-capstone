@@ -71,6 +71,10 @@ const LocationForm = ({ locationData, onFormClose, onSubmit, type, show }) => {
       date_visited: yup.string().matches('^(0[1-9]|1[012])/(0[1-9]|[12][0-9]|3[01])/[0-9]{4}$', 'Enter date as mm/dd/yyyy').typeError("must be date"),
       rating: yup.number()
     }),
+    validateOnChange: true,
+    validateOnMount: true,
+    validateOnBlur: false,
+    initialTouched: {},
     onSubmit:  (values, { resetForm }) => {
       const new_values = { ...values }
       Object.keys(new_values).forEach((key) => {
@@ -114,7 +118,10 @@ const LocationForm = ({ locationData, onFormClose, onSubmit, type, show }) => {
 
 
     <Transition appear show={show} as={Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={onFormClose}>
+      <Dialog as="div" className="relative z-10" onClose={() => {
+        formik.resetForm()
+        onFormClose()
+      }}>
         <Transition.Child as={Fragment} enter="ease-out duration-300" enterFrom="opacity-0" enterTo="opacity-100" leave="ease-in duration-200" leaveFrom="opacity-100" leaveTo="opacity-0">
           <div className="fixed inset-0 bg-black bg-opacity-25" />
         </Transition.Child>
@@ -214,6 +221,7 @@ const LocationForm = ({ locationData, onFormClose, onSubmit, type, show }) => {
 
                     <button type="submit" className="form-button">Submit</button>
                     <button type="reset" className="form-button" value="Cancel" onClick={() => {
+                      formik.resetForm()
                       onFormClose()
                     }}>Cancel</button>
                   </div>
